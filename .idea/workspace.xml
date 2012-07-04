@@ -43,9 +43,20 @@
       <file leaf-file-name="main on ttk.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main on ttk.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="24" column="16" selection-start="508" selection-end="508" vertical-scroll-proportion="0.6948229">
+            <state line="43" column="81" selection-start="1096" selection-end="1096" vertical-scroll-proportion="0.49707603">
               <folding>
                 <element signature="e#78#99#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="bibleotekar.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/bibleotekar.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="7" column="9" selection-start="168" selection-end="168" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="e#24#45#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -54,7 +65,7 @@
       <file leaf-file-name="main on ttk1.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/main on ttk1.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+            <state line="14" column="18" selection-start="315" selection-end="315" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -100,6 +111,7 @@
         <option value="$USER_HOME$/PycharmProjects/GUI/hello world.py" />
         <option value="$USER_HOME$/Dropbox/PP4E/Gui/Intro/gui4.py" />
         <option value="$PROJECT_DIR$/main.py" />
+        <option value="$PROJECT_DIR$/bibleotekar.py" />
         <option value="$PROJECT_DIR$/main on ttk.py" />
       </list>
     </option>
@@ -454,16 +466,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="28" selection-start="359" selection-end="359" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/main on ttk1.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
     <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_execfile.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="31" column="8" selection-start="1085" selection-end="1085" vertical-scroll-proportion="0.0">
@@ -481,9 +483,30 @@
         <state line="4" column="31" selection-start="83" selection-end="83" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/bibleotekar.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="7" column="9" selection-start="168" selection-end="168" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="e#24#45#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="17" column="28" selection-start="359" selection-end="359" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main on ttk1.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="14" column="18" selection-start="315" selection-end="315" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/main on ttk.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="24" column="16" selection-start="508" selection-end="508" vertical-scroll-proportion="0.6948229">
+        <state line="43" column="81" selection-start="1096" selection-end="1096" vertical-scroll-proportion="0.49707603">
           <folding>
             <element signature="e#78#99#0" expanded="true" />
           </folding>
