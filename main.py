@@ -37,7 +37,7 @@ def okAct(event):
     #root1 = Tk()
     librarian = open('bibleotekar.py','r')
     hsh = md5()
-    hsh.update( e1.get().encode('utf-8') )
+    hsh.update( e2.get().encode('utf-8') )
     print( hsh.hexdigest() )
     #e1.delete(0, END)
     #e2.delete(0, END); ss='иван'
@@ -55,7 +55,14 @@ def okAct(event):
     for row in cur.execute(request):
         #print(row,'tadada========================')
         hashtable = row[1]
-    print(str(hsh.hexdigest())==str(hashtable))
+    #print(hsh.hexdigest()==hashtable)
+    #print(str( hsh.hexdigest() )==str(hashtable))
+
+    #print(row[0],row[1])
+   # print(e1.get(), hsh.hexdigest())
+
+    print( str(row[0])+str(row[1]) ==   str(e1.get())+ str (hsh.hexdigest() ) ) #проверка на правельность данных!!!
+   # print( set(row[0],row[1]) ==   set(e1.get(), e2.get() ) ) #хорошо бы реализовать через картежи, чот не то
 
 
 def quit(event):
