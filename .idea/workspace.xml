@@ -40,13 +40,22 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="main on ttk.py" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="main on ttk.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/main on ttk.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="43" column="81" selection-start="1096" selection-end="1096" vertical-scroll-proportion="0.49707603">
+            <state line="46" column="0" selection-start="1031" selection-end="1147" vertical-scroll-proportion="-2.72">
               <folding>
                 <element signature="e#78#99#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="sqltest.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/sqltest.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="8" column="0" selection-start="110" selection-end="218" vertical-scroll-proportion="0.39193085">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -113,6 +122,7 @@
         <option value="$PROJECT_DIR$/main.py" />
         <option value="$PROJECT_DIR$/bibleotekar.py" />
         <option value="$PROJECT_DIR$/main on ttk.py" />
+        <option value="$PROJECT_DIR$/sqltest.py" />
       </list>
     </option>
   </component>
@@ -506,10 +516,17 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main on ttk.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="43" column="81" selection-start="1096" selection-end="1096" vertical-scroll-proportion="0.49707603">
+        <state line="46" column="0" selection-start="1031" selection-end="1147" vertical-scroll-proportion="-2.72">
           <folding>
             <element signature="e#78#99#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sqltest.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="8" column="0" selection-start="110" selection-end="218" vertical-scroll-proportion="0.39193085">
+          <folding />
         </state>
       </provider>
     </entry>

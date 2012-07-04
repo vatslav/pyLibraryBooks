@@ -30,22 +30,32 @@ except:
 #for row in cur.execute("select * from books"):
  #   print(row)
 
+
+
+
 def okAct(event):
     #root1 = Tk()
     librarian = open('bibleotekar.py','r')
     hsh = md5()
     hsh.update( e1.get().encode('utf-8') )
     print( hsh.hexdigest() )
-    e1.delete(0, END)
-    e2.delete(0, END)
+    #e1.delete(0, END)
+    #e2.delete(0, END); ss='иван'
     #e1.insert(0,'same text')
     #exec(librarian)
     #master.quit()
-    cur.execute('update users set pass=? where name=?', (hsh.hexdigest(), 'иван'))
-    for row in cur.execute('select * from users where pass="1" '):
-        print(row)
-    for row in cur.execute('select * from users where name="иван" '):
-        print(row)
+    #cur.execute('update users set pass=? where name=?', (hsh.hexdigest(), 'иван')) #смена пароля
+    #conn.commit()
+
+    #hashtable = cur.execute('select * from users where name=? ',( e1.get() ) )
+    #hashtable = cur.execute('select * from users where name=? ', ss )
+    request = 'select * from users where name="' + e1.get() +'"'
+    #for row in cur.execute('select * from users where name="?"', (e1.get()) ):
+    hashtable=''
+    for row in cur.execute(request):
+        #print(row,'tadada========================')
+        hashtable = row[1]
+    print(str(hsh.hexdigest())==str(hashtable))
 
 
 def quit(event):
