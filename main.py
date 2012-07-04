@@ -1,14 +1,17 @@
-__author__ = 'Вячеслав'
+#__author__ = 'Вячеслав'
 #коннект в бд
 #выбор типа пользователя
 #работа в нем
 from tkinter import *
 from tkinter.messagebox import *
-#from tkinter.ttk import *
+from tkinter.ttk import *
 from sys import exit as ext
 import sqlite3
-root = Tk()
-err = Label(root,text='',bg='red')
+from hashlib import md5
+master = Tk()
+master.resizable(False,False)
+#root.protocol('WM_DELETE_WINDOW', window_deleted) # обработчик закрытия окна===========
+err = Label(master,text='')
 b1  = '<Button-1>'
 b1w = '<Double-1>'
 b2  = '<Button-2>'
@@ -24,44 +27,63 @@ except:
     exit()
 #cur.execute("")
 #391 все из букс
-for row in cur.execute("select * from books"):
-    print(row)
+#for row in cur.execute("select * from books"):
+ #   print(row)
+
+
+
 
 def okAct(event):
-    pass
+    #root1 = Tk()
+    librarian = open('bibleotekar.py','r')
+    hsh = md5()
+    hsh.update( e1.get().encode('utf-8') )
+    print( hsh.hexdigest() )
+    #e1.delete(0, END)
+    #e2.delete(0, END); ss='иван'
+    #e1.insert(0,'same text')
+    #exec(librarian)
+    #master.quit()
+    #cur.execute('update users set pass=? where name=?', (hsh.hexdigest(), 'иван')) #смена пароля
+    #conn.commit()
+
+    #hashtable = cur.execute('select * from users where name=? ',( e1.get() ) )
+    #hashtable = cur.execute('select * from users where name=? ', ss )
+    request = 'select * from users where name="' + e1.get() +'"'
+    #for row in cur.execute('select * from users where name="?"', (e1.get()) ):
+    hashtable=''
+    for row in cur.execute(request):
+        #print(row,'tadada========================')
+        hashtable = row[1]
+    print(str(hsh.hexdigest())==str(hashtable))
+
 
 def quit(event):
     ext()
     return
 
-#GUI:
-logW = Entry(root,width=20,bd=3)
-pasW = Entry(root,width=20,bd=3)
-okW = Button(root, text='Ok')
-cancelW = Button(root, text='Cancel')
-logL = Label(root, text='Логин')
-pasL = Label(root, text='Пароль')
+button1 = Button(text='Да')
+button2 = Button(text='Отмена')
+
+button1.bind(b1,okAct)
+button2.bind(b1,quit)
+
+label1 = Label()
+label2 = Label()
+entry1 = Entry()
+entry2 = Entry()
+
+
+Label(master, text="Логин").grid(row=0)
+Label(master, text="Пароль").grid(row=1)
+
+e1 = Entry(master)
+e2 = Entry(master)
 
 
 
-logL.pack(side=LEFT)
-pasL.pack(side=LEFT)
-logW.pack(side=RIGHT)
-pasW.pack(side=RIGHT)
-okW.pack(side=LEFT)
-cancelW.pack(side=RIGHT)
-okW.bind(b1,okAct)
-okW.bind(b1w,quit)
-
-#logL.drid(row=0,column=0)
-#pasL.drid(row=1,column=0)
-#logW.drid(row=0,column=1)
-#pasW.drid(row=1,column=1)
-#okW.drid(row=2,column=0)
-#cancelW.drid(row=2,column=2)
-okW.bind(b1,okAct)
-okW.bind(b1w,quit)
-
-
-root.mainloop()
-print('finish')
+e1.grid(row=0, column=1,padx=5,pady=5,columnspan=2,ipadx=5)
+e2.grid(row=1, column=1,padx=5,pady=5,columnspan=5,ipadx=5)
+button1.grid(row=2, column=0,columnspan=1,ipadx=5,ipady=5,rowspan=10)
+button2.grid(row=2, column=2,columnspan=2,ipadx=5,ipady=5)
+master.mainloop()

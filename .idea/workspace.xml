@@ -31,8 +31,8 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="main.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/main.py">
+      <file leaf-file-name="old_main.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/old_main.py">
           <provider selected="true" editor-type-id="text-editor">
             <state line="17" column="28" selection-start="359" selection-end="359" vertical-scroll-proportion="0.0">
               <folding />
@@ -40,10 +40,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="main on ttk.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/main on ttk.py">
+      <file leaf-file-name="main.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="46" column="0" selection-start="1031" selection-end="1147" vertical-scroll-proportion="-2.72">
+            <state line="46" column="0" selection-start="1031" selection-end="1147" vertical-scroll-proportion="0.21118012">
               <folding>
                 <element signature="e#78#99#0" expanded="true" />
               </folding>
@@ -51,10 +51,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="sqltest.py" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="sqltest.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/sqltest.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="8" column="0" selection-start="110" selection-end="218" vertical-scroll-proportion="0.39193085">
+            <state line="8" column="0" selection-start="110" selection-end="218" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -71,8 +71,8 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="main on ttk1.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/main on ttk1.py">
+      <file leaf-file-name="old_main on ttk1.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/old_main on ttk1.py">
           <provider selected="true" editor-type-id="text-editor">
             <state line="14" column="18" selection-start="315" selection-end="315" vertical-scroll-proportion="0.0">
               <folding />
@@ -206,7 +206,7 @@
       <PyConsoleSettings />
     </option>
   </component>
-  <component name="RunManager" selected="Python.main on ttk">
+  <component name="RunManager" selected="Python.main">
     <configuration default="false" name="hello world" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -265,7 +265,7 @@
       <ConfigurationWrapper RunnerId="PythonRunner" />
       <method />
     </configuration>
-    <configuration default="false" name="main on ttk" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration default="false" name="main" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -276,7 +276,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <module name="pylibrary" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main on ttk.py" />
+      <option name="SCRIPT_NAME" value="C:\Users\Вячеслав\Documents\GitHub\pyLibraryBooks\main.py" />
       <option name="PARAMETERS" value="" />
       <option name="MULTIPROCESS" value="false" />
       <RunnerSettings RunnerId="PyDebugRunner" />
@@ -285,7 +285,7 @@
       <ConfigurationWrapper RunnerId="PythonRunner" />
       <method />
     </configuration>
-    <configuration default="false" name="main on ttk1" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration default="false" name="old_main on ttk1" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -296,7 +296,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <module name="pylibrary" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main on ttk1.py" />
+      <option name="SCRIPT_NAME" value="C:\Users\Вячеслав\Documents\GitHub\pyLibraryBooks\old_main on ttk1.py" />
       <option name="PARAMETERS" value="" />
       <option name="MULTIPROCESS" value="false" />
       <RunnerSettings RunnerId="PyDebugRunner" />
@@ -360,8 +360,8 @@
       <item index="0" class="java.lang.String" itemvalue="Python.hello world" />
       <item index="1" class="java.lang.String" itemvalue="Python.gui3e" />
       <item index="2" class="java.lang.String" itemvalue="Python.gui4" />
-      <item index="3" class="java.lang.String" itemvalue="Python.main on ttk" />
-      <item index="4" class="java.lang.String" itemvalue="Python.main on ttk1" />
+      <item index="3" class="java.lang.String" itemvalue="Python.main" />
+      <item index="4" class="java.lang.String" itemvalue="Python.old_main on ttk1" />
     </list>
   </component>
   <component name="ShelveChangesManager" show_recycled="false" />
@@ -393,13 +393,13 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Data Sources" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.26783004" sideWeight="0.6712329" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.26783004" sideWeight="0.6712329" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39726028" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -502,31 +502,31 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
+    <entry file="file://$PROJECT_DIR$/old_main.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="17" column="28" selection-start="359" selection-end="359" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main on ttk1.py">
+    <entry file="file://$PROJECT_DIR$/old_main on ttk1.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="14" column="18" selection-start="315" selection-end="315" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main on ttk.py">
+    <entry file="file://$PROJECT_DIR$/sqltest.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="46" column="0" selection-start="1031" selection-end="1147" vertical-scroll-proportion="-2.72">
-          <folding>
-            <element signature="e#78#99#0" expanded="true" />
-          </folding>
+        <state line="8" column="0" selection-start="110" selection-end="218" vertical-scroll-proportion="0.0">
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/sqltest.py">
+    <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="0" selection-start="110" selection-end="218" vertical-scroll-proportion="0.39193085">
-          <folding />
+        <state line="46" column="0" selection-start="1031" selection-end="1147" vertical-scroll-proportion="0.21118012">
+          <folding>
+            <element signature="e#78#99#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
