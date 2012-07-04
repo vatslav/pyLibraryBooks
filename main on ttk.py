@@ -7,8 +7,8 @@ from tkinter.messagebox import *
 from tkinter.ttk import *
 from sys import exit as ext
 import sqlite3
-root = Tk()
-err = Label(root,text='')
+master = Tk()
+err = Label(master,text='')
 b1  = '<Button-1>'
 b1w = '<Double-1>'
 b2  = '<Button-2>'
@@ -24,8 +24,8 @@ except:
     exit()
 #cur.execute("")
 #391 все из букс
-for row in cur.execute("select * from books"):
-    print(row)
+#for row in cur.execute("select * from books"):
+ #   print(row)
 
 def okAct(event):
     pass
@@ -34,34 +34,22 @@ def quit(event):
     ext()
     return
 
-#GUI:
-logW = Entry(root)
-pasW = Entry(root)
-okW = Button(root, text='Ok')
-cancelW = Button(root, text='Cancel')
-logL = Label(root, text='Логин')
-pasL = Label(root, text='Пароль')
+button1 = Button(text='Да')
+button2 = Button(text='Отмена')
+label1 = Label()
+label2 = Label()
+entry1 = Entry()
+entry2 = Entry()
 
 
+Label(master, text="Логин").grid(row=0)
+Label(master, text="Пароль").grid(row=1)
 
-logL.pack(side=LEFT)
-pasL.pack(side=LEFT)
-logW.pack(side=RIGHT)
-pasW.pack(side=RIGHT)
-okW.pack(side=LEFT)
-cancelW.pack(side=RIGHT)
-okW.bind(b1,okAct)
-okW.bind(b1w,quit)
+e1 = Entry(master)
+e2 = Entry(master)
 
-#logL.drid(row=0,column=0)
-#pasL.drid(row=1,column=0)
-#logW.drid(row=0,column=1)
-#pasW.drid(row=1,column=1)
-#okW.drid(row=2,column=0)
-#cancelW.drid(row=2,column=2)
-okW.bind(b1,okAct)
-okW.bind(b1w,quit)
-
-
-root.mainloop()
-print('finish')
+e1.grid(row=0, column=1,padx=5,pady=5,columnspan=2)
+e2.grid(row=1, column=1,padx=5,pady=5,columnspan=5)
+button1.grid(row=2, column=0,columnspan=1,padx=5,pady=5,rowspan=10)
+button2.grid(row=2, column=2,columnspan=2,padx=5,pady=5)
+master.mainloop()
