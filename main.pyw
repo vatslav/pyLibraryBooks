@@ -34,6 +34,7 @@ except:
 
 
 def okAct(event):
+    librarian = open('librarian.py','r')
     hsh = md5()
     hsh.update( e2.get().encode('utf-8') )
     print( hsh.hexdigest() )
@@ -53,11 +54,7 @@ def okAct(event):
     if hashtable!='':
         if str(row[0])+str(row[1]) ==   str(e1.get())+ str (hsh.hexdigest() ):  #проверка на правельность данных!!!
             master.destroy()
-            #root1 = Tk()
-            #librarian = open('librarian.py','r')
-            import librarian
-
-
+            root1 = Tk()
     else:
         err['text'] = 'неправильный логин/пароль'
         err.grid(row=4,column=0,rowspan=2,padx=5,pady=5)

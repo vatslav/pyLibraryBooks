@@ -4,5 +4,8 @@ from tkinter.messagebox import *
 from tkinter.ttk import *
 from sys import exit as ext
 import sqlite3
-root2=Tk()
+root1=Tk()
+
+
+
 mainloop()
