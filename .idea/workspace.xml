@@ -43,7 +43,7 @@
       <file leaf-file-name="main.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="64" column="110" selection-start="1961" selection-end="1961" vertical-scroll-proportion="0.6863354">
+            <state line="54" column="16" selection-start="1342" selection-end="1342" vertical-scroll-proportion="0.57763976">
               <folding>
                 <element signature="e#78#99#0" expanded="true" />
               </folding>
@@ -54,7 +54,7 @@
       <file leaf-file-name="sqltest.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/sqltest.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="8" column="0" selection-start="110" selection-end="218" vertical-scroll-proportion="0.0">
+            <state line="7" column="0" selection-start="126" selection-end="126" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -516,14 +516,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/sqltest.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="0" selection-start="110" selection-end="218" vertical-scroll-proportion="0.0">
+        <state line="7" column="0" selection-start="126" selection-end="126" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="64" column="110" selection-start="1961" selection-end="1961" vertical-scroll-proportion="0.6863354">
+        <state line="54" column="16" selection-start="1342" selection-end="1342" vertical-scroll-proportion="0.57763976">
           <folding>
             <element signature="e#78#99#0" expanded="true" />
           </folding>
