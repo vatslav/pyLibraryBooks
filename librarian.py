@@ -4,6 +4,7 @@ from tkinter.messagebox import *
 from tkinter.ttk import *
 from sys import exit as ext
 import sqlite3
+from hashlib import md5
 
 b1  = '<Button-1>'
 b1w = '<Double-1>'
@@ -26,28 +27,37 @@ def setTitile(val):
         tab.cells[0][i].value.set(val[i])
 
 def exBut():
-    global root1,root,tab
-    cur.execute("insert into users values (?,?,?)", (getTab(1,0),getTab(1,1),getTab(1,2)))
-    conn.commit()
-    #showinfo('Готово', 'Пользователь создан')
-    #setTitile(['dd','dd','dd'])
-    setTab(0,0,'');setTab(0,1,'');setTab(0,2,'')
-    #tab.cells[0][1].delettdhfthe(0, END)
-    root.destroy()
-    #root.grid_remove ()
-    #root.
+    root1.title('Создание нового пользователя')
+    if getTab(1,0)=='' or getTab(1,2)=='' or getTab(1,1)=='':
+        showerror('Ошибка ввода', "Пожалуйста, заполните все поля ввода")
+    else:
+        hsh = md5()
+        hsh.update( getTab(1,1).encode('utf-8') )
+        global root1,root,tab
+        cur.execute("insert into users values (?,?,?)", (getTab(1,0),hsh.hexdigest() ,getTab(1,2)))
+        conn.commit()
+        #showinfo('Готово', 'Пользователь создан')
+        setTab(0,0,'');setTab(0,1,'');setTab(0,2,'')
+        root.destroy()
+
 
 def creatUser():
-    #viewTable(3,1,root1)
     global tab,root1,root
-
+    #root2 = Toplevel(root1)
     root = Toplevel(root1)
-    #root.destroy()
+    #root1.withdraw(True)
+    #root.title('table111')
+    #root2.overrideredirect(True)
     tab = Table(root,3,2)
     tab.pack()
     setTitile(['Имя','Пароль','Тип пользователя'])
     com = Button(root,text='Подтвердить', command=(lambda: exBut() ) )
     com.pack()
+
+def changeUser():
+    global tab,root1,root
+    pass
+
 
 
 
@@ -80,39 +90,26 @@ class Table(Frame):
         [self.cells[i][j].grid(row = i, column = j) for i in range(rows) for j in range(columns)]
 
 
-'''
-if __name__ == '__main__':
-    root = Tk()
-    tab = Table(root)
-    tab.pack()
-    tab.cells[1][1].value.set('test')
-    tab.cells[2][2].value.set( tab.cells[1][1].value.get() )
 
-    root.mainloop()'''
 def viewTable(x,y,r1,title=1):
     global root1,root
     y=y+1
     root = Toplevel(r1)
     tab = Table(root,x,y)
     tab.pack()
-    #tab.cells[1][1].value.set('test')
-    #tab.cells[2][2].value.set( tab.cells[1][1].value.get() )
     com = Button(root,text='Подтвердить')
     com.pack()
 
-    #root.mainloop()
-
-
-#def getinfo():
 
 
 def mymain():
-    #def cratuser():
     global root1
     root1=Tk()
-    viewAllBooks   = Button (text='посмотреть список книг')
-    creatLibrarian = Button (text='Создать  учетную запись библиотекаря', command=(lambda:creatUser()) )
-    viewLibrarian  = Button (text='Посмотреть информацию о библиотекаре')
+    root1.title('Администрирование БД')
+    viewAllBooks    = Button (text='посмотреть список книг')
+    creatLibrarian  = Button (text='Создать/изменть  учетную запись библиотекаря', command=(lambda:creatUser()) )
+    changeLibrarian = Button (text='Изменить  учетную запись библиотекаря', command=(lambda:changeUser()) )
+    viewLibrarian   = Button (text='Посмотреть информацию о библиотекаре')
 
     #viewAllBooks.bind(b1,)
     #creatLibrarian.bind(b1,lambda: creatUser(root1))

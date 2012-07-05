@@ -48,7 +48,7 @@ def ViewUser(name):
         return buf
 
 #s=ViewUser('kola')
-print(s)
+#print(s)
 def deleteUser(name):
     request='delete from users where name="' + str(name) + '"'
     i=0;buf=""
@@ -64,7 +64,7 @@ def okAct(event):
     hsh = md5()
     hsh.update( e2.get().encode('utf-8') )
 
-    print( hsh.hexdigest() )
+   # print( hsh.hexdigest() )
 
     #exec(librarian)
     #master.quit()
@@ -87,10 +87,7 @@ def okAct(event):
 
 
     else:
-        err['text'] = 'неправильный логин/пароль'
-        err.grid(row=4,column=0,rowspan=2,padx=5,pady=5)
-   # print( set(row[0],row[1]) ==   set(e1.get(), e2.get() ) ) #хорошо бы реализовать через картежи, чот не то
-    #if str(row[0])+str(row[1]) ==   str(e1.get())+ str (hsh.hexdigest() ):
+        showerror('Ошибка', 'Неверное сочитание логин/пароль')
 
 
 

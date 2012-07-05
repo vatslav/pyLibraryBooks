@@ -18,3 +18,34 @@ goodversion
 cur.execute('update users set pass=? where name=?', (hsh.hexdigest(), 'иван')) #смена пароля
 conn.commit()
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+'''
+if __name__ == '__main__':
+    root = Tk()
+    tab = Table(root)
+    tab.pack()
+    tab.cells[1][1].value.set('test')
+    tab.cells[2][2].value.set( tab.cells[1][1].value.get() )
+
+    root.mainloop()'''
