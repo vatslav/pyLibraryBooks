@@ -30,12 +30,40 @@ except:
 #for row in cur.execute("select * from books"):
  #   print(row)
 
+def creatUser():
+    cur.execute("insert into users values (?,?,?)", ('kola','qwer',1))
+    conn.commit()
+
+def ViewUser(name):
+    request='select * from users where name="' + str(name) + '"'
+    i=0;buf=""
+    for s in cur.execute(request):
+        buf=s
+        i+=1
+    if i>1: print("users table is invalid")
+    if buf!='':
+        return buf
+    else:
+        print('не найдено не одного юзера')
+        return buf
+
+s=ViewUser('kola')
+print(s)
+def deleteUser(name):
+    request='delete from users where name="' + str(name) + '"'
+    i=0;buf=""
+    for s in cur.execute(request):
+        buf=s
+        i+=1
+
+deleteUser('ss')
 
 
 
 def okAct(event):
     hsh = md5()
     hsh.update( e2.get().encode('utf-8') )
+
     print( hsh.hexdigest() )
 
     #exec(librarian)
