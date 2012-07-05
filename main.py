@@ -47,7 +47,7 @@ def ViewUser(name):
         print('не найдено не одного юзера')
         return buf
 
-s=ViewUser('kola')
+#s=ViewUser('kola')
 print(s)
 def deleteUser(name):
     request='delete from users where name="' + str(name) + '"'
@@ -56,7 +56,7 @@ def deleteUser(name):
         buf=s
         i+=1
 
-deleteUser('ss')
+#deleteUser('ss')
 
 
 
