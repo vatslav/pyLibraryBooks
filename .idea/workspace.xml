@@ -40,10 +40,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="main.py" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="main.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="68" column="20" selection-start="1495" selection-end="1495" vertical-scroll-proportion="0.8416149">
+            <state line="62" column="17" selection-start="1384" selection-end="1384" vertical-scroll-proportion="-4.72">
               <folding>
                 <element signature="e#78#99#0" expanded="true" />
               </folding>
@@ -60,10 +60,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="librarian.py" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="librarian.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/librarian.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="38" column="0" selection-start="952" selection-end="952" vertical-scroll-proportion="0.0">
+            <state line="32" column="21" selection-start="908" selection-end="908" vertical-scroll-proportion="0.16714698">
               <folding>
                 <element signature="e#24#45#0" expanded="true" />
               </folding>
@@ -83,7 +83,7 @@
       <file leaf-file-name="_pydev_execfile.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_execfile.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="36" column="0" selection-start="1164" selection-end="1241" vertical-scroll-proportion="0.0">
+            <state line="36" column="0" selection-start="1164" selection-end="1164" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -122,8 +122,8 @@
         <option value="$PROJECT_DIR$/bibleotekar.py" />
         <option value="$PROJECT_DIR$/main on ttk.py" />
         <option value="$PROJECT_DIR$/sqltest.py" />
-        <option value="$PROJECT_DIR$/librarian.py" />
         <option value="$PROJECT_DIR$/main.py" />
+        <option value="$PROJECT_DIR$/librarian.py" />
       </list>
     </option>
   </component>
@@ -207,7 +207,7 @@
       <PyConsoleSettings />
     </option>
   </component>
-  <component name="RunManager" selected="Python.main">
+  <component name="RunManager" selected="Python.librarian">
     <configuration default="false" name="gui3e" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -499,22 +499,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_execfile.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="36" column="0" selection-start="1164" selection-end="1241" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/librarian.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="38" column="0" selection-start="952" selection-end="952" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="e#24#45#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/sqltest.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="12" column="14" selection-start="278" selection-end="278" vertical-scroll-proportion="0.0">
@@ -524,9 +508,25 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="68" column="20" selection-start="1495" selection-end="1495" vertical-scroll-proportion="0.8416149">
+        <state line="62" column="17" selection-start="1384" selection-end="1384" vertical-scroll-proportion="-4.72">
           <folding>
             <element signature="e#78#99#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_execfile.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="36" column="0" selection-start="1164" selection-end="1164" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/librarian.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="32" column="21" selection-start="908" selection-end="908" vertical-scroll-proportion="0.16714698">
+          <folding>
+            <element signature="e#24#45#0" expanded="true" />
           </folding>
         </state>
       </provider>
