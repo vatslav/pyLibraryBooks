@@ -21,9 +21,7 @@ try:
     conn = sqlite3.connect('db.sqlite')
     cur = conn.cursor()
 except:
-    err['text'] = 'ошибка открытия базы данных'
-    err.pack()
-    err.mainloop()
+    showerror('Ошибка', 'Ошибка открытия базы данных.')
     exit()
 #cur.execute("")
 #391 все из букс

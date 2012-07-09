@@ -1,8 +1,11 @@
+#from main import e1
+
 __author__ = 'Вячеслав'
 from tkinter import *
 from tkinter.messagebox import *
 from tkinter.ttk import *
 from sys import exit as ext
+import scrolledlist
 import sqlite3
 from hashlib import md5
 
@@ -12,8 +15,12 @@ b2  = '<Button-2>'
 tab=''
 root1=True #кнопки
 root=True #таблица
-conn = sqlite3.connect('library.db')
-cur = conn.cursor()
+try:
+    conn = sqlite3.connect('db.sqlite')
+    cur = conn.cursor()
+except:
+    showerror('Ошибка', 'Ошибка при рабое с базой данных, возможно ее кто-то уже использует.')
+    exit()
 
 def getTab(x=1,y=0):
     return tab.cells[x][y].value.get()
@@ -40,8 +47,22 @@ def exBut():
         setTab(0,0,'');setTab(0,1,'');setTab(0,2,'')
         root.destroy()
 def creatUserAct():
+    if e2.get()!=e3.get():
+        showerror('Ошибка', 'Введенные пароли не совпадают')
+        return
+
 #cur.execute("insert into users values (?,?,?)", ('kola','qwer',1))
 #conn.commit()
+    name = e1.get.upper()
+    try:
+        insUserComand = 'INSERT INTO users ("name", "pass","role")'
+        insUserValue = (name, e2.get() )
+    except sqlite3.DatabaseError as err:
+        print(Ошибка, err)
+        showerror('Ошибка', 'Ошиюбка выполнения запроса \n err')
+    else:
+        conn.commit()
+
     
 
 def creatUser():
