@@ -34,14 +34,45 @@ def exBut():
         hsh = md5()
         hsh.update( getTab(1,1).encode('utf-8') )
         global root1,root,tab
-        cur.execute("insert into users values (?,?,?)", (getTab(1,0),hsh.hexdigest() ,getTab(1,2)))
+        cur.execute("insert into users values (?,?,?)", (getTab(1,0).lower(),hsh.hexdigest() ,getTab(1,2)))
         conn.commit()
         #showinfo('Готово', 'Пользователь создан')
         setTab(0,0,'');setTab(0,1,'');setTab(0,2,'')
         root.destroy()
-
+def creatUserAct():
+#cur.execute("insert into users values (?,?,?)", ('kola','qwer',1))
+#conn.commit()
+    
 
 def creatUser():
+    global tab,root1,root
+    root = Toplevel(root1)
+    #Login = Entry (root, text='Логин')
+    #Pass  = Enry (root, text='Пароль')
+    button1 = Button(root,text='Подтвердить',command=(lambda: creatUserAct() ) )
+    button2 = Button(root,text='Отмена' ,command=(lambda: root.destroy() ) )
+
+
+
+
+
+
+
+    Label(root, text="Логин").grid(row=0)
+    Label(root, text="Пароль").grid(row=1)
+    Label(root, text='Подтвердите пароль').grid(row=2)
+    e1 = Entry(root)
+    e2 = Entry(root)
+    e3 = Entry(root)
+
+
+    e1.grid(row=0, column=1,padx=5,pady=5,columnspan=2,ipadx=5)
+    e2.grid(row=1, column=1,padx=5,pady=5,columnspan=5,ipadx=5)
+    e3.grid(row=2, column=1,padx=5,pady=5,columnspan=5,ipadx=5)
+    button1.grid(row=3, column=0,columnspan=1,ipadx=5,ipady=5,rowspan=10)
+    button2.grid(row=3, column=2,columnspan=2,ipadx=5,ipady=5)
+
+def creatUsers():
     global tab,root1,root
     #root2 = Toplevel(root1)
     root = Toplevel(root1)
@@ -61,8 +92,7 @@ def changeUser():
 
 
 
-    #cur.execute("insert into users values (?,?,?)", ('kola','qwer',1))
-    #conn.commit()
+
 
 def ViewUser(name):
     request='select * from users where name="' + str(name) + '"'

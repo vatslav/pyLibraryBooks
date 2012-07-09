@@ -18,7 +18,7 @@ b2  = '<Button-2>'
 b2w = '<Double-2>'
 
 try:
-    conn = sqlite3.connect('library.db')
+    conn = sqlite3.connect('db.sqlite')
     cur = conn.cursor()
 except:
     err['text'] = 'ошибка открытия базы данных'
@@ -70,8 +70,9 @@ def okAct(event):
     #master.quit()
     #cur.execute('update users set pass=? where name=?', (hsh.hexdigest(), '1')) #смена пароля
     #conn.commit()
-
-    request = 'select * from users where name="' + e1.get() +'"'
+    #tmplogin=
+    passlower=e1.get().lower()
+    request = 'select * from users where name="' + passlower +'"'
     hashtable=''
     for row in cur.execute(request):
         hashtable = row[1]
@@ -79,7 +80,7 @@ def okAct(event):
     #print(str(row[0])+str(row[1]) ==   str(e1.get())+ str (hsh.hexdigest() ))
 
     if hashtable!='':
-        if str(row[0])+str(row[1]) ==   str(e1.get())+ str (hsh.hexdigest() ):  #проверка на правельность данных!!!
+        if str(row[0])+str(row[1]) ==   str(passlower)+ str (hsh.hexdigest() ):  #проверка на правельность данных!!!
             master.destroy()
             #root1 = Tk()
             #librarian = open('librarian.py','r')
