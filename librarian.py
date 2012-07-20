@@ -46,15 +46,43 @@ def exBut():
         #showinfo('Готово', 'Пользователь создан')
         setTab(0,0,'');setTab(0,1,'');setTab(0,2,'')
         root.destroy()
+def creatUserAct(e1,e2,e3):
+    if e1.get()=='' or e2.get()=='' or e3.get()=='':
+        showerror('Ошибка ввода', "Пожалуйста, заполните все поля ввода")
+        return
+    if e2.get()!=e3.get():
+        showerror('Ошибка', 'Введенные пароли не совпадают')
+        return
+    hsh = md5()
+    hashpass = hsh.hexdigest()
+    hsh.update( e1.get().encode('utf-8') )
+    #cur.execute("insert into users values (?,?,?)", ('kola','qwer',1))
+    #conn.commit()
+    name = e1.get().lower()
+    #print(name)
+    try:
+
+        insUserValue = (name, hashpass,'библ' )
+        insUserComand = 'INSERT INTO users values (?,?,?)'
+        cur.execute(insUserComand,insUserValue)
+        #print('новый пользователь создан!')
+       # print(insUserComand, insUserValue)
+    except sqlite3.DatabaseError as err:
+        print('Ошибка', err)
+        errMsg = 'Ошиюбка выполнения запроса:\n"' + str(err) + '"'
+        showerror('Ошибка', errMsg)
+    else:
+        conn.commit()
 
 
-    
+
 
 def creatUser():
 
     global tab,root1,root
     root = Toplevel()
-
+    leftFrame  = Frame(root)
+    rightFrame = Frame(root)
     #Login = Entry (root, text='Логин')
     #Pass  = Enry (root, text='Пароль')
     button1 = Button(root,text='Подтвердить',command=(lambda: creatUserAct(e1,e2,e3) ) )
@@ -66,13 +94,17 @@ def creatUser():
 
 
 
-    Label(root, text="Логин").grid(row=0)
-    Label(root, text="Пароль").grid(row=1)
-    Label(root, text='Подтвердите пароль').grid(row=2)
-    e1 = Entry(root)
-    e2 = Entry(root)
-    e3 = Entry(root)
+    Label(leftFrame, text="Логин").grid(row=0)
+    Label(leftFrame, text="Пароль").grid(row=1)
+    Label(leftFrame, text='Подтвердите пароль').grid(row=2)
+    Label(rightFrame, text='Тип учетной записи').grid(column=3)
+    e1 = Entry(leftFrame)
+    e2 = Entry(leftFrame)
+    e3 = Entry(leftFrame)
     elements = ("Библитекарь", "Читатель", "Адинистратор")
+    roleBox = Listbox(rightFrame)
+    [roleBox.insert('end',x) for x in elements]
+    roleBox.grid(row=1,column=3)
     #scrolledlist.ScrolledList(elements)
     #scrolledlist.ScrolledList.pack()
     #scrolledlist.ScrolledList.grid(row=4, column=1,padx=5,pady=5,columnspan=5,ipadx=5)
@@ -81,7 +113,8 @@ def creatUser():
     e3.grid(row=2, column=1,padx=5,pady=5,columnspan=5,ipadx=5)
     button1.grid(row=3, column=0,columnspan=1,ipadx=5,ipady=5,rowspan=10)
     button2.grid(row=3, column=2,columnspan=2,ipadx=5,ipady=5)
-
+    leftFrame.grid(row=0, column=0)
+    rightFrame.grid(row=0,column=4)
     e1.focus_set()
     root.grab_set()
     root.wait_window()
@@ -91,25 +124,6 @@ def creatUser():
     #root.destroy()
     #focus_set()
 
-def creatUserAct(e1,e2,e3):
-    if e2.get()!=e3.get():
-        showerror('Ошибка', 'Введенные пароли не совпадают')
-        return
-
-    #cur.execute("insert into users values (?,?,?)", ('kola','qwer',1))
-    #conn.commit()
-    name = e1.get().upper()
-    print(name)
-    try:
-        insUserValue = (name, e2.get(),'библ' )
-        insUserComand = 'INSERT INTO users ("name", "pass","role")'
-
-        print('новый пользователь создан!')
-    except sqlite3.DatabaseError as err:
-        print(Ошибка, err)
-        showerror('Ошибка', 'Ошиюбка выполнения запроса \n err')
-    else:
-        conn.commit()
 
 
 

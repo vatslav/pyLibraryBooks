@@ -25,8 +25,10 @@
       <file leaf-file-name="main.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="68" column="37" selection-start="1527" selection-end="1529" vertical-scroll-proportion="-4.4">
-              <folding />
+            <state line="61" column="0" selection-start="1361" selection-end="1419" vertical-scroll-proportion="5.8">
+              <folding>
+                <element signature="e#78#99#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -43,19 +45,10 @@
       <file leaf-file-name="librarian.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/librarian.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="103" column="47" selection-start="2893" selection-end="2893" vertical-scroll-proportion="0.44606414">
+            <state line="101" column="21" selection-start="2922" selection-end="2922" vertical-scroll-proportion="0.5043732">
               <folding>
                 <element signature="e#46#67#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="cp1251.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://C:/Python32/Lib/encodings/cp1251.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="22" column="0" selection-start="674" selection-end="674" vertical-scroll-proportion="0.0">
-              <folding />
             </state>
           </provider>
         </entry>
@@ -189,24 +182,6 @@
     </key>
   </component>
   <component name="RunManager" selected="Python.librarian">
-    <configuration default="false" name="old_main on ttk1" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <module name="pylibrary" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="C:\Users\Вячеслав\Documents\GitHub\pyLibraryBooks\old_main on ttk1.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="MULTIPROCESS" value="false" />
-      <RunnerSettings RunnerId="PyDebugRunner" />
-      <ConfigurationWrapper RunnerId="PyDebugRunner" />
-      <method />
-    </configuration>
     <configuration default="false" name="librarian" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -285,6 +260,26 @@
       <ConfigurationWrapper RunnerId="PythonRunner" />
       <method />
     </configuration>
+    <configuration default="false" name="main" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <module name="pylibrary" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="MULTIPROCESS" value="false" />
+      <RunnerSettings RunnerId="PyDebugRunner" />
+      <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PyDebugRunner" />
+      <ConfigurationWrapper RunnerId="PythonRunner" />
+      <method />
+    </configuration>
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -339,11 +334,11 @@
       <method />
     </configuration>
     <list size="5">
-      <item index="0" class="java.lang.String" itemvalue="Python.old_main on ttk1" />
-      <item index="1" class="java.lang.String" itemvalue="Python.librarian" />
-      <item index="2" class="java.lang.String" itemvalue="Python.dlg1.pyw" />
-      <item index="3" class="java.lang.String" itemvalue="Python.scrolledlist" />
-      <item index="4" class="java.lang.String" itemvalue="Python.dlg-custom" />
+      <item index="0" class="java.lang.String" itemvalue="Python.librarian" />
+      <item index="1" class="java.lang.String" itemvalue="Python.dlg1.pyw" />
+      <item index="2" class="java.lang.String" itemvalue="Python.scrolledlist" />
+      <item index="3" class="java.lang.String" itemvalue="Python.dlg-custom" />
+      <item index="4" class="java.lang.String" itemvalue="Python.main" />
     </list>
   </component>
   <component name="ShelveChangesManager" show_recycled="false" />
@@ -478,13 +473,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="68" column="37" selection-start="1527" selection-end="1529" vertical-scroll-proportion="-4.4">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://C:/Python32/Lib/tkinter/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="87" column="0" selection-start="2476" selection-end="2476" vertical-scroll-proportion="0.0">
@@ -526,9 +514,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="61" column="0" selection-start="1361" selection-end="1419" vertical-scroll-proportion="5.8">
+          <folding>
+            <element signature="e#78#99#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://C:/Python32/Lib/encodings/cp1251.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="22" column="0" selection-start="674" selection-end="674" vertical-scroll-proportion="0.0">
+        <state line="25" column="8" selection-start="804" selection-end="804" vertical-scroll-proportion="0.43661973">
           <folding />
         </state>
       </provider>
@@ -542,7 +539,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/librarian.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="103" column="47" selection-start="2893" selection-end="2893" vertical-scroll-proportion="0.44606414">
+        <state line="101" column="21" selection-start="2922" selection-end="2922" vertical-scroll-proportion="0.5043732">
           <folding>
             <element signature="e#46#67#0" expanded="true" />
           </folding>
