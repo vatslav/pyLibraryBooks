@@ -57,7 +57,7 @@ def creatUser():
 
     #Login = Entry (root, text='Логин')
     #Pass  = Enry (root, text='Пароль')
-    button1 = Button(root,text='Подтвердить',command=(lambda: creatUserAct() ) )
+    button1 = Button(root,text='Подтвердить',command=(lambda: creatUserAct(e1,e2,e3) ) )
     button2 = Button(root,text='Отмена' ,command=(lambda: root.destroy() ) )
 
 
@@ -91,17 +91,20 @@ def creatUser():
     #root.destroy()
     #focus_set()
 
-def creatUserAct():
+def creatUserAct(e1,e2,e3):
     if e2.get()!=e3.get():
         showerror('Ошибка', 'Введенные пароли не совпадают')
         return
 
     #cur.execute("insert into users values (?,?,?)", ('kola','qwer',1))
     #conn.commit()
-    name = e1.get.upper()
+    name = e1.get().upper()
+    print(name)
     try:
+        insUserValue = (name, e2.get(),'библ' )
         insUserComand = 'INSERT INTO users ("name", "pass","role")'
-        insUserValue = (name, e2.get() )
+
+        print('новый пользователь создан!')
     except sqlite3.DatabaseError as err:
         print(Ошибка, err)
         showerror('Ошибка', 'Ошиюбка выполнения запроса \n err')
