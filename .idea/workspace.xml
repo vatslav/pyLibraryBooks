@@ -22,10 +22,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="main.py" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="main.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="61" column="0" selection-start="1361" selection-end="1419" vertical-scroll-proportion="5.8">
+            <state line="87" column="28" selection-start="2323" selection-end="2323" vertical-scroll-proportion="0.3090909">
               <folding>
                 <element signature="e#78#99#0" expanded="true" />
               </folding>
@@ -42,10 +42,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="librarian.py" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="librarian.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/librarian.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="89" column="0" selection-start="2654" selection-end="2703" vertical-scroll-proportion="0.28279883">
+            <state line="215" column="1" selection-start="6120" selection-end="6120" vertical-scroll-proportion="-9.64">
               <folding>
                 <element signature="e#46#67#0" expanded="true" />
               </folding>
@@ -87,12 +87,12 @@
         <option value="$USER_HOME$/Dropbox/PP4E/Gui/Intro/gui4.py" />
         <option value="$PROJECT_DIR$/bibleotekar.py" />
         <option value="$PROJECT_DIR$/main on ttk.py" />
-        <option value="$PROJECT_DIR$/main.py" />
         <option value="$USER_HOME$/Dropbox/PP4E/Gui/Tour/scrolledlist.py" />
         <option value="$PROJECT_DIR$/scrolledlist.py" />
         <option value="$USER_HOME$/Dropbox/PP4E/Gui/Tour/dlg-custom.py" />
         <option value="$PROJECT_DIR$/sqltest.py" />
         <option value="$PROJECT_DIR$/librarian.py" />
+        <option value="$PROJECT_DIR$/main.py" />
       </list>
     </option>
   </component>
@@ -514,15 +514,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="61" column="0" selection-start="1361" selection-end="1419" vertical-scroll-proportion="5.8">
-          <folding>
-            <element signature="e#78#99#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://C:/Python32/Lib/encodings/cp1251.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="25" column="8" selection-start="804" selection-end="804" vertical-scroll-proportion="0.43661973">
@@ -539,9 +530,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/librarian.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="89" column="0" selection-start="2654" selection-end="2703" vertical-scroll-proportion="0.28279883">
+        <state line="215" column="1" selection-start="6120" selection-end="6120" vertical-scroll-proportion="-9.64">
           <folding>
             <element signature="e#46#67#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="87" column="28" selection-start="2323" selection-end="2323" vertical-scroll-proportion="0.3090909">
+          <folding>
+            <element signature="e#78#99#0" expanded="true" />
           </folding>
         </state>
       </provider>

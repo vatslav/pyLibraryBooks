@@ -59,6 +59,7 @@ def deleteUser(name):
 
 
 def okAct(event):
+    #print('accece complite1')
     hsh = md5()
     hsh.update( e2.get().encode('utf-8') )
 
@@ -78,16 +79,19 @@ def okAct(event):
     #print(str(row[0])+str(row[1]) ==   str(e1.get())+ str (hsh.hexdigest() ))
 
     if hashtable!='':
+        #print('hsh msg 1')
         if str(row[0])+str(row[1]) ==   str(passlower)+ str (hsh.hexdigest() ):  #проверка на правельность данных!!!
             master.destroy()
             #root1 = Tk()
             #librarian = open('librarian.py','r')
+            print('accece complite')
             import librarian
 
 
+        else:
+            showerror('Ошибка', 'Неверные пароль')
     else:
         showerror('Ошибка', 'Неверное сочитание логин/пароль')
-
 
 
 def quit(event):

@@ -189,6 +189,7 @@ def viewTable(x,y,r1,title=1):
 
 
 def mymain():
+    #print('mymain init)')
     global root1
     root1=Tk()
     root1.title('Администрирование БД')
@@ -212,5 +213,5 @@ def mymain():
     root1.mainloop()
 
 
-
+#print('librarian start now')
 mymain()
