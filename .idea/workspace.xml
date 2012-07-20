@@ -36,7 +36,7 @@
       <file leaf-file-name="sqltest.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/sqltest.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="37" column="14" selection-start="773" selection-end="773" vertical-scroll-proportion="0.0">
+            <state line="3" column="23" selection-start="49" selection-end="49" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -45,7 +45,7 @@
       <file leaf-file-name="librarian.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/librarian.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="101" column="21" selection-start="2922" selection-end="2922" vertical-scroll-proportion="0.5043732">
+            <state line="89" column="0" selection-start="2654" selection-end="2703" vertical-scroll-proportion="0.28279883">
               <folding>
                 <element signature="e#46#67#0" expanded="true" />
               </folding>
@@ -181,7 +181,7 @@
       <recent name="C:\Users\Вячеслав\Documents\GitHub\pyLibraryBooks" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.librarian">
+  <component name="RunManager" selected="Python.main">
     <configuration default="false" name="librarian" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -532,14 +532,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/sqltest.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="37" column="14" selection-start="773" selection-end="773" vertical-scroll-proportion="0.0">
+        <state line="3" column="23" selection-start="49" selection-end="49" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/librarian.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="101" column="21" selection-start="2922" selection-end="2922" vertical-scroll-proportion="0.5043732">
+        <state line="89" column="0" selection-start="2654" selection-end="2703" vertical-scroll-proportion="0.28279883">
           <folding>
             <element signature="e#46#67#0" expanded="true" />
           </folding>

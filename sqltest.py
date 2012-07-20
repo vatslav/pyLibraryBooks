@@ -1,6 +1,13 @@
 __author__ = 'Вячеслав'
 
 
+#===Отлавливаем ошибку!
+try:
+    a=2/0
+except ZeroDivisionError as zero:
+    print(zero)
+
+
 for row in cur.execute('select * from users where name="иван" '):
     print(row)
 
