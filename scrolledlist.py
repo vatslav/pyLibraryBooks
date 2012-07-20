@@ -3,7 +3,7 @@
 from tkinter import *
 
 class ScrolledList(Frame):
-    def __init__(self, options, parent=None):
+    def __init__(self, options, parent=None, root='root)'):
         Frame.__init__(self, parent)
         self.pack(expand=YES, fill=BOTH)                   # make me expandable
         self.makeWidgets(options)
@@ -32,5 +32,9 @@ class ScrolledList(Frame):
         print('You selected:', selection)
 
 if __name__ == '__main__':
-    options = (('Lumberjack-%s' % x) for  x in range(20))  # or map/lambda, [...]
-    ScrolledList(options).mainloop()
+    options = ( ('Lumberjack-%s' % x) for  x in range(20))  # or map/lambda, [...]
+    print(options)
+    print(type(options))
+    root  = Tk()
+   # ScrolledList(options).mainloop()
+    root.mainloop()

@@ -24,7 +24,18 @@ conn.commit()
 
 
 
-
+def creatUsers():
+    global tab,root1,root
+    #root2 = Toplevel(root1)
+    root = Toplevel(root1)
+    #root1.withdraw(True)
+    #root.title('table111')
+    #root2.overrideredirect(True)
+    tab = Table(root,3,2)
+    tab.pack()
+    setTitile(['Имя','Пароль','Тип пользователя'])
+    com = Button(root,text='Подтвердить', command=(lambda: exBut() ) )
+    com.pack()
 
 
 

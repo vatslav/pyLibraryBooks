@@ -46,28 +46,15 @@ def exBut():
         #showinfo('Готово', 'Пользователь создан')
         setTab(0,0,'');setTab(0,1,'');setTab(0,2,'')
         root.destroy()
-def creatUserAct():
-    if e2.get()!=e3.get():
-        showerror('Ошибка', 'Введенные пароли не совпадают')
-        return
 
-#cur.execute("insert into users values (?,?,?)", ('kola','qwer',1))
-#conn.commit()
-    name = e1.get.upper()
-    try:
-        insUserComand = 'INSERT INTO users ("name", "pass","role")'
-        insUserValue = (name, e2.get() )
-    except sqlite3.DatabaseError as err:
-        print(Ошибка, err)
-        showerror('Ошибка', 'Ошиюбка выполнения запроса \n err')
-    else:
-        conn.commit()
 
     
 
 def creatUser():
+
     global tab,root1,root
-    root = Toplevel(root1)
+    root = Toplevel()
+
     #Login = Entry (root, text='Логин')
     #Pass  = Enry (root, text='Пароль')
     button1 = Button(root,text='Подтвердить',command=(lambda: creatUserAct() ) )
@@ -85,26 +72,43 @@ def creatUser():
     e1 = Entry(root)
     e2 = Entry(root)
     e3 = Entry(root)
-
-
+    elements = ("Библитекарь", "Читатель", "Адинистратор")
+    #scrolledlist.ScrolledList(elements)
+    #scrolledlist.ScrolledList.pack()
+    #scrolledlist.ScrolledList.grid(row=4, column=1,padx=5,pady=5,columnspan=5,ipadx=5)
     e1.grid(row=0, column=1,padx=5,pady=5,columnspan=2,ipadx=5)
     e2.grid(row=1, column=1,padx=5,pady=5,columnspan=5,ipadx=5)
     e3.grid(row=2, column=1,padx=5,pady=5,columnspan=5,ipadx=5)
     button1.grid(row=3, column=0,columnspan=1,ipadx=5,ipady=5,rowspan=10)
     button2.grid(row=3, column=2,columnspan=2,ipadx=5,ipady=5)
 
-def creatUsers():
-    global tab,root1,root
-    #root2 = Toplevel(root1)
-    root = Toplevel(root1)
-    #root1.withdraw(True)
-    #root.title('table111')
-    #root2.overrideredirect(True)
-    tab = Table(root,3,2)
-    tab.pack()
-    setTitile(['Имя','Пароль','Тип пользователя'])
-    com = Button(root,text='Подтвердить', command=(lambda: exBut() ) )
-    com.pack()
+    e1.focus_set()
+    root.grab_set()
+    root.wait_window()
+    #root.grab_set()
+    #root.wait_window()
+    #root.mainloop()
+    #root.destroy()
+    #focus_set()
+
+def creatUserAct():
+    if e2.get()!=e3.get():
+        showerror('Ошибка', 'Введенные пароли не совпадают')
+        return
+
+    #cur.execute("insert into users values (?,?,?)", ('kola','qwer',1))
+    #conn.commit()
+    name = e1.get.upper()
+    try:
+        insUserComand = 'INSERT INTO users ("name", "pass","role")'
+        insUserValue = (name, e2.get() )
+    except sqlite3.DatabaseError as err:
+        print(Ошибка, err)
+        showerror('Ошибка', 'Ошиюбка выполнения запроса \n err')
+    else:
+        conn.commit()
+
+
 
 def changeUser():
     global tab,root1,root
