@@ -57,8 +57,9 @@ def creatUserAct(e1,e2,e3,userBox):
         showerror('Ошибка', 'Введенные пароли не совпадают')
         return
     hsh = md5()
+    hsh.update( e2.get().encode('utf-8') )
     hashpass = hsh.hexdigest()
-    hsh.update( e1.get().encode('utf-8') )
+
     #cur.execute("insert into users values (?,?,?)", ('kola','qwer',1))
     #conn.commit()
     name = e1.get().lower()

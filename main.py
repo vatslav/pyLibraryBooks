@@ -81,13 +81,13 @@ def okAct(event):
     if hashtable!='':
         #print('hsh msg 1')
         if str(row[0])+str(row[1]) ==   str(passlower)+ str (hsh.hexdigest() ):  #проверка на правельность данных!!!
-            master.destroy()
-            #root1 = Tk()
-            #librarian = open('librarian.py','r')
-            print('accece complite')
-            import librarian
+            if row[2]=='Адинистратор':
+                master.destroy()
+                import librarian
+            else:
+                showerror('Ошибка', 'Ошибка роли, обратитесь в техподдержку')
 
-
+           #import librarian
         else:
             showerror('Ошибка', 'Неверные пароль')
     else:
@@ -122,4 +122,5 @@ e1.grid(row=0, column=1,padx=5,pady=5,columnspan=2,ipadx=5)
 e2.grid(row=1, column=1,padx=5,pady=5,columnspan=5,ipadx=5)
 button1.grid(row=2, column=0,columnspan=1,ipadx=5,ipady=5,rowspan=10)
 button2.grid(row=2, column=2,columnspan=2,ipadx=5,ipady=5)
+e1.focus_set()
 master.mainloop()

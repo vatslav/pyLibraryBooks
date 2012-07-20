@@ -22,17 +22,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="main.py" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/main.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="87" column="28" selection-start="2323" selection-end="2323" vertical-scroll-proportion="0.3090909">
-              <folding>
-                <element signature="e#78#99#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="sqltest.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/sqltest.py">
           <provider selected="true" editor-type-id="text-editor">
@@ -45,9 +34,20 @@
       <file leaf-file-name="librarian.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/librarian.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="215" column="1" selection-start="6120" selection-end="6120" vertical-scroll-proportion="-9.64">
+            <state line="59" column="18" selection-start="1635" selection-end="1635" vertical-scroll-proportion="4.64">
               <folding>
                 <element signature="e#46#67#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="main.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/main.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="87" column="16" selection-start="2292" selection-end="2292" vertical-scroll-proportion="0.53939396">
+              <folding>
+                <element signature="e#78#99#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -370,13 +370,13 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Data Sources" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.33611533" sideWeight="0.6729452" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.33611533" sideWeight="0.6729452" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39726028" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -530,7 +530,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/librarian.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="215" column="1" selection-start="6120" selection-end="6120" vertical-scroll-proportion="-9.64">
+        <state line="59" column="18" selection-start="1635" selection-end="1635" vertical-scroll-proportion="4.64">
           <folding>
             <element signature="e#46#67#0" expanded="true" />
           </folding>
@@ -539,7 +539,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="87" column="28" selection-start="2323" selection-end="2323" vertical-scroll-proportion="0.3090909">
+        <state line="87" column="16" selection-start="2292" selection-end="2292" vertical-scroll-proportion="0.53939396">
           <folding>
             <element signature="e#78#99#0" expanded="true" />
           </folding>
