@@ -70,16 +70,11 @@ def creatUserAct(e1,e2,e3,userBox):
     except TclError as notSelect:
         showerror('Ошибка ввода', "Пожалуйста, выбирите тип учетной записи пользователя")
         return
-
-    #print(name)
-
     try:
 
         insUserValue = (name, hashpass, role )
         insUserComand = 'INSERT INTO users values (?,?,?)'
         cur.execute(insUserComand,insUserValue)
-        #print('новый пользователь создан!')
-       # print(insUserComand, insUserValue)
     except sqlite3.DatabaseError as err:
         print('Ошибка', err)
         errMsg = 'Ошиюбка выполнения запроса:\n"' + str(err) + '"'
@@ -98,16 +93,8 @@ def creatUser():
     root = Toplevel()
     leftFrame  = Frame(root)
     rightFrame = Frame(root)
-    #Login = Entry (root, text='Логин')
-    #Pass  = Enry (root, text='Пароль')
     button1 = Button(root,text='Подтвердить',command=(lambda: creatUserAct(e1,e2,e3,roleBox) ) )
     button2 = Button(root,text='Отмена' ,command=(lambda: root.destroy() ) )
-
-
-
-
-
-
 
     Label(leftFrame, text="Логин").grid(row=0)
     Label(leftFrame, text="Пароль").grid(row=1)
@@ -144,8 +131,9 @@ def creatUser():
 
 def changeUser():
     global tab,root1,root
-    pass
-
+    root = Toplevel()
+    leftFrame  = Frame(root)
+    rightFrame = Frame(root)
 
 
 
@@ -195,7 +183,7 @@ def mymain():
     root1=Tk()
     root1.title('Администрирование БД')
     viewAllBooks    = Button (text='посмотреть список книг')
-    creatLibrarian  = Button (text='Создать/изменть  учетную запись библиотекаря', command=(lambda:creatUser()) )
+    creatLibrarian  = Button (text='Создать учетную запись библиотекаря',   command=(lambda:creatUser()) )
     changeLibrarian = Button (text='Изменить  учетную запись библиотекаря', command=(lambda:changeUser()) )
     viewLibrarian   = Button (text='Посмотреть информацию о библиотекаре')
 

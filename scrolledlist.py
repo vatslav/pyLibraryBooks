@@ -31,10 +31,21 @@ class ScrolledList(Frame):
     def runCommand(self, selection):                       # redefine me lower
         print('You selected:', selection)
 
+def gen(n):
+    if n==20:
+        yield root
+    while n > 0:
+        yield n
+        n -= 1
+
 if __name__ == '__main__':
     options = ( ('Lumberjack-%s' % x) for  x in range(20))  # or map/lambda, [...]
+    options = gen(20)
     print(options)
     print(type(options))
     root  = Tk()
-   # ScrolledList(options).mainloop()
-    root.mainloop()
+    ScrolledList(options).mainloop()
+    #root.mainloop()
+    #for i in range(20):
+     #   if i==0:
+    #        i
