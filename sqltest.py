@@ -45,12 +45,54 @@ def creatUsers():
     com.pack()
 
 
+def getTab(x=1,y=0):
+    return tab.cells[x][y].value.get()
+def setTab(x=1,y=0, val=None):
+    global tab
+    tab.cells[x][y].value.set(val)
+def setTitile(val):
+    global tab
+    for i in range( len(val) ):
+
+        tab.cells[0][i].value.set(val[i])
+
+class Cell(Entry):
+    def __init__(self, parent):
+        self.value = StringVar()
+        Entry.__init__(self, parent, textvariable = self.value)
+
+class Table(Frame):
+    def __init__(self, parent, columns = 4, rows = 10):
+        Frame.__init__(self, parent)
+        self.cells = [[Cell(self) for i in range(columns)] for j in range(rows)]
+        [self.cells[i][j].grid(row = i, column = j) for i in range(rows) for j in range(columns)]
+
+
+def viewTable(x,y,r1,title=1):
+    global root1,root
+    y=y+1
+    root = Toplevel(r1)
+    tab = Table(root,x,y)
+    tab.pack()
+    com = Button(root,text='Подтвердить')
+    com.pack()
 
 
 
 
-
-
+def exBut():
+    root1.title('Создание нового пользователя')
+    if getTab(1,0)=='' or getTab(1,2)=='' or getTab(1,1)=='':
+        showerror('Ошибка ввода', "Пожалуйста, заполните все поля ввода")
+    else:
+        hsh = md5()
+        hsh.update( getTab(1,1).encode('utf-8') )
+        global root1,root,tab
+        cur.execute("insert into users values (?,?,?)", (getTab(1,0).lower(),hsh.hexdigest() ,getTab(1,2)))
+        conn.commit()
+        #showinfo('Готово', 'Пользователь создан')
+        setTab(0,0,'');setTab(0,1,'');setTab(0,2,'')
+        root.destroy()
 
 
 

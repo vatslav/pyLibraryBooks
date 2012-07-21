@@ -40,12 +40,16 @@ def gen(n):
 
 if __name__ == '__main__':
     options = ( ('Lumberjack-%s' % x) for  x in range(20))  # or map/lambda, [...]
-    options = gen(20)
+    #options = gen(20)
     print(options)
     print(type(options))
     root  = Tk()
-    ScrolledList(options).mainloop()
-    #root.mainloop()
+    ScrolledList(options,parent=root)
+    e=Entry(root)
+    l=Label(root, text='TEXT!!')
+    e.pack()
+    l.pack()
+    root.mainloop()
     #for i in range(20):
      #   if i==0:
     #        i

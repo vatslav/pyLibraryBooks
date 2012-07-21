@@ -8,6 +8,7 @@ from sys import exit as ext
 import scrolledlist
 import sqlite3
 from hashlib import md5
+import re
 
 
 
@@ -15,6 +16,7 @@ b1  = '<Button-1>'
 b1w = '<Double-1>'
 b2  = '<Button-2>'
 tab=''
+specialty = ("Библитекарь", "Читатель", "Адинистратор")
 root1=True #кнопки
 root=True #таблица
 try:
@@ -24,30 +26,52 @@ except:
     showerror('Ошибка', 'Ошибка при рабое с базой данных, возможно ее кто-то уже использует.')
     exit()
 
-def getTab(x=1,y=0):
-    return tab.cells[x][y].value.get()
-def setTab(x=1,y=0, val=None):
-    global tab
-    tab.cells[x][y].value.set(val)
-def setTitile(val):
-    global tab
-    for i in range( len(val) ):
+class ScrolledList(Frame):
+    def __init__(self, options, parent=None):
+        Frame.__init__(self, parent)
+        self.pack(expand=YES, fill=BOTH)                   # make me expandable
+        self.makeWidgets(options)
 
-        tab.cells[0][i].value.set(val[i])
+    def handleList(self, event):
+        index = self.listbox.curselection()                # on list double-click
+        print(index)
+        label = self.listbox.get(index)                    # fetch selection text
+        self.runCommand(label)                             # and call action here
+        # or get(ACTIVE)
+    def getCur(self):
+        index = self.listbox.curselection()                # on list double-click
+        #print(index)
+        label = self.listbox.get(index)
+        return label
 
-def exBut():
-    root1.title('Создание нового пользователя')
-    if getTab(1,0)=='' or getTab(1,2)=='' or getTab(1,1)=='':
-        showerror('Ошибка ввода', "Пожалуйста, заполните все поля ввода")
-    else:
-        hsh = md5()
-        hsh.update( getTab(1,1).encode('utf-8') )
-        global root1,root,tab
-        cur.execute("insert into users values (?,?,?)", (getTab(1,0).lower(),hsh.hexdigest() ,getTab(1,2)))
-        conn.commit()
-        #showinfo('Готово', 'Пользователь создан')
-        setTab(0,0,'');setTab(0,1,'');setTab(0,2,'')
-        root.destroy()
+    def getIndexCur(self):
+        index = self.listbox.curselection()
+        #print('===',index, type(index), index[0],type(index[0]))
+        return index[0]
+
+    def makeWidgets(self, options):
+        sbar = Scrollbar(self)
+        list = Listbox(self, relief=SUNKEN)
+        sbar.config(command=list.yview)                    # xlink sbar and list
+        list.config(yscrollcommand=sbar.set)               # move one moves other
+        sbar.pack(side=RIGHT, fill=Y)                      # pack first=clip last
+        list.pack(side=LEFT, expand=YES, fill=BOTH)        # list clipped first
+        pos = 0
+        for label in options:                              # add to listbox
+            list.insert(pos, label)                        # or insert(END,label)
+            pos += 1                                       # or enumerate(options)
+            #list.config(selectmode=SINGLE, setgrid=1)          # select,resize modes
+        list.bind('<Double-1>', self.handleList)           # set event handler
+        self.listbox = list
+
+    def runCommand(self, selection):                       # redefine me lower
+        print( selection)
+
+
+
+
+
+
 
 def creatUserAct(e1,e2,e3,userBox):
     if e1.get()=='' or e2.get()=='' or e3.get()=='':
@@ -63,10 +87,8 @@ def creatUserAct(e1,e2,e3,userBox):
     #cur.execute("insert into users values (?,?,?)", ('kola','qwer',1))
     #conn.commit()
     name = e1.get().lower()
-    #sel = userBox.get( userBox.curselection() )
     try:
         role = userBox.get( userBox.curselection() )
-        #print(sel)
     except TclError as notSelect:
         showerror('Ошибка ввода', "Пожалуйста, выбирите тип учетной записи пользователя")
         return
@@ -89,7 +111,7 @@ def creatUserAct(e1,e2,e3,userBox):
 
 def creatUser():
 
-    global tab,root1,root
+    global tab,root1,root,specialty
     root = Toplevel()
     leftFrame  = Frame(root)
     rightFrame = Frame(root)
@@ -103,13 +125,10 @@ def creatUser():
     e1 = Entry(leftFrame)
     e2 = Entry(leftFrame)
     e3 = Entry(leftFrame)
-    elements = ("Библитекарь", "Читатель", "Адинистратор")
+
     roleBox = Listbox(rightFrame)
-    [roleBox.insert('end',x) for x in elements]
+    [roleBox.insert('end',x) for x in specialty]
     roleBox.grid(row=1,column=3)
-    #scrolledlist.ScrolledList(elements)
-    #scrolledlist.ScrolledList.pack()
-    #scrolledlist.ScrolledList.grid(row=4, column=1,padx=5,pady=5,columnspan=5,ipadx=5)
     e1.grid(row=0, column=1,padx=5,pady=5,columnspan=2,ipadx=5)
     e2.grid(row=1, column=1,padx=5,pady=5,columnspan=5,ipadx=5)
     e3.grid(row=2, column=1,padx=5,pady=5,columnspan=5,ipadx=5)
@@ -120,22 +139,84 @@ def creatUser():
     e1.focus_set()
     root.grab_set()
     root.wait_window()
-    #root.grab_set()
-    #root.wait_window()
-    #root.mainloop()
-    #root.destroy()
-    #focus_set()
 
+def getUsers(maska):
+    if mask == None:
+        request = 'select * from users'
+    else:
+        pass
 
+    try:
+        for row in cur.execute(request):
+            yield (row[0],'||',row[2])
+    except sqlite3.OperationalError as dbLock:
+        showerror('Ошибка', dbLock)
+    else:
+        conn.commit()
 
-
-def changeUser():
+def changeOneuser():
     global tab,root1,root
     root = Toplevel()
     leftFrame  = Frame(root)
     rightFrame = Frame(root)
+    Login = Label(leftFrame,text='Лоигн')
+    roleL = Label(rightFrame,text='Тип пользователя')
+    e1 = Entry(leftFrame)
+    roleList = ScrolledList(getSpeciality(),parent=rightFrame)
+    okB     = Button(root,text='Ок')
+    cancelB = Button(root,text='Отмена')
+
+    Login.grid(row=0,column=0)
+    roleL.grid()
+    e1.grid(row=1,column=0)
+    roleList.grid(row=1)
+    leftFrame.grid()
+    rightFrame.grid(column=1,row=0)
+    okB.grid(row=2)
+    cancelB.grid(row=2,column=1)
 
 
+def getSpeciality():
+    global specialty
+    for x in specialty:
+        yield x
+
+def delUser(userList):
+    indexUser = userList.getCur()
+    request  = "delete from users where name=?" #====НЕ МОГУ ПОНЯТЬ ПОЧЕМУ не работает если знак вопроса, и потом замена
+    #вероятно он заменяет ? на 1 символ
+    request1 = 'delete from users where name="' + str(indexUser[0]) + '"'
+    try:
+        userList.listbox.delete(userList.getIndexCur())
+        cur.execute(request1)
+    except sqlite3.OperationalError as dbLock:
+        showerror('Ошибка', dbLock)
+    else:
+        conn.commit()
+
+def changeUser():
+    global tab,root1,root
+    root = Toplevel()
+
+    leftFrame  = Frame(root)
+    rightFrame = Frame(root)
+    options = getUsers(None)
+    userList = ScrolledList(options,parent=leftFrame)
+    findE   = Entry(rightFrame, text='Найти')
+    changeB = Button(rightFrame, text='Изменить',command=(lambda:changeOneuser() ) )
+    delB    = Button(rightFrame, text='Удалить', command=(lambda:delUser(userList)       ) )
+    changeB.pack()
+    delB.pack()
+    findE.pack()
+    #options = ( ('Lumberjack-%s' % x) for  x in range(20))
+
+    findE.inser(0,'Найти')
+    findE.bind('<KeyPress>',  getUsers(findE.get() ) )
+
+
+    leftFrame.pack()
+    rightFrame.pack()
+    root.mainloop()
 
 
 
@@ -153,27 +234,7 @@ def ViewUser(name):
         return buf
 
 
-class Cell(Entry):
-    def __init__(self, parent):
-        self.value = StringVar()
-        Entry.__init__(self, parent, textvariable = self.value)
 
-class Table(Frame):
-    def __init__(self, parent, columns = 4, rows = 10):
-        Frame.__init__(self, parent)
-        self.cells = [[Cell(self) for i in range(columns)] for j in range(rows)]
-        [self.cells[i][j].grid(row = i, column = j) for i in range(rows) for j in range(columns)]
-
-
-
-def viewTable(x,y,r1,title=1):
-    global root1,root
-    y=y+1
-    root = Toplevel(r1)
-    tab = Table(root,x,y)
-    tab.pack()
-    com = Button(root,text='Подтвердить')
-    com.pack()
 
 
 
@@ -187,20 +248,14 @@ def mymain():
     changeLibrarian = Button (text='Изменить  учетную запись библиотекаря', command=(lambda:changeUser()) )
     viewLibrarian   = Button (text='Посмотреть информацию о библиотекаре')
 
-    #viewAllBooks.bind(b1,)
-    #creatLibrarian.bind(b1,lambda: creatUser(root1))
-
-    #viewAllBooks.pack(expand=False)
-    #creatLibrarian.pack(expand=True)
-    #viewLibrarian.pack()
     viewAllBooks.grid(padx=20,ipady=5)
     creatLibrarian.grid(columnspan=5,padx=20,ipady=5)
+    changeLibrarian.grid(columnspan=5,padx=20,ipady=5)
     viewLibrarian.grid(ipady=2)
-    #
+
 
 
     root1.mainloop()
 
 
-#print('librarian start now')
 mymain()
