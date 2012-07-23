@@ -53,6 +53,7 @@ class ScrolledList(Frame):
         except TclError:
             showerror('Ошибка',"Не выбран не один элемент из списка")
             return None
+
     def getCurNoHandle(self):
         index = self.listbox.curselection()                # on list double-click
         try:
@@ -146,27 +147,25 @@ def creatUserAct(e1,e2,e3,userBox):
         showinfo('Успех', "Новый пользователь создан")
 
 
+def mkpass(size=10):
+    chars = []
+    chars.extend([i for i in string.ascii_letters])
+    chars.extend([i for i in string.digits])
+    chars.extend([i for i in '\'"!@#$%&*()-_=+[{}]~^,<.>;:/?'])
 
+    passwd = ''
+
+    for i in range(size):
+        passwd += chars[random.randint(0,  len(chars) - 1)]
+        random.seed = int(time.time())
+        random.shuffle(chars)
+    return passwd
 
 def creatUser():
     def randPasAct():
         e2.delete(0,last='end')
         e2.insert(0,mkpass())
-    def mkpass(size=10):
-        chars = []
-        chars.extend([i for i in string.ascii_letters])
-        chars.extend([i for i in string.digits])
-        chars.extend([i for i in '\'"!@#$%&*()-_=+[{}]~^,<.>;:/?'])
 
-        passwd = ''
-
-        for i in range(size):
-            passwd += chars[random.randint(0,  len(chars) - 1)]
-
-            random.seed = int(time.time())
-            random.shuffle(chars)
-
-        return passwd
 
     global tab,root1,root,specialty
     root = Toplevel()
@@ -287,10 +286,11 @@ def changeUser():#изменить юзеров 1 окно
     def changeOneuser(user): #интерфейс изменить пользователя
         if not user: #если не выбран не один юзер, была ошибка, ее перехватили и вернули None
             return
-        def okAct():
+        def okAct(Event=None):
             if e1.get()=="":
                 showerror("Ошибка","Заполните имя учетной записи")
                 return
+
             if roleList.getCurNoHandle()==None:
                 showerror("Ошибка","Выбирите тип пользователя")
                 return
@@ -299,9 +299,10 @@ def changeUser():#изменить юзеров 1 окно
                 return
 
             request1 = 'update users set name=? where name=?'
+            request2 = 'update users set role=? where name=?'
             try:
                 cur.execute(request1,(e1.get(),user[0]) ) #
-                #roleList.listbox.insert(0,(e1.get,'||',roleList.getCur()))
+                cur.execute(request2,(roleList.getCurNoHandle(),e1.get()   ) ) #
                 roleList.listbox.delete(roleList.getIndexCur()) #удалить из списка
 
             except sqlite3.OperationalError as dbLock:
@@ -335,10 +336,33 @@ def changeUser():#изменить юзеров 1 окно
         okB.grid(row=2)
         cancelB.grid(row=2,column=1)
         e1.insert(0,user[0])
+        def handkerEnter(event):
+            okAct()
+        def handkerEscape(event):
+            root1.destroy()
+        root1.bind('<Return>',handkerEnter)
+        root1.bind('<Escape>',handkerEscape)
         e1.focus_set()
         root1.grab_set()
         root1.wait_window()
 
+    def resetPasAct():
+        request = 'update users set pass=? where name=?'
+        tmp = mkpass()
+        
+        hsh = md5()
+        hsh.update( tmp.encode('utf-8') )
+        hashpass = hsh.hexdigest()
+        tmpmsg = 'Пароль сброшен, на ' + tmp
+        #
+        try:
+            cur.execute(request,(hashpass,userList.getCur()[0] ) ) #
+            #roleList.listbox.delete(roleList.getIndexCur()) #удалить из списка
+            showinfo('Успех', tmpmsg)
+        except sqlite3.OperationalError as dbLock:
+            showerror('Ошибка', dbLock)
+        else:
+            conn.commit()
 
     global tab,root1,root
     root = Toplevel()
@@ -351,16 +375,17 @@ def changeUser():#изменить юзеров 1 окно
     userList = ScrolledList(options,parent=leftFrame,newBind=changeOneuser )
     #userList.setBind(changeOneuser())
     findE   = Entry(rightFrame, text='Найти')
+    resetPas = Button(rightFrame, text='Сбросить пароль',command=(lambda:resetPasAct() ) )
     changeB = Button(rightFrame, text='Изменить',command=(lambda:changeOneuser(userList.getCur()) ) )
     delB    = Button(rightFrame, text='Удалить', command=(lambda:delUser(userList)       ) )
     changeB.pack()
     delB.pack()
     findE.pack()
+    resetPas.pack()
     #options = ( ('Lumberjack-%s' % x) for  x in range(20))
 
     findE.insert(0,'Найти')
     #findE.bind('<KeyPress>',  test('as' ) )
-    print('in changeOne User^ find=',findE.get())
     def handleFindPress(event):
         try:
             userList.listbox.delete(0,99999)
@@ -379,6 +404,12 @@ def changeUser():#изменить юзеров 1 окно
 
     leftFrame.pack()
     rightFrame.pack()
+    def handkerEnter(event):
+        changeOneuser(userList.getCur())
+    def handkerEscape(event):
+        root.destroy()
+    root.bind('<Return>',handkerEnter)
+    root.bind('<Escape>',handkerEscape)
     findE.focus_set()
     root.grab_set()
     root.wait_window()
