@@ -13,5 +13,8 @@ print(c.__next__())
 print(c.__next__())
 
 for n in countdown(10):
-    print(n)
+    print(n,type(n))
 a=sum(countdown(10))
+import math
+math.
+
