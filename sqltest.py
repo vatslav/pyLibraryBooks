@@ -78,6 +78,20 @@ def viewTable(x,y,r1,title=1):
     com.pack()
 
 
+def ViewUser(name):
+    request='select * from users where name="' + str(name) + '"'
+    i=0;buf=""
+    for s in cur.execute(request):
+        buf=s
+        i+=1
+    if i>1: print("users table is invalid")
+    if buf!='':
+        return buf
+    else:
+        print('не найдено не одного юзера')
+        return buf
+
+
 
 
 def exBut():

@@ -19,16 +19,29 @@ b1  = '<Button-1>'
 b1w = '<Double-1>'
 b2  = '<Button-2>'
 tab=''
-specialty = ("Библитекарь", "Читатель", "Адинистратор")
+specialty = ("Библиотекарь", "Читатель", "Администратор")
 root1=True #кнопки
 root=True #таблица
 numberUser=0
 NumberUserCur=0
+#сортировка строк, в sql запросе, без учете регистра
+def sortTextInDb(s1,s2):
+    s1 = s1.lower()
+    s2 = s2.lower()
+    if s1==s2: return 0
+    elif s1>s2: return  1
+    else: return -1
+def low(s):
+    return s.lower()
+
+
 try:
     conn = sqlite3.connect('db.sqlite')
     cur = conn.cursor()
-except:
-    showerror('Ошибка', 'Ошибка при рабое с базой данных, возможно ее кто-то уже использует.')
+    conn.create_collation('sort',sortTextInDb) #встраиваем сортировку
+    conn.create_function("low", 1, low) #встраиваеваем функцию, 1 - кол-во аргмуентов
+except sqlite3.OperationalError as dbLock:
+    showerror('Ошибка', dbLock)
     exit()
 
 class ScrolledList(Frame):
@@ -138,7 +151,6 @@ def creatUserAct(e1,e2,e3,userBox):
         insUserComand = 'INSERT INTO users values (?,?,?)'
         cur.execute(insUserComand,insUserValue)
     except sqlite3.DatabaseError as err:
-        print('Ошибка', err)
         errMsg = 'Ошиюбка выполнения запроса:\n"' + str(err) + '"'
         showerror('Ошибка', errMsg)
     else:
@@ -206,19 +218,17 @@ def pbTruly(mask,expression):
 
 
 def getUsers(mask): #фильтр на юзеров
-    #print(mask, mask==None)
     if mask:
 
         template = re.compile(mask)
-
-    request = 'select * from users'
+    #low(name) LIKE ?
+    request = 'select * from users ORDER BY low(name) COLLATE sort' #выводим, с сортировкой без учета регистра по столбцу name
     try:
         for row in cur.execute(request):
             if not mask:
                 yield (row[0],'||',row[2])
             else:
-
-                pb = template.search(str(row[0]))
+                pb = template.search(str(row[0]).lower())
                 if pb:
                     yield (row[0],'||',row[2])
 
@@ -255,30 +265,7 @@ def delUser(userList): #удалить выбранного юзера
     else:
         conn.commit()
 
-def reDrawUser(mask):
-    global numberUser
-    print('reDrowStart')
 
-    request = 'select * from users'
-    template = re.compile(mask)
-
-    #userList.listbox.delete(0,99999)
-
-
-    i=0
-    try:
-        for row in cur.execute(request):
-            #print('use cycle!', i)
-            i += 1
-            pb = template.search(str(row[0]))
-            if pb:
-                print(row, type(row))
-                yield (row[0],'||',row[2])
-    except sqlite3.OperationalError as dbLock:
-        showerror('Ошибка', dbLock)
-    else:
-
-        conn.commit()
 
 
 def changeUser():#изменить юзеров 1 окно
@@ -287,6 +274,12 @@ def changeUser():#изменить юзеров 1 окно
         if not user: #если не выбран не один юзер, была ошибка, ее перехватили и вернули None
             return
         def okAct(Event=None):
+            ptr=0
+            for spec in specialty:
+                if spec==user[2]:
+                    roleList.listbox.activate(ptr)
+                    print(ptr, spec)
+                ptr += 1
             if e1.get()=="":
                 showerror("Ошибка","Заполните имя учетной записи")
                 return
@@ -294,14 +287,14 @@ def changeUser():#изменить юзеров 1 окно
             if roleList.getCurNoHandle()==None:
                 showerror("Ошибка","Выбирите тип пользователя")
                 return
-            if len(e1.get())<6:
-                showerror("Ошибка","Минимальная длина пароля 6 символов")
+            if len(e1.get())<4:
+                showerror("Ошибка","Минимальная длина имени 4 символов")
                 return
 
             request1 = 'update users set name=? where name=?'
             request2 = 'update users set role=? where name=?'
             try:
-                cur.execute(request1,(e1.get(),user[0]) ) #
+                cur.execute(request1,(e1.get(),user[0]) ) # можно было бы через один запрос " ; "
                 cur.execute(request2,(roleList.getCurNoHandle(),e1.get()   ) ) #
                 roleList.listbox.delete(roleList.getIndexCur()) #удалить из списка
 
@@ -331,6 +324,15 @@ def changeUser():#изменить юзеров 1 окно
         roleL.grid()
         e1.grid(row=2,column=0)
         roleList.grid(row=1)
+        print(user)
+        print(specialty)
+        ptr=0
+        for spec in specialty:
+            if spec==user[2]:
+                roleList.listbox.activate(ptr)
+                print(ptr, spec)
+            ptr += 1
+        #roleList.listbox.activate() ##===*-
         leftFrame.grid()
         rightFrame.grid(column=1,row=0)
         okB.grid(row=2)
@@ -342,6 +344,12 @@ def changeUser():#изменить юзеров 1 окно
             root1.destroy()
         root1.bind('<Return>',handkerEnter)
         root1.bind('<Escape>',handkerEscape)
+        ptr = 0
+        for spec in specialty:
+            if spec==user[2]:
+                roleList.listbox.activate(ptr)
+                print(ptr, spec)
+            ptr += 1
         e1.focus_set()
         root1.grab_set()
         root1.wait_window()
@@ -349,7 +357,7 @@ def changeUser():#изменить юзеров 1 окно
     def resetPasAct():
         request = 'update users set pass=? where name=?'
         tmp = mkpass()
-        
+
         hsh = md5()
         hsh.update( tmp.encode('utf-8') )
         hashpass = hsh.hexdigest()
@@ -357,10 +365,11 @@ def changeUser():#изменить юзеров 1 окно
         #
         try:
             cur.execute(request,(hashpass,userList.getCur()[0] ) ) #
-            #roleList.listbox.delete(roleList.getIndexCur()) #удалить из списка
             showinfo('Успех', tmpmsg)
         except sqlite3.OperationalError as dbLock:
             showerror('Ошибка', dbLock)
+        except TypeError as te:
+            pass
         else:
             conn.commit()
 
@@ -374,6 +383,7 @@ def changeUser():#изменить юзеров 1 окно
     title.pack()
     userList = ScrolledList(options,parent=leftFrame,newBind=changeOneuser )
     #userList.setBind(changeOneuser())
+
     findE   = Entry(rightFrame, text='Найти')
     resetPas = Button(rightFrame, text='Сбросить пароль',command=(lambda:resetPasAct() ) )
     changeB = Button(rightFrame, text='Изменить',command=(lambda:changeOneuser(userList.getCur()) ) )
@@ -383,7 +393,7 @@ def changeUser():#изменить юзеров 1 окно
     findE.pack()
     resetPas.pack()
     #options = ( ('Lumberjack-%s' % x) for  x in range(20))
-
+    findE.delete(0,last='end')
     findE.insert(0,'Найти')
     #findE.bind('<KeyPress>',  test('as' ) )
     def handleFindPress(event):
@@ -392,8 +402,8 @@ def changeUser():#изменить юзеров 1 окно
         except StopIteration:
             pass
         try:
-            for x in getUsers(findE.get() ):
-                print(x)#тут делать вставку в лист
+            for x in getUsers(findE.get().lower() ):
+                #print(x)#тут делать вставку в лист
                 userList.listbox.insert('end',x)
         except StopIteration:
             pass
@@ -415,20 +425,6 @@ def changeUser():#изменить юзеров 1 окно
     root.wait_window()
     #root.mainloop()
 
-
-
-def ViewUser(name):
-    request='select * from users where name="' + str(name) + '"'
-    i=0;buf=""
-    for s in cur.execute(request):
-        buf=s
-        i+=1
-    if i>1: print("users table is invalid")
-    if buf!='':
-        return buf
-    else:
-        print('не найдено не одного юзера')
-        return buf
 
 
 
