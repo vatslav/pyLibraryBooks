@@ -1,18 +1,65 @@
-"a simple customizable scrolled listbox component"
-
+import sqlite3
 from tkinter import *
+def sortTextInDb(s1,s2):
+    s1 = s1.lower()
+    s2 = s2.lower()
+    if s1==s2: return 0
+    elif s1>s2: return  1
+    else: return -1
+def low(s):
+    return s.lower()
+
+def testOpt():
+    return( ('Lumberjack-%s' % x) for  x in range(20))
+try:
+    conn = sqlite3.connect('db.sqlite')
+    cur = conn.cursor()
+    conn.create_collation('sort',sortTextInDb) #встраиваем сортировку
+    conn.create_function("low", 1, low) #встраиваеваем функцию, 1 - кол-во аргмуентов
+except sqlite3.OperationalError as dbLock:
+    showerror('Ошибка', dbLock)
+    exit()
 
 class ScrolledList(Frame):
-    def __init__(self, options, parent=None, root='root)'):
+    def __init__(self, options=testOpt(), parent=None,newBind=None):
         Frame.__init__(self, parent)
         self.pack(expand=YES, fill=BOTH)                   # make me expandable
         self.makeWidgets(options)
+        self.reBind = newBind
 
     def handleList(self, event):
+        #if self.reBind == None:
+
         index = self.listbox.curselection()                # on list double-click
         label = self.listbox.get(index)                    # fetch selection text
         self.runCommand(label)                             # and call action here
-                                                           # or get(ACTIVE)
+        # or get(ACTIVE)
+    def getCur(self):
+        index = self.listbox.curselection()                # on list double-click
+        try:
+            label = self.listbox.get(index)
+            return label
+        except TclError:
+            showerror('Ошибка',"Не выбран не один элемент из списка")
+            return None
+
+    def getCurNoHandle(self):
+        index = self.listbox.curselection()                # on list double-click
+        try:
+            label = self.listbox.get(index)
+            return label
+        except TclError:
+            return None
+
+
+
+    def getIndexCur(self):
+        index = self.listbox.curselection()
+        return index[0]
+
+    def setBind(self,object):
+        self.listbox.bind('<Double-1>', object)
+
     def makeWidgets(self, options):
         sbar = Scrollbar(self)
         list = Listbox(self, relief=SUNKEN)
@@ -24,32 +71,14 @@ class ScrolledList(Frame):
         for label in options:                              # add to listbox
             list.insert(pos, label)                        # or insert(END,label)
             pos += 1                                       # or enumerate(options)
-       #list.config(selectmode=SINGLE, setgrid=1)          # select,resize modes
-        list.bind('<Double-1>', self.handleList)           # set event handler
+            #list.config(selectmode=SINGLE, setgrid=1)          # select,resize modes
+
+        list.bind('<Double-1>', self.handleList,)           # set event handler
+
         self.listbox = list
 
     def runCommand(self, selection):                       # redefine me lower
-        print('You selected:', selection)
-
-def gen(n):
-    if n==20:
-        yield root
-    while n > 0:
-        yield n
-        n -= 1
-
-if __name__ == '__main__':
-    options = ( ('Lumberjack-%s' % x) for  x in range(20))  # or map/lambda, [...]
-    #options = gen(20)
-    print(options)
-    print(type(options))
-    root  = Tk()
-    ScrolledList(options,parent=root)
-    e=Entry(root)
-    l=Label(root, text='TEXT!!')
-    e.pack()
-    l.pack()
-    root.mainloop()
-    #for i in range(20):
-     #   if i==0:
-    #        i
+        if self.reBind != None:
+            self.reBind(selection)
+        else:
+            print( selection)

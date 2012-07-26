@@ -12,7 +12,7 @@ import re
 import random
 import string
 import time
-
+from tkinter.filedialog   import asksaveasfilename
 
 
 b1  = '<Button-1>'
@@ -425,6 +425,20 @@ def changeUser():#изменить юзеров 1 окно
     root.wait_window()
     #root.mainloop()
 
+def exportDb():
+    filename = asksaveasfilename()
+    msg = "Не возможно сохранить файл, попробуйте выбрать другое местоположение"
+    if not filename: 
+        showerror('Ошибка', msg)
+        return
+    try:
+        file = open('filename','w')
+    except: 
+        showerror('Ошибка', msg)
+        return
+    for line in conn.iterdamp():
+        file.witeline(line)
+        print(line)
 
 
 
@@ -438,15 +452,16 @@ def mymain():
 
     root1.title(string='Администрирование БД Библиотека')
     viewAllBooks    = Button (text='посмотреть список книг')
-    creatLibrarian  = Button (text='Создать учетную запись библиотекаря',   command=(lambda:creatUser()) )
+    creatLibrarian  = Button (text='Создать учетную запись библиотекаря',   command=(lambda:creatUser())  )
     changeLibrarian = Button (text='Изменить  учетную запись библиотекаря', command=(lambda:changeUser()) )
-    viewLibrarian   = Button (text='Посмотреть информацию о библиотекаре')
+    viewLibrarian   = Button (text='Посмотреть статистику')
+    exportdb        = Button (text='Экспорт базы данных в файл',            command=(lambda:exportDb()  )  )
 
     viewAllBooks.grid(padx=20,ipady=5)
     creatLibrarian.grid(columnspan=5,padx=20,ipady=5)
     changeLibrarian.grid(columnspan=5,padx=20,ipady=5)
     viewLibrarian.grid(ipady=2)
-
+    exportdb.grid(columnspan=5,padx=20,ipady=5)
 
 
     root1.mainloop()
