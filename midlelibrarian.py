@@ -33,38 +33,108 @@ def ViewBooks():
     bookList.listbox.config(height=15,width=50)
     bookList.grid(column=4,row=0)
 
+#крутяцкая функция!:)
+def execsql(request1,*values):
+    if len(values):
+        tmp=[]
+        for obj in values[0]:
+            if str(type(obj)) == "<class 'tkinter.Entry'>":
+                tmp.append(obj.get())
+            else:tmp.append(obj)
+        values = tuple(tmp)
+    try:
+        if not len(values):cur.execute(request1)
+        else:
+            cur.execute(request1,values)
+            for obj in cur:
+                print(obj)
+        for line in cur:
+            yield line
+    except sqlite3.OperationalError as dbLock:
+        showerror('Ошибка', dbLock)
+    else:
+        conn.commit()
+
+
 def addBook():
+    def OkAct(q):
+        print(type(q))
+        #s=''
+        s = execsql('INSERT INTO books values(?,?,?,?,?,?,?,?)',(ISBN,author,2,4,5,6,7,8))
+        #s = execsql('select * from users where name="марк"')
+        '''
+        ISBN = Entry
+        author = Ent
+        title = Entr
+        years     =
+        publisher =
+        keywords  =
+        sity      =
+        ISBN.grid(ro
+        author.grid(
+            title.grid(r
+        years.grid(r
+        publisher.gr
+        keywords.gri
+        sity.grid(ro
+        bbk.grid(row
+        '''
+        for line in s:
+            print(line)
+
+    def OkAct1():
+        for x in execsql('select * from users where name=?',('марк',)):
+            print(x)
+
+
+    def cancelAct():
+        leftFrame.grid_remove()
+        rightFrame.grid_remove()
+        bottom.grid_remove()
 
     leftFrame  = Frame(root)
     rightFrame = Frame(root)
     bottom     = Frame(root)
 
-    button1 = Button(bottom,text='Подтвердить',command=(lambda: creatUserAct(e1,e2,e3,roleBox) ) )
-    button2 = Button(bottom,text='Отмена' ,command=(lambda: root.destroy() ) )
-    randPas = Button(bottom,text='Случайный пароль' ,command=(lambda: randPasAct() ) )
-    Label(leftFrame, text="Логин").grid(row=0)
-    Label(leftFrame, text="Пароль").grid(row=1)
-    Label(leftFrame, text='Подтвердите пароль').grid(row=2)
-    Label(rightFrame, text='Тип учетной записи').grid(column=0)
-    e1 = Entry(leftFrame)
-    e2 = Entry(leftFrame)
-    e3 = Entry(leftFrame)
+    button1 = Button(bottom,text='Подтвердить',command=lambda: OkAct(ISBN)  )
+    button2 = Button(bottom,text='Отмена' ,command=lambda: cancelAct () )
+    Label(leftFrame, text="ISBN").grid(row=0)
+    Label(leftFrame, text="Автор").grid(row=1)
+    Label(leftFrame, text='Название').grid(row=2)
+    Label(leftFrame, text='годы').grid(row=3)
+    Label(leftFrame, text='издательство').grid(row=4)
+    Label(leftFrame, text='ключевые слова').grid(row=5)
+    Label(leftFrame, text='город').grid(row=6)
+    Label(leftFrame, text='ББК').grid(row=7)
 
-    roleBox = Listbox(rightFrame)
-    [roleBox.insert('end',x) for x in specialty]
-    roleBox.config(height=4,width=20)
-    roleBox.grid(row=3,column=0)
-    e1.grid(row=0, column=1,padx=5,pady=5,columnspan=2,ipadx=5)
-    e2.grid(row=1, column=1,padx=5,pady=5,columnspan=5,ipadx=5)
-    e3.grid(row=2, column=1,padx=5,pady=5,columnspan=5,ipadx=5)
-    randPas.grid(row=3, column=1,ipadx=5,rowspan=10)
+
+
+    ISBN = Entry(leftFrame)
+    author = Entry(leftFrame)
+    title = Entry(leftFrame)
+    years     = Entry(leftFrame)
+    publisher = Entry(leftFrame)
+    keywords  = Entry(leftFrame)
+    sity      = Entry(leftFrame)
+    bbk      = Entry(leftFrame)
+    ISBN.grid(row=0, column=1,padx=5,pady=5,columnspan=2,ipadx=5)
+    author.grid(row=1, column=1,padx=5,pady=5,columnspan=5,ipadx=5)
+    title.grid(row=2, column=1,padx=5,pady=5,columnspan=5,ipadx=5)
+    years.grid(row=3, column=1,padx=5,pady=5,columnspan=5,ipadx=5)
+    publisher.grid(row=4, column=1,padx=5,pady=5,columnspan=5,ipadx=5)
+    keywords.grid(row=5, column=1,padx=5,pady=5,columnspan=5,ipadx=5)
+    sity.grid(row=6, column=1,padx=5,pady=5,columnspan=5,ipadx=5)
+    bbk.grid(row=7, column=1,padx=5,pady=5,columnspan=5,ipadx=5)
+
     button1.grid(row=3, column=0,columnspan=1,ipadx=5,ipady=5,rowspan=10)
     button2.grid(row=3, column=2,columnspan=2,ipadx=5,ipady=5)
     leftFrame.grid(row=0, column=4)
     rightFrame.grid(row=0,column=5)
     bottom.grid(row=1,column=4)
-    e1.focus_set()
-
+    ISBN.focus_set()
+    #s = execsql('INSERT INTO books values(?,?,?,?,?,?,?,?)',(ISBN.get(),author.get(),3,4,5,6,7,8))
+    #for line in s:
+    #    print(line)
 
 
 root=Tk()

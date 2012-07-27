@@ -226,7 +226,6 @@ def creatUser():
 
 def getUsers(mask): #фильтр на юзеров
     if mask:
-
         template = re.compile(mask)
     request = 'select * from users ORDER BY low(name) COLLATE sort' #выводим, с сортировкой без учета регистра по столбцу name
     try:
