@@ -9,6 +9,7 @@ from scrolledlist import *
 import sqlite3
 from hashlib import md5
 import re
+import random,datetime, time
 
 
 
@@ -23,7 +24,7 @@ numberUser=0
 NumberUserCur=0
 
 try:
-    conn = sqlite3.connect('db.sqlite')
+    conn = sqlite3.connect('db3.sqlite')
     cur = conn.cursor()
 except:
     showerror('Ошибка', 'Ошибка при рабое с базой данных, возможно ее кто-то уже использует.')
@@ -32,55 +33,94 @@ def ViewBooks():
     bookList = ScrolledList(parent=root)
     bookList.listbox.config(height=15,width=50)
     bookList.grid(column=4,row=0)
+#если среди аргументов есть Entry, замещает его на его содержимое, т.е. на entry.get() -генератор
+def genGet(*values):
+    for obj in values[0]:
+        if str(type(obj)) == "<class 'tkinter.Entry'>":
+            yield obj.get()
+        else:yield obj
+
+#если среди аргументов есть Entry, замещает его на его содержимое, т.е. на entry.get() -возвращает картеж, в том же порядкке
+def funcGet(*values):
+    tmp=[]
+    #print(values,type(values),len(values))
+    for obj in values[0]:
+        if str(type(obj)) == "<class 'tkinter.Entry'>":
+            tmp.append(obj.get())
+        else:
+            tmp.append(obj)
+    return tuple(tmp)
+
+#проверяет, все ли поля заполнены
+def testCompair(*args):
+    args = funcGet(*args)
+    if len(args) == 1:args=args[0] #помогает от звездочки:)
+    for obj in args:
+        if not obj:
+            showerror('Ошибка',"Пожалуйста, заполните все поля ввода данных")
+            return False
+    return True
 
 #крутяцкая функция!:)
 def execsql(request1,*values):
     if len(values):
-        tmp=[]
-        for obj in values[0]:
-            if str(type(obj)) == "<class 'tkinter.Entry'>":
-                tmp.append(obj.get())
-            else:tmp.append(obj)
-        values = tuple(tmp)
+        values = funcGet(*values)
     try:
         if not len(values):cur.execute(request1)
         else:
             cur.execute(request1,values)
             for obj in cur:
                 print(obj)
-        for line in cur:
-            yield line
     except sqlite3.OperationalError as dbLock:
         showerror('Ошибка', dbLock)
     else:
         conn.commit()
+        for line in cur:
+            yield line
 
+def inscsql(request1,*values):
+    if len(values):
+        values = funcGet(*values)
+    try:
+        if not len(values):cur.execute(request1)
+        else:
+            cur.execute(request1,values)
+            for obj in cur:
+                print(obj)
+    except sqlite3.OperationalError as dbLock:
+        showerror('Ошибка', dbLock)
+    else:
+        conn.commit()
+        return
+def tuple2str(t):
+    tmp = ''
+    for x in t:
+        tmp = tmp + str(x) +','
+    tmp = tmp[0:-1]
+    return tmp
+
+def time2sec(t):
+    return time.mktime(t.timetuple())
+def sec2time(t):
+    return datetime.datetime.fromtimestamp(float(t))
+
+
+
+def handlerBrackets(s):
+    return '('+s+')'
 
 def addBook():
-    def OkAct(q):
-        print(type(q))
-        #s=''
-        s = execsql('INSERT INTO books values(?,?,?,?,?,?,?,?)',(ISBN,author,2,4,5,6,7,8))
-        #s = execsql('select * from users where name="марк"')
-        '''
-        ISBN = Entry
-        author = Ent
-        title = Entr
-        years     =
-        publisher =
-        keywords  =
-        sity      =
-        ISBN.grid(ro
-        author.grid(
-            title.grid(r
-        years.grid(r
-        publisher.gr
-        keywords.gri
-        sity.grid(ro
-        bbk.grid(row
-        '''
-        for line in s:
-            print(line)
+    def OkAct():
+        args = (ISBN,author,title,years,publisher,keywords,sity,bbk)
+        #args = (random.randint(0,9999),2,3,4,5,6,7,8)
+        if not testCompair(args):return #8
+       #req = 'INSERT INTO books ' + handlerBrackets( tuple2str(args) ) + 'values(?,?,?,?,?,?,?,?)'
+        req = 'INSERT INTO books (ISBN,autors,title,years,publisher,keywords,city,bbk) values(?,?,?,?,?,?,?,?)'
+        #req2 = 'values(?,?,?,?,?,?,?,?,?,?)'
+        print(req, args)
+        inscsql(req,args)
+
+        showinfo('Успех',"Книги добавлена")
 
     def OkAct1():
         for x in execsql('select * from users where name=?',('марк',)):
@@ -96,7 +136,7 @@ def addBook():
     rightFrame = Frame(root)
     bottom     = Frame(root)
 
-    button1 = Button(bottom,text='Подтвердить',command=lambda: OkAct(ISBN)  )
+    button1 = Button(bottom,text='Подтвердить',command=lambda: OkAct()  )
     button2 = Button(bottom,text='Отмена' ,command=lambda: cancelAct () )
     Label(leftFrame, text="ISBN").grid(row=0)
     Label(leftFrame, text="Автор").grid(row=1)
@@ -110,13 +150,14 @@ def addBook():
 
 
     ISBN = Entry(leftFrame)
+    bbk      = Entry(leftFrame)
     author = Entry(leftFrame)
     title = Entry(leftFrame)
     years     = Entry(leftFrame)
     publisher = Entry(leftFrame)
     keywords  = Entry(leftFrame)
     sity      = Entry(leftFrame)
-    bbk      = Entry(leftFrame)
+
     ISBN.grid(row=0, column=1,padx=5,pady=5,columnspan=2,ipadx=5)
     author.grid(row=1, column=1,padx=5,pady=5,columnspan=5,ipadx=5)
     title.grid(row=2, column=1,padx=5,pady=5,columnspan=5,ipadx=5)
