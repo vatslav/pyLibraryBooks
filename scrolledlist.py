@@ -27,6 +27,9 @@ class ScrolledList(Frame):
         self.makeWidgets(options)
         self.reBind = newBind
 
+    def setHeight(height):
+        pass
+
     def handleList(self, event):
         #if self.reBind == None:
 
@@ -82,3 +85,6 @@ class ScrolledList(Frame):
             self.reBind(selection)
         else:
             print( selection)
+
+
+           

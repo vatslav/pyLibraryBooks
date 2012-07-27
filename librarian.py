@@ -13,7 +13,7 @@ import random
 import string
 import time
 from tkinter.filedialog   import asksaveasfilename
-
+from tkinter.filedialog   import asksaveasfilename as openFile
 
 b1  = '<Button-1>'
 b1w = '<Double-1>'
@@ -56,7 +56,8 @@ class ScrolledList(Frame):
 
         index = self.listbox.curselection()                # on list double-click
         label = self.listbox.get(index)                    # fetch selection text
-        self.runCommand(label)                             # and call action here
+        try:self.runCommand(label)                             # and call action here
+        except:pass
         # or get(ACTIVE)
     def getCur(self):
         index = self.listbox.curselection()                # on list double-click
@@ -108,14 +109,22 @@ class ScrolledList(Frame):
             print( selection)
 
 def execsql(req,values):
-    request1 = req + str(values) + '"'
+    if values ==None: request1 = req
+    else: request1 = req + str(values) + '"'
     try:
         cur.execute(request1)
-        #userList.listbox.delete(userList.getIndexCur()) #удалить из списка
+        for line in cur:
+            yield line
+            #userList.listbox.delete(userList.getIndexCur()) #удалить из списка
     except sqlite3.OperationalError as dbLock:
         showerror('Ошибка', dbLock)
     else:
         conn.commit()
+
+
+
+
+
 
 
 
@@ -175,8 +184,11 @@ def mkpass(size=10):
 
 def creatUser():
     def randPasAct():
+        tmp = mkpass()
         e2.delete(0,last='end')
-        e2.insert(0,mkpass())
+        e2.insert(0,tmp )
+        e3.delete(0,last='end')
+        e3.insert(0,tmp )
 
 
     global tab,root1,root,specialty
@@ -196,6 +208,7 @@ def creatUser():
 
     roleBox = Listbox(rightFrame)
     [roleBox.insert('end',x) for x in specialty]
+    roleBox.config(height=4,width=20)
     roleBox.grid(row=1,column=3)
     e1.grid(row=0, column=1,padx=5,pady=5,columnspan=2,ipadx=5)
     e2.grid(row=1, column=1,padx=5,pady=5,columnspan=5,ipadx=5)
@@ -209,19 +222,12 @@ def creatUser():
     root.grab_set()
     root.wait_window()
 
-def pbTruly(mask,expression):
-    template = re.compile(mask)
-    return template.search(expression), template.search(expression).group(), template.search(expression).span()
-
-
-
 
 
 def getUsers(mask): #фильтр на юзеров
     if mask:
 
         template = re.compile(mask)
-    #low(name) LIKE ?
     request = 'select * from users ORDER BY low(name) COLLATE sort' #выводим, с сортировкой без учета регистра по столбцу name
     try:
         for row in cur.execute(request):
@@ -231,9 +237,6 @@ def getUsers(mask): #фильтр на юзеров
                 pb = template.search(str(row[0]).lower())
                 if pb:
                     yield (row[0],'||',row[2])
-
-
-
     except sqlite3.OperationalError as dbLock:
         showerror('Ошибка', dbLock)
     else:
@@ -265,6 +268,11 @@ def delUser(userList): #удалить выбранного юзера
     else:
         conn.commit()
 
+def viewBooks(): #=============================================================== ==================== ======!!!!
+    pass
+    def getBooks():
+        execsql('select * from books COLLATE sort')
+    booksList = ScrolledList
 
 
 
@@ -277,8 +285,8 @@ def changeUser():#изменить юзеров 1 окно
             ptr=0
             for spec in specialty:
                 if spec==user[2]:
-                    roleList.listbox.activate(ptr)
-                    print(ptr, spec)
+                    roleList.activate(ptr)
+                    print(ptr, spec,'===tada')
                 ptr += 1
             if e1.get()=="":
                 showerror("Ошибка","Заполните имя учетной записи")
@@ -316,22 +324,29 @@ def changeUser():#изменить юзеров 1 окно
         Login = Label(leftFrame,text='Изменить, на логин:')
         roleL = Label(rightFrame,text='Новый тип пользователя')
         e1 = Entry(leftFrame)
+        #getSpeciality(),
         roleList = ScrolledList(getSpeciality(),parent=rightFrame)
+        #roleList.config(height=4,width=50)
+        roleList.listbox.config(height=4,width=20)
+        #roleList.config(height=4,width=20)    
         okB     = Button(root1,text='Ок',command=(lambda: okAct() ))
-        cancelB = Button(root1,text='Отмена',command=(lambda: root1.destroy() ) )
+        cancelB = Button(root1,text='Отмена!!',command=(lambda: root1.destroy() ) )
         title.grid()
         Login.grid(row=1)
         roleL.grid()
         e1.grid(row=2,column=0)
         roleList.grid(row=1)
-        print(user)
-        print(specialty)
+        #print(user)
+        #print(specialty)
         ptr=0
+        '''
         for spec in specialty:
             if spec==user[2]:
                 roleList.listbox.activate(ptr)
-                print(ptr, spec)
+                #print(ptr, spec,'===tada')
             ptr += 1
+        '''
+
         #roleList.listbox.activate() ##===*-
         leftFrame.grid()
         rightFrame.grid(column=1,row=0)
@@ -345,14 +360,18 @@ def changeUser():#изменить юзеров 1 окно
         root1.bind('<Return>',handkerEnter)
         root1.bind('<Escape>',handkerEscape)
         ptr = 0
+        '''
         for spec in specialty:
             if spec==user[2]:
                 roleList.listbox.activate(ptr)
                 print(ptr, spec)
             ptr += 1
+        '''
+        roleList.config(height=4,width=5)
         e1.focus_set()
         root1.grab_set()
         root1.wait_window()
+
 
     def resetPasAct():
         request = 'update users set pass=? where name=?'
@@ -372,6 +391,10 @@ def changeUser():#изменить юзеров 1 окно
             pass
         else:
             conn.commit()
+
+
+
+
 
     global tab,root1,root
     root = Toplevel()
@@ -405,6 +428,7 @@ def changeUser():#изменить юзеров 1 окно
             for x in getUsers(findE.get().lower() ):
                 #print(x)#тут делать вставку в лист
                 userList.listbox.insert('end',x)
+
         except StopIteration:
             pass
 
@@ -415,12 +439,16 @@ def changeUser():#изменить юзеров 1 окно
     leftFrame.pack()
     rightFrame.pack()
     def handkerEnter(event):
-        changeOneuser(userList.getCur())
+        try:
+            changeOneuser(userList.getCur())
+        except TclError:
+            pass
     def handkerEscape(event):
         root.destroy()
     root.bind('<Return>',handkerEnter)
     root.bind('<Escape>',handkerEscape)
     findE.focus_set()
+    userList.listbox.config(height=15,width=30)
     root.grab_set()
     root.wait_window()
     #root.mainloop()
@@ -428,19 +456,39 @@ def changeUser():#изменить юзеров 1 окно
 def exportDb():
     filename = asksaveasfilename()
     msg = "Не возможно сохранить файл, попробуйте выбрать другое местоположение"
-    if not filename: 
+    if not filename:
         showerror('Ошибка', msg)
         return
     try:
-        file = open('filename','w')
-    except: 
+        file = open(filename,'w')
+    except:
         showerror('Ошибка', msg)
         return
-    for line in conn.iterdamp():
-        file.witeline(line)
+    for line in conn.iterdump():
         print(line)
+    showinfo("Успех",'База данных успешно экспортировано')
+    file.close()
 
-
+def  importDb():
+    filename = openFile()
+    msg = "Не возможно сохранить файл, попробуйте выбрать другое местоположение"
+    if not filename:
+        showerror('Ошибка', msg)
+        return
+    try:
+        file = open(filename,'r')
+    except:
+        showerror('Ошибка', msg)
+        return
+    req = ''
+    for line in file.read():
+        req += line
+    try:
+        cur.execute(req)
+    except sqlite3.OperationalError as dbLock:
+        showerror('Ошибка', dbLock)
+    else:
+        conn.commit()
 
 
 
@@ -452,17 +500,18 @@ def mymain():
 
     root1.title(string='Администрирование БД Библиотека')
     viewAllBooks    = Button (text='посмотреть список книг')
-    creatLibrarian  = Button (text='Создать учетную запись библиотекаря',   command=(lambda:creatUser())  )
-    changeLibrarian = Button (text='Изменить  учетную запись библиотекаря', command=(lambda:changeUser()) )
+    creatLibrarian  = Button (text='Создать учетную запись библиотекаря',   command=(lambda:creatUser() )  )
+    changeLibrarian = Button (text='Изменить  учетную запись библиотекаря', command=(lambda:changeUser())  )
     viewLibrarian   = Button (text='Посмотреть статистику')
     exportdb        = Button (text='Экспорт базы данных в файл',            command=(lambda:exportDb()  )  )
+    importdb        = Button (text='Импорт базы данных в файл',             command=(lambda:importDb()  )  )
 
     viewAllBooks.grid(padx=20,ipady=5)
     creatLibrarian.grid(columnspan=5,padx=20,ipady=5)
     changeLibrarian.grid(columnspan=5,padx=20,ipady=5)
     viewLibrarian.grid(ipady=2)
     exportdb.grid(columnspan=5,padx=20,ipady=5)
-
+    #importdb.grid(columnspan=5,padx=20,ipady=5)
 
     root1.mainloop()
 
