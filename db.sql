@@ -1,23 +1,22 @@
 DROP TABLE IF EXISTS "books";
 CREATE TABLE books(
 	id integer primary key autoincrement,
-	ISBN text not null,
+	ISBN text unique not null,
 	bbk text not null,
 	autors text not null,
 	title text not null,
-	years integer not null,
+	years date not null,
 	publisher text not null,
 	keywords text not null,
 	city text not null,
-	createTime integer
+	createTime timestamp
 	);
-
 
 DROP TABLE IF EXISTS "exemplars";
 CREATE TABLE exemplars(
 	id integer primary key autoincrement,
 	classbook integer not null,
-	create_time integer,
+	create_time timestamp,
 	FOREIGN KEY (classbook) REFERENCES books(id)
 	ON DELETE RESTRICT 
 	ON UPDATE CASCADE
@@ -25,6 +24,7 @@ CREATE TABLE exemplars(
 DROP TABLE IF EXISTS "getting";
 CREATE TABLE getting(
 	id integer primary key autoincrement,
+	active boolean,
 	datestart integer not null,
 	dateend integer not null,
 	idbook integer not null,
@@ -42,13 +42,13 @@ CREATE TABLE readers(
 	fio not null,
 	adress text not null,
 	telephone text,
-	create_time integer);
+	create_time timestamp);
 DROP TABLE IF EXISTS "users";
 CREATE TABLE [users] (
   [name] TEXT primary key, 
   [pass] TEXT NOT NULL, 
   [role] TEXT NOT NULL,
-  create_time integer);
+  create_time timestamp);
 INSERT INTO "users" VALUES('Иван Ильич','f1290186a5d0b1ceab27f4e77c0c5d68','Читатель',1);
 INSERT INTO "users" VALUES('Евгений Абрамы','e1671797c52e15f763380b45e841ec32','Библиотекарь',1);
 INSERT INTO "users" VALUES('vfddd','9e3669d19b675bd57058fd4664205d2a','Администратор',1);

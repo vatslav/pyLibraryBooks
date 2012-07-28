@@ -25,22 +25,31 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="dlg-custom.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/Dropbox/PP4E/Gui/Tour/dlg-custom.py">
+      <file leaf-file-name="midlelibrarian.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/midlelibrarian.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="11" column="25" selection-start="501" selection-end="501" vertical-scroll-proportion="0.0">
+            <state line="126" column="29" selection-start="3515" selection-end="3515" vertical-scroll-proportion="0.6296296">
+              <folding>
+                <element signature="e#46#67#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="17.16.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/arhiv/17.16.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="22" column="32" selection-start="704" selection-end="704" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="midlelibrarian.py" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/midlelibrarian.py">
+      <file leaf-file-name="17.17.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/arhiv/17.17.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="84" column="32" selection-start="2280" selection-end="2280" vertical-scroll-proportion="2.0576272">
-              <folding>
-                <element signature="e#46#67#0" expanded="true" />
-              </folding>
+            <state line="11" column="20" selection-start="427" selection-end="427" vertical-scroll-proportion="0.0">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -76,15 +85,6 @@
         <entry file="file://$PROJECT_DIR$/librarian.py">
           <provider selected="true" editor-type-id="text-editor">
             <state line="279" column="17" selection-start="8779" selection-end="8781" vertical-scroll-proportion="-3.92">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="regular.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/arhiv/regular.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="22" column="8" selection-start="698" selection-end="716" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -127,8 +127,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/bibleotekar.py" />
-        <option value="$PROJECT_DIR$/main on ttk.py" />
         <option value="$USER_HOME$/Dropbox/PP4E/Gui/Tour/scrolledlist.py" />
         <option value="$USER_HOME$/Dropbox/PP4E/Gui/Tour/dlg-custom.py" />
         <option value="$PROJECT_DIR$/main.py" />
@@ -142,6 +140,8 @@
         <option value="$PROJECT_DIR$/librarian.py" />
         <option value="$PROJECT_DIR$/arhiv/17.2.py" />
         <option value="$PROJECT_DIR$/arhiv/17.2.1.py" />
+        <option value="$PROJECT_DIR$/arhiv/17.16.py" />
+        <option value="$PROJECT_DIR$/arhiv/17.17.py" />
         <option value="$PROJECT_DIR$/midlelibrarian.py" />
       </list>
     </option>
@@ -246,66 +246,6 @@
     </key>
   </component>
   <component name="RunManager" selected="Python.midlelibrarian">
-    <configuration default="false" name="sqlit_education_2" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/arhiv" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <module name="pylibrary" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/arhiv/sqlit_education_2.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="MULTIPROCESS" value="false" />
-      <RunnerSettings RunnerId="PyDebugRunner" />
-      <RunnerSettings RunnerId="PythonRunner" />
-      <ConfigurationWrapper RunnerId="PyDebugRunner" />
-      <ConfigurationWrapper RunnerId="PythonRunner" />
-      <method />
-    </configuration>
-    <configuration default="false" name="midlelibrarian" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <module name="pylibrary" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/midlelibrarian.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="MULTIPROCESS" value="false" />
-      <RunnerSettings RunnerId="PyDebugRunner" />
-      <RunnerSettings RunnerId="PythonRunner" />
-      <ConfigurationWrapper RunnerId="PyDebugRunner" />
-      <ConfigurationWrapper RunnerId="PythonRunner" />
-      <method />
-    </configuration>
-    <configuration default="false" name="librarian" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <module name="pylibrary" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/librarian.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="MULTIPROCESS" value="false" />
-      <RunnerSettings RunnerId="PyDebugRunner" />
-      <RunnerSettings RunnerId="PythonRunner" />
-      <ConfigurationWrapper RunnerId="PyDebugRunner" />
-      <ConfigurationWrapper RunnerId="PythonRunner" />
-      <method />
-    </configuration>
     <configuration default="false" name="17.2" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -336,6 +276,60 @@
       <module name="pylibrary" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/arhiv/17.2.1.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="MULTIPROCESS" value="false" />
+      <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PythonRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="17.16" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/arhiv" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <module name="pylibrary" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/arhiv/17.16.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="MULTIPROCESS" value="false" />
+      <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PythonRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="17.17" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/arhiv" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <module name="pylibrary" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/arhiv/17.17.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="MULTIPROCESS" value="false" />
+      <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PythonRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="midlelibrarian" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <module name="pylibrary" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/midlelibrarian.py" />
       <option name="PARAMETERS" value="" />
       <option name="MULTIPROCESS" value="false" />
       <RunnerSettings RunnerId="PythonRunner" />
@@ -396,11 +390,11 @@
       <method />
     </configuration>
     <list size="5">
-      <item index="0" class="java.lang.String" itemvalue="Python.sqlit_education_2" />
-      <item index="1" class="java.lang.String" itemvalue="Python.midlelibrarian" />
-      <item index="2" class="java.lang.String" itemvalue="Python.librarian" />
-      <item index="3" class="java.lang.String" itemvalue="Python.17.2" />
-      <item index="4" class="java.lang.String" itemvalue="Python.17.2.1" />
+      <item index="0" class="java.lang.String" itemvalue="Python.17.2" />
+      <item index="1" class="java.lang.String" itemvalue="Python.17.2.1" />
+      <item index="2" class="java.lang.String" itemvalue="Python.17.16" />
+      <item index="3" class="java.lang.String" itemvalue="Python.17.17" />
+      <item index="4" class="java.lang.String" itemvalue="Python.midlelibrarian" />
     </list>
   </component>
   <component name="ShelveChangesManager" show_recycled="false" />
@@ -515,16 +509,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$USER_HOME$/.PyCharm20/system/python_stubs/-1700991364/builtins.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="992" column="12" selection-start="34307" selection-end="34307" vertical-scroll-proportion="0.6905263" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/arhiv/library.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-1.7597402" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/sqltest.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="93" column="0" selection-start="2064" selection-end="2064" vertical-scroll-proportion="1.7175325" />
@@ -606,9 +590,23 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/arhiv/17.16.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="22" column="32" selection-start="704" selection-end="704" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/arhiv/17.17.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="11" column="20" selection-start="427" selection-end="427" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/midlelibrarian.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="84" column="32" selection-start="2280" selection-end="2280" vertical-scroll-proportion="2.0576272">
+        <state line="126" column="29" selection-start="3515" selection-end="3515" vertical-scroll-proportion="0.6296296">
           <folding>
             <element signature="e#46#67#0" expanded="true" />
           </folding>
