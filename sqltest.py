@@ -123,3 +123,38 @@ if __name__ == '__main__':
     tab.cells[2][2].value.set( tab.cells[1][1].value.get() )
 
     root.mainloop()'''
+
+'''
+try:
+    print(type(issueF))
+    if issueF.winfo_viewable():
+        print('+100')
+        viewFrame(issueF)
+        print('+100')
+    return
+
+except AttributeError:print('exc')
+'''
+
+
+#===НЕ МОГУ ПОЛУЧИТЬ ИМЕНА ВИДЖЕТОВ, т.е. тупo ISBN=>'ISBN, нужно наверно исподьзова base64 или еще что-то низкоуровневое
+#req = 'INSERT INTO books ' + handlerBrackets( tuple2str(args) ) + 'values(?,?,?,?,?,?,?,?,?)'
+#req = 'INSERT INTO books ' + str(args) + 'values(?,?,?,?,?,?,?,?,?)'
+
+
+#print(req, args)
+#print(req2, args)
+#print(req==req2)  #'select * from users where name=?',('марк',
+
+
+def cancelAct(*args):
+    try:
+        for x in args:
+            x.grid_remove()
+        return 1
+    except UnboundLocalError:
+        return 0
+def viewFrame(name):
+    global issueF,getF,insertF,delF, catalogingF, classificationF,flags
+    if flags[name]==True:
+        pass
