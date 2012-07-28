@@ -115,6 +115,7 @@ def handlerBrackets(s):
     return '('+s+')'
 
 def addBook():
+
     def OkAct():
         ts = datetime.datetime.today()
         args = (ISBN,bbk,author,title,years,publisher,keywords,sity,ts)
@@ -136,49 +137,59 @@ def addBook():
         leftFrame.grid_remove()
         rightFrame.grid_remove()
         bottom.grid_remove()
-
-    leftFrame  = Frame(root)
-    rightFrame = Frame(root)
-    bottom     = Frame(root)
-
-    button1 = Button(bottom,text='Подтвердить',command=lambda: OkAct()  )
-    button2 = Button(bottom,text='Отмена' ,command=lambda: cancelAct () )
-    Label(leftFrame, text="ISBN").grid(row=0)
-    Label(leftFrame, text="Автор").grid(row=1)
-    Label(leftFrame, text='Название').grid(row=2)
-    Label(leftFrame, text='годы').grid(row=3)
-    Label(leftFrame, text='издательство').grid(row=4)
-    Label(leftFrame, text='ключевые слова').grid(row=5)
-    Label(leftFrame, text='город').grid(row=6)
-    Label(leftFrame, text='ББК').grid(row=7)
+        #делаем фреймы видимыми
+    try:
+        if not leftFrame.winfo_viewable():
+            leftFrame.grid()
+            rightFrame.grid()
+            bottom.grid()
+            ISBN.focus_set()
+            #а если фреймы еще не создавались, то создаем их
+    except UnboundLocalError:
 
 
+        leftFrame  = Frame(root)
+        rightFrame = Frame(root)
+        bottom     = Frame(root)
 
-    ISBN = Entry(leftFrame)
-    bbk      = Entry(leftFrame)
-    author = Entry(leftFrame)
-    title = Entry(leftFrame)
-    years     = Entry(leftFrame)
-    publisher = Entry(leftFrame)
-    keywords  = Entry(leftFrame)
-    sity      = Entry(leftFrame)
-
-    ISBN.grid(row=0, column=1,padx=5,pady=5,columnspan=2,ipadx=5)
-    bbk.grid(row=1, column=1,padx=5,pady=5,columnspan=5,ipadx=5)
-    author.grid(row=2, column=1,padx=5,pady=5,columnspan=5,ipadx=5)
-    title.grid(row=3, column=1,padx=5,pady=5,columnspan=5,ipadx=5)
-    years.grid(row=4, column=1,padx=5,pady=5,columnspan=5,ipadx=5)
-    publisher.grid(row=5, column=1,padx=5,pady=5,columnspan=5,ipadx=5)
-    keywords.grid(row=6, column=1,padx=5,pady=5,columnspan=5,ipadx=5)
-    sity.grid(row=7, column=1,padx=5,pady=5,columnspan=5,ipadx=5)
+        button1 = Button(bottom,text='Подтвердить',command=lambda: OkAct()  )
+        button2 = Button(bottom,text='Отмена' ,command=lambda: cancelAct () )
+        Label(leftFrame, text="ISBN").grid(row=0)
+        Label(leftFrame, text="Автор").grid(row=1)
+        Label(leftFrame, text='Название').grid(row=2)
+        Label(leftFrame, text='годы').grid(row=3)
+        Label(leftFrame, text='издательство').grid(row=4)
+        Label(leftFrame, text='ключевые слова').grid(row=5)
+        Label(leftFrame, text='город').grid(row=6)
+        Label(leftFrame, text='ББК').grid(row=7)
 
 
-    button1.grid(row=3, column=0,columnspan=1,ipadx=5,ipady=5,rowspan=10)
-    button2.grid(row=3, column=2,columnspan=2,ipadx=5,ipady=5)
-    leftFrame.grid(row=0, column=4)
-    rightFrame.grid(row=0,column=5)
-    bottom.grid(row=1,column=4)
-    ISBN.focus_set()
+
+        ISBN = Entry(leftFrame)
+        bbk      = Entry(leftFrame)
+        author = Entry(leftFrame)
+        title = Entry(leftFrame)
+        years     = Entry(leftFrame)
+        publisher = Entry(leftFrame)
+        keywords  = Entry(leftFrame)
+        sity      = Entry(leftFrame)
+
+        ISBN.grid(row=0, column=1,padx=5,pady=5,columnspan=2,ipadx=5)
+        bbk.grid(row=1, column=1,padx=5,pady=5,columnspan=5,ipadx=5)
+        author.grid(row=2, column=1,padx=5,pady=5,columnspan=5,ipadx=5)
+        title.grid(row=3, column=1,padx=5,pady=5,columnspan=5,ipadx=5)
+        years.grid(row=4, column=1,padx=5,pady=5,columnspan=5,ipadx=5)
+        publisher.grid(row=5, column=1,padx=5,pady=5,columnspan=5,ipadx=5)
+        keywords.grid(row=6, column=1,padx=5,pady=5,columnspan=5,ipadx=5)
+        sity.grid(row=7, column=1,padx=5,pady=5,columnspan=5,ipadx=5)
+
+
+        button1.grid(row=3, column=0,columnspan=1,ipadx=5,ipady=5,rowspan=10)
+        button2.grid(row=3, column=2,columnspan=2,ipadx=5,ipady=5)
+        leftFrame.grid(row=0, column=4)
+        rightFrame.grid(row=0,column=5)
+        bottom.grid(row=1,column=4)
+        ISBN.focus_set()
     #s = execsql('INSERT INTO books values(?,?,?,?,?,?,?,?)',(ISBN.get(),author.get(),3,4,5,6,7,8))
     #for line in s:
     #    print(line)
