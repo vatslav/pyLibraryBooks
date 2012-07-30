@@ -158,3 +158,8 @@ def viewFrame(name):
     global issueF,getF,insertF,delF, catalogingF, classificationF,flags
     if flags[name]==True:
         pass
+
+
+fieldOfBooksRus = ('ISBN', 'ББК', 'Автор', 'Название', 'Год издания', 'Издательство', 'ключивые слова', 'город' )
+fieldOfBooks = ('ISBN','bbk', 'autors', 'titile', 'years', 'publisher', 'keywords', 'city')
+fieldOfBooksstr = 'ISBN,bbk,autors,titile,years,publisher,keywords,city

@@ -6,51 +6,114 @@ from tkinter.messagebox import *
 from tkinter.ttk import *
 from sys import exit as ext
 from scrolledlist import *
-import sqlite3
+import sqlite3,re,random,datetime, time
 from hashlib import md5
-import re
-import random,datetime, time
+from share_data import *
 
-flags ={'viewbooks':False,'addbook':False}
-
+flags ={'выдать_книги':False,'добавить_книгу':False}
+fieldOfBooksRus = ('ISBN', 'ББК', 'Автор', 'Название', 'Год издания', 'Издательство', 'ключивые слова', 'город' )
+fieldOfBooks = ('ISBN','bbk', 'autors', 'title', 'years', 'publisher', 'keywords', 'city')
+fieldOfBooksstr = 'ISBN,bbk,autors,title,years,publisher,keywords,city'
 b1  = '<Button-1>'
 b1w = '<Double-1>'
 b2  = '<Button-2>'
-tab=''
 specialty = ("Библитекарь", "Читатель", "Адинистратор")
-root=True #кнопки
-root=True #таблица
-numberUser=0
-NumberUserCur=0
-#issueF = 1
-try:
-    conn = sqlite3.connect('db6.sqlite')
-    cur = conn.cursor()
-except:
-    showerror('Ошибка', 'Ошибка при рабое с базой данных, возможно ее кто-то уже использует.')
-    exit()
-    #frames = (issueF,getF,insertF,delF, catalogingF, classificationF )
+firstIn = True
+
+
+#маска для поиска, индекс столбца в бд, по которому делаем поиск, сортируем по
+def getBooks(mask=None,index=3,table='books', sortby='title'): #фильтр на книги
+    #print('mask=%s, index=%d, sort=%s' %(mask,index,sortby))
+    #index += 1
+    if mask:
+        template = re.compile(mask)
+
+
+    request = 'select ISBN,bbk,autors,title,years,publisher,keywords,city from '+ table + ' ORDER BY low(' +sortby+ ') COLLATE sort' #выводим, с сортировкой без учета регистра по столбцу name
+    print(request)
+    try:
+        for row in cur.execute(request):
+            if not mask:
+                yield row
+            else:
+                pb = template.search(str(row[index]).lower())
+                if pb:
+                    yield row
+    except sqlite3.OperationalError as dbLock:
+        showerror('Ошибка', dbLock)
+    else:
+        conn.commit()
+
+
 
 def ViewBooks():
-    def getBooks():
-        pass
-    global flags,issueF
+    global flags,issueF,fieldOfBooksRus
+
+    def xx():#вернет название всех полей
+        for x in execsql('PRAGMA table_info("books")'):yield x[1]
+
+    def handlerPress(event):
+        global firstIn
+        bookList.clearlist()#index=rb.reportIndex()
+        if firstIn:
+            firstIn = False
+            tmp = (text.get())
+            tmp = tmp.replace('Найти','')
+            text.set(tmp)
+        txt =text.get()
+        txt = txt.lower()
+        if rb.reportIndex()==4:
+            pass
+
+        for x in getBooks(txt,index=rb.reportIndex(),sortby=fieldOfBooks[rb.reportIndex()]):
+            bookList.listbox.insert('end',x)
+
+
+    def nameOfrb():
+        for x in fieldOfBooksRus:
+            yield x
+
+
     hideFrames();
-    if flags['viewbooks']==True:
+    if flags['выдать_книги']==True:
         issueF.grid()
         return
-    flags['viewbooks'] = True
+    flags['выдать_книги'] = True
     issueF = Frame(root)
-    midlle, bottom = Frame(issueF), Frame(issueF)
-    bookList = ScrolledList(parent=midlle)
-    bookList.listbox.config(height=15,width=50)
-    bookList.grid(column=0,row=0)
-    Button(bottom, text='Ок',command=lambda:issueF.grid_remove()   ).grid(row=0)
+    midlle, bottom, right = Frame(issueF), Frame(issueF), Frame(issueF)
+
+    Button(bottom, text='Ок',command=lambda:handlerPress(None)  ).grid(row=0)
     Button(bottom, text='Отмена',command=lambda:issueF.grid_remove()).grid(row=0,column=1)
     midlle.grid(column=4,row=0)
     bottom.grid(column=4,row=1)
+    right.grid(column=5,row=0)
+
+    sortFind = Frame(right)
+    sortFind.grid()
+    var  = IntVar(0)
+    def qq():
+        for x in ['q','w','z']:
+            yield x
+
+    rb = RadioBut(parent=sortFind,opt=nameOfrb(),titile='Сортировать и искать по',default=fieldOfBooksRus[3])
+    print('======',rb.report())
+    text =StringVar()
+    find = Entry(midlle,textvariable=text)
+
+    #print(rb.report())
+    bookList = ScrolledList(parent=midlle,options=getBooks( ) )
+
+
+    bookList.listbox.config(height=25,width=100)
+    bookList.grid(column=0,row=0)
+    find.grid(row=2,padx=20,ipady=5)
     issueF.grid(column=4,row=0)
-    root.mainloop()
+    find.focus()
+    root.bind('<KeyPress>',handlerPress)
+    text.set('Найти')
+    #root1.bind('<Return>',handkerEnter)
+    #root1.bind('<Escape>',handkerEscape)
+    #root.mainloop()
 
 #если среди аргументов есть Entry, замещает его на его содержимое, т.е. на entry.get() -генератор
 def genGet(*values):
@@ -115,7 +178,7 @@ def inscsql(request1,*values):
 
     else:
         conn.commit()
-        return
+        return True
 
 def tuple2str(t):
     tmp = ''
@@ -146,14 +209,15 @@ def addBook():
         args = (ISBN,bbk,author,title,years,publisher,keywords,sity,ts)
         #args = (random.randint(0,9999),20,3,4,5,6,7,8,ts)
         if not testCompair(args):return
-        req1 = 'INSERT INTO books (ISBN,autors,title,years,publisher,keywords,city,bbk,createTime) values(?,?,?,?,?,?,?,?,?)'
-        if inscsql(req,args):
+        request = 'INSERT INTO books (ISBN,autors,title,years,publisher,keywords,city,bbk,createTime) values(?,?,?,?,?,?,?,?,?)'
+        print()
+        if inscsql(request,args):
             showinfo('Успех',"Книги добавлена")
     hideFrames()
-    if flags['addbook']==True:
+    if flags['добавить_книгу']==True:
         insertF.grid()
         return
-    flags['addbook'] = True
+    flags['добавить_книгу'] = True
 
     insertF = Frame(root)
     leftFrame  = Frame(insertF)
@@ -199,8 +263,16 @@ def addBook():
     bottom.grid(row=1,column=4)
     insertF.grid(row=0,column=4)
     ISBN.focus_set()
+def view():
+    for x in getBooks():
+        print(x)
 
-
+def iterColumnBooks():
+    i =execsql('''SELECT name FROM sqlite_master
+    WHERE type='table'
+    ORDER BY name;''')
+    for x in i:
+        print(x)
 
 root=Tk()
 root.title('Администрирование БД')
@@ -208,6 +280,14 @@ master = Frame(root)
 accountingF = Frame(master)
 getNdelF = Frame(master)
 classifF = Frame(master)
+
+#view()
+iterColumnBooks()
+
+#Dataset с полями CID, NAME, TYPE, NOTNULL, DFLT_VALUE, PK
+state = ''
+buttons = []
+
 
 issueB            = Button (accountingF,text='Выдача книг чиателю', command=lambda: ViewBooks() );
 getB              = Button (accountingF,text='Прием книг у читателя',command=lambda:ViewBooks())

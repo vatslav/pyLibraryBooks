@@ -1,6 +1,7 @@
 #from main import e1
 
 __author__ = 'Вячеслав'
+from share_data import *
 from tkinter import *
 from tkinter.messagebox import *
 from tkinter.ttk import *
@@ -24,6 +25,7 @@ root1=True #кнопки
 root=True #таблица
 numberUser=0
 NumberUserCur=0
+'''
 #сортировка строк, в sql запросе, без учете регистра
 def sortTextInDb(s1,s2):
     s1 = s1.lower()
@@ -35,6 +37,7 @@ def low(s):
     return s.lower()
 
 
+
 try:
     conn = sqlite3.connect('db.sqlite')
     cur = conn.cursor()
@@ -43,7 +46,7 @@ try:
 except sqlite3.OperationalError as dbLock:
     showerror('Ошибка', dbLock)
     exit()
-
+'''
 class ScrolledList(Frame):
     def __init__(self, options, parent=None,newBind=None):
         Frame.__init__(self, parent)
@@ -157,7 +160,7 @@ def creatUserAct(e1,e2,e3,userBox):
     try:
 
         insUserValue = (name, hashpass, role )
-        insUserComand = 'INSERT INTO users values (?,?,?)'
+        insUserComand = 'INSERT INTO users values (?,?,?,2)'
         cur.execute(insUserComand,insUserValue)
     except sqlite3.DatabaseError as err:
         errMsg = 'Ошиюбка выполнения запроса:\n"' + str(err) + '"'
@@ -189,6 +192,9 @@ def creatUser():
         e2.insert(0,tmp )
         e3.delete(0,last='end')
         e3.insert(0,tmp )
+        e2.config(show='')
+    def handlehideE2(event):
+        e2.config(show='*')
 
 
     global tab,root1,root,specialty
@@ -203,8 +209,8 @@ def creatUser():
     Label(leftFrame, text='Подтвердите пароль').grid(row=2)
     Label(rightFrame, text='Тип учетной записи').grid(column=3)
     e1 = Entry(leftFrame)
-    e2 = Entry(leftFrame)
-    e3 = Entry(leftFrame)
+    e2 = Entry(leftFrame,show='*')
+    e3 = Entry(leftFrame,show='*')
 
     roleBox = Listbox(rightFrame)
     [roleBox.insert('end',x) for x in specialty]
@@ -219,6 +225,7 @@ def creatUser():
     leftFrame.grid(row=0, column=0)
     rightFrame.grid(row=0,column=4)
     e1.focus_set()
+    e2.bind('<KeyPress>',handlehideE2)
     root.grab_set()
     root.wait_window()
 

@@ -2,12 +2,14 @@
 #коннект в бд
 #выбор типа пользователя
 #работа в нем
+from share_data import *
 from tkinter import *
 from tkinter.messagebox import *
 from tkinter.ttk import *
 from sys import exit as ext
 import sqlite3
 from hashlib import md5
+
 master = Tk()
 master.resizable(False,False)
 #root.protocol('WM_DELETE_WINDOW', window_deleted) # обработчик закрытия окна===========
@@ -16,13 +18,14 @@ b1  = '<Button-1>'
 b1w = '<Double-1>'
 b2  = '<Button-2>'
 b2w = '<Double-2>'
-
+'''
 try:
     conn = sqlite3.connect('db.sqlite')
     cur = conn.cursor()
 except:
     showerror('Ошибка', 'Ошибка открытия базы данных.')
     exit()
+'''
 #cur.execute("")
 #391 все из букс
 #for row in cur.execute("select * from books"):
@@ -122,7 +125,7 @@ Label(master, text="Логин").grid(row=0)
 Label(master, text="Пароль").grid(row=1)
 
 e1 = Entry(master)
-e2 = Entry(master)
+e2 = Entry(master,show='*')
 
 
 

@@ -54,7 +54,11 @@ class ScrolledList(Frame):
         except TclError:
             return None
 
-
+    def clearlist(self):
+        try:
+            self.listbox.delete(0,99999999)
+        except StopIteration:
+            pass
 
     def getIndexCur(self):
         index = self.listbox.curselection()
