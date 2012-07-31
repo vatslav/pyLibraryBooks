@@ -159,7 +159,7 @@ def viewFrame(name):
     if flags[name]==True:
         pass
 
-
+#'PRAGMA table_info("books")'
 fieldOfBooksRus = ('ISBN', 'ББК', 'Автор', 'Название', 'Год издания', 'Издательство', 'ключивые слова', 'город' )
 fieldOfBooks = ('ISBN','bbk', 'autors', 'titile', 'years', 'publisher', 'keywords', 'city')
 fieldOfBooksstr = 'ISBN,bbk,autors,titile,years,publisher,keywords,city

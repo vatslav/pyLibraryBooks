@@ -28,10 +28,8 @@
       <file leaf-file-name="midlelibrarian.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/midlelibrarian.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="36" column="25" selection-start="1331" selection-end="1331" vertical-scroll-proportion="-8.84">
-              <folding>
-                <element signature="e#46#67#0" expanded="true" />
-              </folding>
+            <state line="127" column="16" selection-start="4211" selection-end="4211" vertical-scroll-proportion="-7.84">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -39,10 +37,26 @@
       <file leaf-file-name="share_data.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/share_data.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="8" column="23" selection-start="249" selection-end="249" vertical-scroll-proportion="14.96">
-              <folding>
-                <element signature="e#24#63#0" expanded="true" />
-              </folding>
+            <state line="144" column="26" selection-start="4157" selection-end="4157" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="clock.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/Dropbox/PP4E/Gui/Clock/clock.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="226" column="0" selection-start="9863" selection-end="9863" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="tictactoe.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/Dropbox/PP4E/Ai/TicTacToe/tictactoe.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="18" column="26" selection-start="568" selection-end="568" vertical-scroll-proportion="0.0">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -59,7 +73,7 @@
       <file leaf-file-name="sqltest.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/sqltest.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="164" column="71" selection-start="3983" selection-end="3983" vertical-scroll-proportion="0.8927445">
+            <state line="155" column="16" selection-start="3571" selection-end="3571" vertical-scroll-proportion="0.39716312">
               <folding />
             </state>
           </provider>
@@ -68,10 +82,8 @@
       <file leaf-file-name="librarian.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/librarian.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="226" column="18" selection-start="7352" selection-end="7352" vertical-scroll-proportion="-5.24">
-              <folding>
-                <element signature="e#46#70#0" expanded="true" />
-              </folding>
+            <state line="361" column="0" selection-start="11748" selection-end="11836" vertical-scroll-proportion="-2.1">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -79,7 +91,7 @@
       <file leaf-file-name="main.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="4" column="24" selection-start="102" selection-end="102" vertical-scroll-proportion="7.48">
+            <state line="4" column="24" selection-start="102" selection-end="102" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -97,7 +109,7 @@
       <file leaf-file-name="demoRadio.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$USER_HOME$/Dropbox/PP4E/Gui/Tour/demoRadio.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="3" column="63" selection-start="182" selection-end="182" vertical-scroll-proportion="0.0">
+            <state line="27" column="29" selection-start="252" selection-end="1031" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -113,8 +125,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$USER_HOME$/Dropbox/PP4E/Gui/Tour/dlg-custom.py" />
-        <option value="$USER_HOME$/Dropbox/PP4E/Gui/Tour/bind.py" />
         <option value="$PROJECT_DIR$/arhiv/regular.py" />
         <option value="$PROJECT_DIR$/arhiv/generators test.py" />
         <option value="$PROJECT_DIR$/arhiv/sqlite_education.py" />
@@ -124,11 +134,13 @@
         <option value="$PROJECT_DIR$/arhiv/17.16.py" />
         <option value="$PROJECT_DIR$/arhiv/17.17.py" />
         <option value="$PROJECT_DIR$/scrolledlist.py" />
-        <option value="$PROJECT_DIR$/sqltest.py" />
         <option value="$PROJECT_DIR$/main.py" />
+        <option value="$USER_HOME$/Dropbox/PP4E/Gui/Tour/demoCheck.py" />
         <option value="$PROJECT_DIR$/librarian.py" />
-        <option value="$PROJECT_DIR$/share_data.py" />
+        <option value="$USER_HOME$/Dropbox/PP4E/Gui/Clock/clock.py" />
+        <option value="$PROJECT_DIR$/sqltest.py" />
         <option value="$PROJECT_DIR$/midlelibrarian.py" />
+        <option value="$PROJECT_DIR$/share_data.py" />
       </list>
     </option>
   </component>
@@ -218,42 +230,6 @@
     </key>
   </component>
   <component name="RunManager" selected="Python.midlelibrarian">
-    <configuration default="false" name="17.16" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/arhiv" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <module name="pylibrary" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/arhiv/17.16.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="MULTIPROCESS" value="false" />
-      <RunnerSettings RunnerId="PythonRunner" />
-      <ConfigurationWrapper RunnerId="PythonRunner" />
-      <method />
-    </configuration>
-    <configuration default="false" name="17.17" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/arhiv" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <module name="pylibrary" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/arhiv/17.17.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="MULTIPROCESS" value="false" />
-      <RunnerSettings RunnerId="PythonRunner" />
-      <ConfigurationWrapper RunnerId="PythonRunner" />
-      <method />
-    </configuration>
     <configuration default="false" name="midlelibrarian" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -308,6 +284,42 @@
       <ConfigurationWrapper RunnerId="PythonRunner" />
       <method />
     </configuration>
+    <configuration default="false" name="clock" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$USER_HOME$/Dropbox/PP4E/Gui/Clock" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <module name="pylibrary" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$USER_HOME$/Dropbox/PP4E/Gui/Clock/clock.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="MULTIPROCESS" value="false" />
+      <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PythonRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="tictactoe" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$USER_HOME$/Dropbox/PP4E/Ai/TicTacToe" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <module name="pylibrary" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$USER_HOME$/Dropbox/PP4E/Ai/TicTacToe/tictactoe.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="MULTIPROCESS" value="false" />
+      <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PythonRunner" />
+      <method />
+    </configuration>
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -331,7 +343,7 @@
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="" />
       <option name="IS_MODULE_SDK" value="false" />
-      <module name="pylibrary" />
+      <module name="" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="" />
       <option name="CLASS_NAME" value="" />
@@ -362,11 +374,11 @@
       <method />
     </configuration>
     <list size="5">
-      <item index="0" class="java.lang.String" itemvalue="Python.17.16" />
-      <item index="1" class="java.lang.String" itemvalue="Python.17.17" />
-      <item index="2" class="java.lang.String" itemvalue="Python.midlelibrarian" />
-      <item index="3" class="java.lang.String" itemvalue="Python.main" />
-      <item index="4" class="java.lang.String" itemvalue="Python.librarian" />
+      <item index="0" class="java.lang.String" itemvalue="Python.midlelibrarian" />
+      <item index="1" class="java.lang.String" itemvalue="Python.main" />
+      <item index="2" class="java.lang.String" itemvalue="Python.librarian" />
+      <item index="3" class="java.lang.String" itemvalue="Python.clock" />
+      <item index="4" class="java.lang.String" itemvalue="Python.tictactoe" />
     </list>
   </component>
   <component name="ShelveChangesManager" show_recycled="false" />
@@ -404,11 +416,11 @@
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.14036418" sideWeight="0.5856164" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.14036418" sideWeight="0.5856164" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2739726" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.41438356" sideWeight="0.9983051" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23287672" sideWeight="0.9983051" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -481,21 +493,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://C:/Python32/Lib/tkinter/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1891" column="9" selection-start="78221" selection-end="78221" vertical-scroll-proportion="0.54375" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/arhiv/sqlit_education_2.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="61" selection-start="623" selection-end="651" vertical-scroll-proportion="0.74375" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/arhiv/sqlite_education.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="22" column="15" selection-start="521" selection-end="521" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/arhiv/17.16.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="22" column="32" selection-start="704" selection-end="704" vertical-scroll-proportion="0.0" />
@@ -516,71 +513,72 @@
         <state line="8" column="25" selection-start="238" selection-end="250" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/Dropbox/PP4E/Gui/Tour/demo-radio-manual.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="0" selection-start="265" selection-end="407" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Dropbox/PP4E/Gui/Tour/demoRadio.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="3" column="63" selection-start="182" selection-end="182" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/Dropbox/PP4E/Gui/Tour/demo-radio-auto.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="0" selection-start="104" selection-end="121" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="4" column="0" selection-start="104" selection-end="121" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Dropbox/PP4E/Gui/Tour/demoCheck.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="22" column="0" selection-start="737" selection-end="737" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Dropbox/PP4E/Gui/Clock/clock.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="226" column="0" selection-start="9863" selection-end="9863" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scrolledlist.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="58" column="16" selection-start="1849" selection-end="1849" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="24" selection-start="102" selection-end="102" vertical-scroll-proportion="7.48">
+        <state line="4" column="24" selection-start="102" selection-end="102" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Dropbox/PP4E/Gui/Tour/demo-radio-manual.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="8" column="0" selection-start="265" selection-end="407" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Dropbox/PP4E/Gui/Tour/demoRadio.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="27" column="29" selection-start="252" selection-end="1031" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Dropbox/PP4E/Ai/TicTacToe/tictactoe.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="18" column="26" selection-start="568" selection-end="568" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/librarian.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="226" column="18" selection-start="7352" selection-end="7352" vertical-scroll-proportion="-5.24">
-          <folding>
-            <element signature="e#46#70#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/midlelibrarian.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="36" column="25" selection-start="1331" selection-end="1331" vertical-scroll-proportion="-8.84">
-          <folding>
-            <element signature="e#46#67#0" expanded="true" />
-          </folding>
+        <state line="361" column="0" selection-start="11748" selection-end="11836" vertical-scroll-proportion="-2.1">
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/share_data.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="23" selection-start="249" selection-end="249" vertical-scroll-proportion="14.96">
-          <folding>
-            <element signature="e#24#63#0" expanded="true" />
-          </folding>
+        <state line="144" column="26" selection-start="4157" selection-end="4157" vertical-scroll-proportion="0.0">
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/scrolledlist.py">
+    <entry file="file://$PROJECT_DIR$/midlelibrarian.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="58" column="16" selection-start="1849" selection-end="1849" vertical-scroll-proportion="0.0">
+        <state line="127" column="16" selection-start="4211" selection-end="4211" vertical-scroll-proportion="-7.84">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/sqltest.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="164" column="71" selection-start="3983" selection-end="3983" vertical-scroll-proportion="0.8927445">
+        <state line="155" column="16" selection-start="3571" selection-end="3571" vertical-scroll-proportion="0.39716312">
           <folding />
         </state>
       </provider>

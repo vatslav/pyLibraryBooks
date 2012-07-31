@@ -13,7 +13,11 @@ from share_data import *
 flags ={'выдать_книги':False,'добавить_книгу':False}
 fieldOfBooksRus = ('ISBN', 'ББК', 'Автор', 'Название', 'Год издания', 'Издательство', 'ключивые слова', 'город' )
 fieldOfBooks = ('ISBN','bbk', 'autors', 'title', 'years', 'publisher', 'keywords', 'city')
-fieldOfBooksstr = 'ISBN,bbk,autors,title,years,publisher,keywords,city'
+fieldOfBookD = {} #создадим словарь на оснве двух предыдущих картежей
+if len(fieldOfBooks)!=len(fieldOfBooksRus):showerror('erroe','erroedict')
+for x in range(len(fieldOfBooks)):
+    fieldOfBookD[ fieldOfBooksRus[x] ] = fieldOfBooks[x]
+
 b1  = '<Button-1>'
 b1w = '<Double-1>'
 b2  = '<Button-2>'
@@ -22,20 +26,39 @@ firstIn = True
 
 
 #маска для поиска, индекс столбца в бд, по которому делаем поиск, сортируем по
-def getBooks(mask=None,index=3,table='books', sortby='title'): #фильтр на книги
-    #print('mask=%s, index=%d, sort=%s' %(mask,index,sortby))
-    #index += 1
+def getBooks(mask=None,index=3,table='books', sortby='title',field={},state={}): #фильтр на книги
+    global fieldOfBooks
     if mask:
         template = re.compile(mask)
+    if not field or not state: #если запрос по всем стодбцам
+        request = 'select ISBN,bbk,autors,title,years,publisher,keywords,city from '+ table + ' ORDER BY low(' +sortby+ ') COLLATE sort' #выводим, с сортировкой без учета регистра по столбцу name
+    else:#оставляем толькоотмеченные столбцы
+        request = 'select '
+        tmp = list(fieldOfBooks)
+        for key,value in field.items():
+            if not state[key]:
+                tmp.remove(value)
 
 
-    request = 'select ISBN,bbk,autors,title,years,publisher,keywords,city from '+ table + ' ORDER BY low(' +sortby+ ') COLLATE sort' #выводим, с сортировкой без учета регистра по столбцу name
-    print(request)
+
+        tmpstr = tuple2str(tmp)
+
+        request = request + tmpstr +' from '+table+' ORDER BY low(' +sortby+ ') COLLATE sort'
+        try:
+            index = tmp.index(sortby)
+        except ValueError:
+
+            print('eRROR===',request)
+            return
+
+
+
     try:
         for row in cur.execute(request):
             if not mask:
                 yield row
             else:
+                print(row)
                 pb = template.search(str(row[index]).lower())
                 if pb:
                     yield row
@@ -47,27 +70,28 @@ def getBooks(mask=None,index=3,table='books', sortby='title'): #фильтр н�
 
 
 def ViewBooks():
-    global flags,issueF,fieldOfBooksRus
-
-    def xx():#вернет название всех полей
-        for x in execsql('PRAGMA table_info("books")'):yield x[1]
-
+    global flags,issueF,fieldOfBooksRus,firstIn
     def handlerPress(event):
         global firstIn
         bookList.clearlist()#index=rb.reportIndex()
-        if firstIn:
+
+
+        if firstIn and event!='служебный поиск':
             firstIn = False
-            tmp = (text.get())
-            tmp = tmp.replace('Найти','')
-            text.set(tmp)
-        txt =text.get()
-        txt = txt.lower()
+            text.set( text.get().replace('Найти','') )
+            #text.set(tmp)
+        txt =text.get().lower()#txt = txt.lower()
         if rb.reportIndex()==4:
             pass
-
-        for x in getBooks(txt,index=rb.reportIndex(),sortby=fieldOfBooks[rb.reportIndex()]):
+        cursort = fieldOfBooksRus[rb.reportIndex()]
+        #print('cursort',cursort)
+        chekLayers.setFlag(cursort)
+        if event=='служебный поиск':
+            txt=''
+        for x in getBooks(txt,index=rb.reportIndex(),sortby=fieldOfBooks[rb.reportIndex()],state=chekLayers.reportDict(),field=fieldOfBookD):
+            x = tuple2str(x)
             bookList.listbox.insert('end',x)
-
+            #print(x,type(x),type(x[0]),type(x[4]))
 
     def nameOfrb():
         for x in fieldOfBooksRus:
@@ -85,32 +109,42 @@ def ViewBooks():
     Button(bottom, text='Ок',command=lambda:handlerPress(None)  ).grid(row=0)
     Button(bottom, text='Отмена',command=lambda:issueF.grid_remove()).grid(row=0,column=1)
     midlle.grid(column=4,row=0)
+    submidle1, submidle2 = Frame(midlle),Frame(midlle)
+    submidle1.grid(row=0)
+    submidle2.grid(row=1)
     bottom.grid(column=4,row=1)
     right.grid(column=5,row=0)
 
-    sortFind = Frame(right)
-    sortFind.grid()
-    var  = IntVar(0)
-    def qq():
-        for x in ['q','w','z']:
-            yield x
 
-    rb = RadioBut(parent=sortFind,opt=nameOfrb(),titile='Сортировать и искать по',default=fieldOfBooksRus[3])
-    print('======',rb.report())
+    rb = RadioBut(parent=right,opt=nameOfrb(),titile='Сортировать и искать по:',default=fieldOfBooksRus[3])
+    #rb['command']=lambda:print('nhfnhf!!')
+
     text =StringVar()
     find = Entry(midlle,textvariable=text)
 
-    #print(rb.report())
-    bookList = ScrolledList(parent=midlle,options=getBooks( ) )
+    chekLayers = chekbutton(parent=submidle1,title='Отображаемые поля:',opt=nameOfrb())
+    def hand():handlerPress('служебный поиск')
+    chekLayers.setComand(hand)
+    titname = []
+    titname = list(fieldOfBooksRus[2:4])
+    titname.append(fieldOfBooksRus[6])
+    for name in titname:
+        chekLayers.setFlag(name)
+    bookList = ScrolledList(parent=submidle2,options=getBooks( ) )
+    handlerPress('чижика собаку, кошку забичку!')#убираем фигурные скобки и деактивизируем первыйfirstIn
 
-
-    bookList.listbox.config(height=25,width=100)
+    bookList.listbox.config(height=25,width=120)
     bookList.grid(column=0,row=0)
     find.grid(row=2,padx=20,ipady=5)
     issueF.grid(column=4,row=0)
     find.focus()
+    def handlerCancel(event):issueF.grid_remove()
+
     root.bind('<KeyPress>',handlerPress)
+    root.bind('<Return>',  handlerPress)
+    root.bind('<Escape>',handlerCancel)
     text.set('Найти')
+    firstIn = True
     #root1.bind('<Return>',handkerEnter)
     #root1.bind('<Escape>',handkerEscape)
     #root.mainloop()
@@ -143,49 +177,11 @@ def testCompair(*args):
             return False
     return True
 
-#крутяцкая функция!:)
-def execsql(request1,*values):
-    if len(values):
-        values = funcGet(*values)
-    try:
-        if not len(values):cur.execute(request1)
-        else:
-            cur.execute(request1,values)
-            for obj in cur:
-                print(obj)
-    except sqlite3.OperationalError as dbLock:
-        showerror('Ошибка', dbLock)
-    else:
-        conn.commit()
-        for line in cur:
-            yield line
 
-def inscsql(request1,*values):
-    if len(values):
-        values = funcGet(*values)
-    try:
-        if not len(values):cur.execute(request1)
-        else:
-            cur.execute(request1,values)
-            for obj in cur:
-                print(obj)
-    except sqlite3.IntegrityError as NoUn:
-        showerror('Ошибка', NoUn)
-        return None
-    except sqlite3.OperationalError as dbLock:
-        showerror('Ошибка', dbLock)
-        return None
 
-    else:
-        conn.commit()
-        return True
 
-def tuple2str(t):
-    tmp = ''
-    for x in t:
-        tmp = tmp + str(x) +','
-    tmp = tmp[0:-1]
-    return tmp
+
+
 #тек. время в секунды
 def time2sec(t):
     return time.mktime(t.timetuple())
@@ -204,7 +200,7 @@ def hideFrames():
 
 def addBook():
     global insertF
-    def OkAct():
+    def OkAct(event=True):
         ts = datetime.datetime.today()
         args = (ISBN,bbk,author,title,years,publisher,keywords,sity,ts)
         #args = (random.randint(0,9999),20,3,4,5,6,7,8,ts)
@@ -234,7 +230,7 @@ def addBook():
     Label(leftFrame, text='ключевые слова').grid(row=5)
     Label(leftFrame, text='город').grid(row=6)
     Label(leftFrame, text='ББК').grid(row=7)
-
+    Label(leftFrame, text='Количество экземпляров').grid(row=7)
 
 
     ISBN = Entry(leftFrame)
@@ -263,6 +259,10 @@ def addBook():
     bottom.grid(row=1,column=4)
     insertF.grid(row=0,column=4)
     ISBN.focus_set()
+    def handcancel(event):insertF.grid_remove()
+    #root.bind('<KeyPress>',handlerPress)
+    root.bind('<Return>',  OkAct)
+    root.bind('<Escape>',handcancel)
 def view():
     for x in getBooks():
         print(x)

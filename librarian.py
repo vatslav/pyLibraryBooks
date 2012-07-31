@@ -330,11 +330,9 @@ def changeUser():#изменить юзеров 1 окно
         Login = Label(leftFrame,text='Изменить, на логин:')
         roleL = Label(rightFrame,text='Новый тип пользователя')
         e1 = Entry(leftFrame)
-        #getSpeciality(),
+
         roleList = ScrolledList(getSpeciality(),parent=rightFrame)
-        #roleList.config(height=4,width=50)
         roleList.listbox.config(height=4,width=20)
-        #roleList.config(height=4,width=20)    
         okB     = Button(root1,text='Ок',command=(lambda: okAct() ))
         cancelB = Button(root1,text='Отмена!!',command=(lambda: root1.destroy() ) )
         title.grid()
@@ -342,8 +340,6 @@ def changeUser():#изменить юзеров 1 окно
         roleL.grid()
         e1.grid(row=2,column=0)
         roleList.grid(row=1)
-        #print(user)
-        #print(specialty)
         ptr=0
         '''
         for spec in specialty:
