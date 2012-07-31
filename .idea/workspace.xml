@@ -25,10 +25,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="midlelibrarian.py" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="midlelibrarian.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/midlelibrarian.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="127" column="16" selection-start="4211" selection-end="4211" vertical-scroll-proportion="-7.84">
+            <state line="127" column="16" selection-start="4211" selection-end="4211" vertical-scroll-proportion="0.5090909">
               <folding />
             </state>
           </provider>
@@ -70,10 +70,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="sqltest.py" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="sqltest.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/sqltest.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="155" column="16" selection-start="3571" selection-end="3571" vertical-scroll-proportion="0.39716312">
+            <state line="158" column="25" selection-start="3690" selection-end="3690" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -562,6 +562,13 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/sqltest.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="158" column="25" selection-start="3690" selection-end="3690" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/share_data.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="144" column="26" selection-start="4157" selection-end="4157" vertical-scroll-proportion="0.0">
@@ -571,14 +578,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/midlelibrarian.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="127" column="16" selection-start="4211" selection-end="4211" vertical-scroll-proportion="-7.84">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sqltest.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="155" column="16" selection-start="3571" selection-end="3571" vertical-scroll-proportion="0.39716312">
+        <state line="127" column="16" selection-start="4211" selection-end="4211" vertical-scroll-proportion="0.5090909">
           <folding />
         </state>
       </provider>
