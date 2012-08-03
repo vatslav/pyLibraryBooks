@@ -9,14 +9,31 @@ from scrolledlist import *
 import sqlite3,re,random,datetime, time
 from hashlib import md5
 from share_data import *
-
+#поиск книг
 flags ={'выдать_книги':False,'добавить_книгу':False}
-fieldOfBooksRus = ('ISBN', 'ББК', 'Автор', 'Название', 'Год издания', 'Издательство', 'ключивые слова', 'город' )
-fieldOfBooks = ('ISBN','bbk', 'autors', 'title', 'years', 'publisher', 'keywords', 'city')
+fieldOfBooksRus = ('ISBN', 'ББК', 'Автор', 'Название', 'Год издания', 'Издательство', 'ключивые слова')
+fieldOfBooks = ('ISBN','bbk', 'autors', 'title', 'years', 'publisher', 'keywords')
 fieldOfBookD = {} #создадим словарь на оснве двух предыдущих картежей
 if len(fieldOfBooks)!=len(fieldOfBooksRus):showerror('erroe','erroedict')
 for x in range(len(fieldOfBooks)):
     fieldOfBookD[ fieldOfBooksRus[x] ] = fieldOfBooks[x]
+#поиск читателя
+rTableR = ('порядковый номер','Номер Абонемента', 'ФИО',"адресс","телефон","время создания") #имя для пользователя
+rTableE = ('id',              'NomberAbonement' ,'fio', 'adress','telephone','create_time') #имя поля в бд
+rTableS = [0,                   1,                  1,      1,      1,          0] #флаг, отвечающий за общедоступна ли это поле
+rTableA = [0,1,1,1,0,0] #автивно ли это поле
+rTableD = {}
+readerT = {}
+for x in range(len(rTableR)):
+    rTableD[rTableR[x]]=list((rTableE[x],rTableA[x],rTableS[x],))
+for x in range(len(rTableR))[1:-1]:
+    readerT[rTableR[x]]=list((rTableE[x],rTableA[x]))
+readermy = []
+for x in range(len(rTableR))[1:-1]:
+    readermy.append(list((rTableR[x],rTableE[x],rTableA[x])))
+
+#имя для пользователя /\ в бд, для всех, поумолчанию тру?
+#print(list(rTableD.items()))
 
 b1  = '<Button-1>'
 b1w = '<Double-1>'
@@ -38,21 +55,14 @@ def getBooks(mask=None,index=3,table='books', sortby='title',field={},state={}):
         for key,value in field.items():
             if not state[key]:
                 tmp.remove(value)
-
-
-
         tmpstr = tuple2str(tmp)
-
-        request = request + tmpstr +' from '+table+' ORDER BY low(' +sortby+ ') COLLATE sort'
+        request = request + tmpstr + ' from '+table+' ORDER BY low(' +sortby+ ') COLLATE sort'
         try:
             index = tmp.index(sortby)
-        except ValueError:
+        except ValueError as er:
 
-            print('eRROR===',request)
+            print('eRROR===',request, er)
             return
-
-
-
     try:
         for row in cur.execute(request):
             if not mask:
@@ -66,7 +76,42 @@ def getBooks(mask=None,index=3,table='books', sortby='title',field={},state={}):
         showerror('Ошибка', dbLock)
     else:
         conn.commit()
+#index=3,table='books', sortby='title',field={},state={}
+def sqlmy(mask=None,req=None,r=[],table='', sortby=''): #фильтр на книги
+    global fieldOfBooks
+    if mask:
+        template = re.compile(mask)
+    if req!=None:
+        request=req
+    else:
+        if not table or not sortby:
+            showerror('Ошибка',"системная ошибка")
+            return
+        nfields = [x[1] for x in r]
+        nfieldstr = tuple2str(nfields)
+        sortby = nfields[sortby]
 
+        #select имена полей from имя_таблицы Order By low сортировать по полю
+        request = 'select ' + nfieldstr + ' from ' + table + ' ORDER BY low(' +sortby+ ') COLLATE sort'
+        print(request)
+        try:
+            index = nfields.index(sortby)
+        except ValueError as er:
+            showerror('Ошибка',er)
+            return
+    try:
+        for row in cur.execute(request):
+            if not mask:
+                yield row
+            else:
+                print(row)
+                pb = template.search(str(row[index]).lower())
+                if pb:
+                    yield row
+    except sqlite3.OperationalError as dbLock:
+        showerror('Ошибка', dbLock)
+    else:
+        conn.commit()
 
 
 def ViewBooks():
@@ -145,9 +190,6 @@ def ViewBooks():
     root.bind('<Escape>',handlerCancel)
     text.set('Найти')
     firstIn = True
-    #root1.bind('<Return>',handkerEnter)
-    #root1.bind('<Escape>',handkerEscape)
-    #root.mainloop()
 
 #если среди аргументов есть Entry, замещает его на его содержимое, т.е. на entry.get() -генератор
 def genGet(*values):
@@ -195,8 +237,49 @@ def handlerBrackets(s):
 
 def hideFrames():
     global issueF,getF,insertF,delF, catalogingF, classificationF
-    for frame in [issueF,getF,insertF,delF, catalogingF, classificationF]:
+    for frame in [issueF,getF,insertF,delF, catalogingF, classificationF,addreaderF,delreaderF]:
         frame.grid_remove()
+
+def viewreader():
+    #имя для пользователя /\ в бд, для всех, поумолчанию тру?
+    hideFrames()
+    if windows['прием_книг'][1]:
+        windows['прием_книг'][0].grid()
+        return
+    windows['прием_книг'][1] = True
+    def handeofind(event=True):
+        curelem = rb.reportIndex()
+        chb.setFlagByIndex(curelem)
+        txt = findtext.get()
+        print(txt)
+        userlist.clearlist()
+        for x in sqlmy(mask=txt,r=readermy,table='readers',sortby=rb.reportIndex()):
+            x = tuple2str(x)
+            userlist.listbox.insert('end',x)
+    centr,bottom,top,right = Frame(getF), Frame(getF), Frame(getF), Frame(getF)
+    #userGen = (x for x in sqlmy(mask=txt,r=readermy,table='readers',sortby=rb.reportIndex()))
+    userlist = ScrolledList(parent=centr)
+    userlist.listbox.config(height=25,width=100)
+    #number = StringVar() #поле ввода имени
+    findtext = StringVar()
+    Entry(bottom, textvariable=findtext).grid(row=0,column=0)
+    Button(bottom,text='Ok', command=lambda:handeofind() ).grid(row=1)
+    Button(bottom,text='Отмена', command=lambda:getF.grid_remove()).grid(row=1,column=1)
+    #Entry(bottom, textvariable=number).grid(row=1)
+    options = (x[0] for x in readermy)
+    print(options)
+    print(list(options))
+    chb = chekbutton(parent=top,title='отображать поля:',opt=(x[0] for x in readermy),)
+    rb = RadioBut(parent=right, titile='Сортировать и искать по:',opt=(x[0] for x in readermy),default=list((x[0] for x in readermy))[1])
+    chb.setFlagByIndex(0)
+    chb.setFlagByIndex(1)
+
+    centr.grid(row=1,column=4)
+    bottom.grid(row=2,column=4)
+    top.grid(row=0,column=4)
+    right.grid(row=1,column=5)
+    getF.grid(column=4,row=0)
+    handeofind()
 
 def addBook():
     global insertF
@@ -274,15 +357,44 @@ def iterColumnBooks():
     for x in i:
         print(x)
 
+def addreader():
+    hideFrames()
+    if windows['добавить читателя'][1]:
+        addreaderF.grid()
+        return
+    windows['добавить читателя'][1] = True
+    addreaderF.grid(column=4,row=0,sticky='w')
+    centr,bottom  = Frame(addreaderF),Frame(addreaderF)
+    opt=[x[0] for x in readermy]
+    txt = makeform(centr,fields=opt,w1=17,w2=30)
+
+    Button(bottom,text="Ок",command=lambda:handl()).grid(column=0,row=1)
+    Button(bottom,text="Отмена",command=lambda:addreaderF.grid_remove() ).grid(column=1,row=1)
+
+    centr.grid(sticky='w')
+    bottom.grid(sticky='w')
+    def handl(event=True):
+        for x in txt:
+            if not x.get():
+                showerror('Ошибка',"Не все поля заполнены")
+                return
+        val = [x.get() for x in txt]
+        s=datetime.datetime.today()
+        val.append(s)
+        print(val)
+        if inscsql('INSERT INTO readers (NomberAbonement ,fio, adress,telephone,create_time) values(?,?,?,?,?)',val):
+            showinfo('Успех',"Читатель успешно добвален")
+
+
+def delreader():
+    pass
 root=Tk()
 root.title('Администрирование БД')
 master = Frame(root)
 accountingF = Frame(master)
 getNdelF = Frame(master)
 classifF = Frame(master)
-
-#view()
-iterColumnBooks()
+readerAdmin = Frame(master)
 
 #Dataset с полями CID, NAME, TYPE, NOTNULL, DFLT_VALUE, PK
 state = ''
@@ -290,9 +402,13 @@ buttons = []
 
 
 issueB            = Button (accountingF,text='Выдача книг чиателю', command=lambda: ViewBooks() );
-getB              = Button (accountingF,text='Прием книг у читателя',command=lambda:ViewBooks())
+getB              = Button (accountingF,text='Прием книг у читателя',command=lambda:viewreader() )
 insertB           = Button (getNdelF,text='Добавление новой книги в фонд библиотеки',command=lambda:addBook() )
 delB              = Button (getNdelF,text='Удаление книги')
+
+addReader         = Button (readerAdmin,text='Добавление читателя',command=lambda:addreader()).grid(padx=20,ipady=5)
+delReader         = Button (readerAdmin,text='Удаление читателя',command=lambda:delreader()).grid(padx=20,ipady=5)
+
 cataloging        = Button (classifF,text='Каталогизация' )
 classificationB   = Button (classifF,text='Классификация книг')
 #фремы подфункций
@@ -302,10 +418,11 @@ insertF           = Frame(root)
 delF              = Frame(root)
 catalogingF       = Frame(root)
 classificationF   = Frame(root)
-frames = (issueF,getF,insertF,delF, catalogingF, classificationF )
-
-
-
+addreaderF        = Frame(root)
+delreaderF        = Frame(root)
+frames = (issueF,getF,addreaderF,delreaderF, insertF,delF, catalogingF, classificationF )
+windows ={'добавить читателя':[addreaderF,0],'удалить читателя':[delreaderF,0], 'выдача_книг':[issueF,0],'прием_книг':[getF,0],'добавить_книгу':[insertF,0],"удаление_книг":[delF,0],"каталогизация":[catalogingF,0],"класссификация":[classificationF,0]}
+print(windows)
 issueB.grid(padx=20,ipady=5)
 getB.grid(padx=20,ipady=5)
 insertB.grid(padx=20,ipady=5)
@@ -315,8 +432,9 @@ classificationB.grid(padx=20,ipady=5)
 
 master.grid()
 accountingF.grid(padx=20,ipady=5)
-getNdelF.grid(padx=20,ipady=5,row=1)
-classifF.grid(padx=20,ipady=5,row=2)
+getNdelF.grid(padx=20,ipady=5,row=2)
+readerAdmin.grid(padx=20,ipady=5,row=1)
+classifF.grid(padx=20,ipady=5,row=3)
 
 
 root.mainloop()

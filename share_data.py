@@ -39,10 +39,18 @@ def funcGet(*values):
     return tuple(tmp)
 
 def inscsql(request1,*values):
-    if len(values):
-        values = funcGet(*values)
+    trace=False
+
+    #if not isinstance(values,tuple):
+        #values = funcGet(*values)
+    if len(values)==1:
+        values = values[0]
     try:
+        print(request1,*values)
+        print(values)
         if not len(values):cur.execute(request1)
+        if trace:
+            print(request1,values)
         else:
             cur.execute(request1,values)
             for obj in cur:
@@ -119,6 +127,48 @@ class RadioBut(Frame):
     def report(self):
         return self.var.get()
 
+class EnryV(Frame):
+    def __init__(self, parent=None,opt=[1,2,3],r=[], **options):
+        Frame.__init__(self, parent, **options)
+        self.pack()
+        #self.tools()
+        self.system = []
+        print(opt)
+        for x in opt:
+            nframe = Frame(self)
+            var = StringVar()
+            Entry(nframe).pack(side=RIGHT)
+            Label(nframe,text=x[0]).pack(side=LEFT)
+            self.system.append((var,x[0]))
+            var.set(x[1])
+            nframe.pack()
+    def getState(self):
+        return self.system
+    def getOnlyStateEntry(self):
+        return [x[0] for x in self.system]
+    def getOnlyStateEntryGenerator(self):
+        yield (x[0] for x in self.system)
+    def getStateGenerator(self):
+        yield [x[0] for x in self.system]
+
+def makeform(root, fields,w1=15,w2=None):
+    entries = []
+    var = StringVar()
+    for field in fields:
+        #field=field[0]
+        var = StringVar()
+        row = Frame(root)                           # make a new row
+        lab = Label(row, width=w1, text=field)       # add label, entry
+        ent = Entry(row,textvariable=var)
+        if w2!=None:
+            ent.config(width=w2)
+        row.pack(side=TOP, fill=X)                  # pack row on top
+        lab.pack(side=LEFT,expand=YES,)
+        ent.pack(side=RIGHT, expand=YES, fill=X)    # grow horizontal
+        entries.append(var)
+    return entries
+
+
 class chekbutton(Frame):
     def __init__(self, parent=None, title=None, opt=[1,2,3], **options):
         Frame.__init__(self, parent, **options)
@@ -129,6 +179,8 @@ class chekbutton(Frame):
         self.vars = []
         self.sd={}
         self.allrb={}
+        self.nn = {}
+        ptr = 0
         for key in opt:
             var = IntVar()
             var.set(0)
@@ -140,6 +192,8 @@ class chekbutton(Frame):
             self.vars.append(var)
             self.sd[key]=var
             self.allrb[key]=s
+            self.nn[ptr]=var
+            ptr += 1
     def gettext(self):
         pass
         #for x in self.ss:
@@ -147,6 +201,9 @@ class chekbutton(Frame):
 
     def setFlag(self,key,value=True):
         self.sd[key].set(value)
+
+    def setFlagByIndex(self,index,value=True):
+        self.nn[index].set(value)
 
     def setComand(self,com):
         for name, rb in self.allrb.items():
