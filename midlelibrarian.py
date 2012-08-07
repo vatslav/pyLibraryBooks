@@ -9,6 +9,7 @@ from scrolledlist import *
 import sqlite3,re,random,datetime, time
 from hashlib import md5
 from share_data import *
+from copy import deepcopy
 #поиск книг
 flags ={'выдать_книги':False,'добавить_книгу':False}
 fieldOfBooksRus = ('ISBN', 'ББК', 'Автор', 'Название', 'Год издания', 'Издательство', 'ключивые слова')
@@ -48,47 +49,53 @@ def getBooks(mask=None,index=3,table='books', sortby='title',field={},state={}):
     if mask:
         template = re.compile(mask)
     if not field or not state: #если запрос по всем стодбцам
-        request = 'select ISBN,bbk,autors,title,years,publisher,keywords,city from '+ table + ' ORDER BY low(' +sortby+ ') COLLATE sort' #выводим, с сортировкой без учета регистра по столбцу name
+        request = 'select ISBN,bbk,autors,title,years,publisher,keywords,city from ' + table + ' ORDER BY low(' +sortby+ ') COLLATE sort' #выводим, с сортировкой без учета регистра по столбцу name
     else:#оставляем толькоотмеченные столбцы
         request = 'select '
         tmp = list(fieldOfBooks)
+        print(tmp)
         for key,value in field.items():
             if not state[key]:
                 tmp.remove(value)
+        tmp.insert(0,'ISBN') #полюому будет ISBN
         tmpstr = tuple2str(tmp)
+        print(tmpstr)
         request = request + tmpstr + ' from '+table+' ORDER BY low(' +sortby+ ') COLLATE sort'
         try:
             index = tmp.index(sortby)
         except ValueError as er:
-
-            print('eRROR===',request, er)
+            showerror('Ошибка', er)
             return
     try:
         for row in cur.execute(request):
             if not mask:
                 yield row
             else:
-                print(row)
+                #print(row)
                 pb = template.search(str(row[index]).lower())
                 if pb:
-                    yield row
+                    yield row[0],row[1:]
     except sqlite3.OperationalError as dbLock:
         showerror('Ошибка', dbLock)
     else:
         conn.commit()
 #index=3,table='books', sortby='title',field={},state={}
-def sqlmy(mask=None,req=None,r=[],table='', sortby=''): #фильтр на книги
+def sqlmy(mask=None,req=None,r=[],table='', sortby='',shadow=''): #фильтр на книги
     global fieldOfBooks
     if mask:
         template = re.compile(mask)
     if req!=None:
         request=req
     else:
-        if not table or not sortby:
+        if table=='' or sortby=='':
             showerror('Ошибка',"системная ошибка")
+            print(table, 'table')
+            print(sortby ,' sortby')
             return
-        nfields = [x[1] for x in r]
+        nfields = r
         nfieldstr = tuple2str(nfields)
+        if shadow:
+            nfieldstr = shadow + ',' + nfieldstr
         sortby = nfields[sortby]
 
         #select имена полей from имя_таблицы Order By low сортировать по полю
@@ -104,7 +111,7 @@ def sqlmy(mask=None,req=None,r=[],table='', sortby=''): #фильтр на кн�
             if not mask:
                 yield row
             else:
-                print(row)
+
                 pb = template.search(str(row[index]).lower())
                 if pb:
                     yield row
@@ -133,16 +140,97 @@ def ViewBooks():
         chekLayers.setFlag(cursort)
         if event=='служебный поиск':
             txt=''
+
+        for x in range(len(storageisbn)):storageisbn.pop()
         for x in getBooks(txt,index=rb.reportIndex(),sortby=fieldOfBooks[rb.reportIndex()],state=chekLayers.reportDict(),field=fieldOfBookD):
+            isbn = x[0]
+            x=x[1:]
             x = tuple2str(x)
             bookList.listbox.insert('end',x)
+            storageisbn.append(isbn)
+
             #print(x,type(x),type(x[0]),type(x[4]))
 
     def nameOfrb():
         for x in fieldOfBooksRus:
             yield x
+#==== begin                                         ================================
+    def iss(isbns,books):
+        def inserbd():
+            if not userlist.getCur():return
+            #inscsql('INSERT INTO ')
 
 
+        tf = Toplevel(getF)
+        def handeofind(event=True):
+            curelem = rb.reportIndex()
+            chb.setFlagByIndex(curelem)
+            txt = findtext.get()
+            print(txt)
+            userlist.clearlist()
+            print(chb.getSetup())
+
+
+            for x in sqlmy(mask=txt,r=chb.getSetup(),table='readers',sortby=rb.reportIndex(),shadow='NomberAbonement'):
+                x = tuple2str(x)
+                userlist.listbox.insert('end',x)
+
+        centr,bottom,top,right = Frame(tf), Frame(tf), Frame(tf), Frame(tf)
+        #userGen = (x for x in sqlmy(mask=txt,r=readermy,table='readers',sortby=r////b.reportIndex()))
+        userlist = ScrolledList(parent=centr)
+        userlist.listbox.config(height=25,width=120)
+        #number = StringVar() #поле ввода имени
+        findtext = StringVar()
+        fent = Entry(bottom, textvariable=findtext)
+        fent.grid(row=0,column=0)
+        Button(bottom,text='Ok', command=lambda:inserbd() ).grid(row=1)
+        Button(bottom,text='Отмена', command=lambda:tf.destroy()).grid(row=1,column=1)
+        Button(bottom,text='Поиск', command=lambda:handeofind()).grid(row=1,column=2)
+        subbotton = Frame(bottom)
+        subbotton.grid(row=0,column=0,padx=25,pady=25)
+        #Entry(bottom, textvariable=number).grid(row=1)
+        options = (x[0] for x in readermy)
+        print(options)
+        print(list(options))
+        #optchb = ( (x[0],x[1]) for x in readermy)
+
+        chb = modernchekbutton(parent=top,title='отображать поля:',opt=( (x[0],x[1]) for x in readermy))
+        rb = RadioBut(parent=right, titile='Сортировать и искать по:',opt=(x[0] for x in readermy),default=list((x[0] for x in readermy))[0])
+        chb.setFlagByIndex(0)
+        chb.setFlagByIndex(1)
+        print(chb.getSetup())
+        centr.grid(row=1,column=4)
+        bottom.grid(row=2,column=4)
+        top.grid(row=0,column=4)
+        right.grid(row=1,column=5)
+        handeofind()
+        maxlenttitile = len(books[0])
+        for x in books: # не работает т.к.список книг и юзеров в одном фрейме и размер по Х задается макс из двух
+            if len(x)>maxlenttitile:
+                maxlenttitile=len(x)
+        selectbooks = ScrolledList(parent=centr)#книшки которые уже выбрали
+        selectbooks.listbox.config(height=len(isbns),width=maxlenttitile)
+        selectbooks.clearlist()
+        #print('isbn=',isbns)
+        for x in books:
+            selectbooks.listbox.insert('end',x)
+
+        #root.focus()
+        handlecancel = lambda Event:tf.destroy()
+        root.bind('<KeyPress>',handeofind)
+        root.bind('<Return>',  handeofind)
+        root.bind('<Escape>',handlecancel)
+
+
+
+
+        fent.focus_set()
+        #getF.grab_set()
+        #getF.wait_window()
+
+
+
+    #===================    end==========
     hideFrames();
     if flags['выдать_книги']==True:
         issueF.grid()
@@ -150,8 +238,14 @@ def ViewBooks():
     flags['выдать_книги'] = True
     issueF = Frame(root)
     midlle, bottom, right = Frame(issueF), Frame(issueF), Frame(issueF)
-
-    Button(bottom, text='Ок',command=lambda:handlerPress(None)  ).grid(row=0)
+    def handlOk():
+        index, books = bookList.getCurMulti()
+        tmp = []  #текущие выбранные тут тепер хранитяться, после ок
+        for x in index:
+            tmp.append(storageisbn[x-1]) #-1выведена эмпирически
+        books = list(books)
+        iss(tmp,books) #отправляеем индексы и названия
+    Button(bottom, text='Ок',command=lambda:handlOk() ).grid(row=0)
     Button(bottom, text='Отмена',command=lambda:issueF.grid_remove()).grid(row=0,column=1)
     midlle.grid(column=4,row=0)
     submidle1, submidle2 = Frame(midlle),Frame(midlle)
@@ -160,6 +254,7 @@ def ViewBooks():
     bottom.grid(column=4,row=1)
     right.grid(column=5,row=0)
 
+    storageisbn = []
 
     rb = RadioBut(parent=right,opt=nameOfrb(),titile='Сортировать и искать по:',default=fieldOfBooksRus[3])
     #rb['command']=lambda:print('nhfnhf!!')
@@ -178,18 +273,23 @@ def ViewBooks():
     bookList = ScrolledList(parent=submidle2,options=getBooks( ) )
     handlerPress('чижика собаку, кошку забичку!')#убираем фигурные скобки и деактивизируем первыйfirstIn
 
-    bookList.listbox.config(height=25,width=120)
+    bookList.listbox.config(height=25,width=80,font=('courier'),selectmode=MULTIPLE)#EXTENDED    MULTIPLE SINGLE
+    bookList.listbox.ff=lambda Event:print('tada')
+    #bookList.listbox.bind('<Double-1>', bookList.listbox.ff)
     bookList.grid(column=0,row=0)
-    find.grid(row=2,padx=20,ipady=5)
+    find.grid(column=0,row=2,padx=20,ipady=5)
+    Button(bottom,text='Найти',command=lambda:handlerPress(1)).grid(column=2,row=0,padx=20,pady=5)
     issueF.grid(column=4,row=0)
     find.focus()
     def handlerCancel(event):issueF.grid_remove()
 
-    root.bind('<KeyPress>',handlerPress)
+    #root.bind('<KeyPress>',handlerPress)
     root.bind('<Return>',  handlerPress)
     root.bind('<Escape>',handlerCancel)
     text.set('Найти')
     firstIn = True
+    def rederforbook(row):
+        pass
 
 #если среди аргументов есть Entry, замещает его на его содержимое, т.е. на entry.get() -генератор
 def genGet(*values):
@@ -245,34 +345,45 @@ def viewreader():
     hideFrames()
     if windows['прием_книг'][1]:
         windows['прием_книг'][0].grid()
+        handlecancel = lambda event:getF.grid_remove()
+
+        #root.bind('<KeyPress>',handeofind)
+        #root.bind('<Return>',  handeofind)
+        #root.bind('<Escape>',handlecancel)
         return
     windows['прием_книг'][1] = True
+
+
+
     def handeofind(event=True):
         curelem = rb.reportIndex()
         chb.setFlagByIndex(curelem)
         txt = findtext.get()
         print(txt)
         userlist.clearlist()
-        for x in sqlmy(mask=txt,r=readermy,table='readers',sortby=rb.reportIndex()):
+        for x in sqlmy(mask=txt,r=chb.getSetup(),table='readers',sortby=rb.reportIndex()):
             x = tuple2str(x)
             userlist.listbox.insert('end',x)
     centr,bottom,top,right = Frame(getF), Frame(getF), Frame(getF), Frame(getF)
-    #userGen = (x for x in sqlmy(mask=txt,r=readermy,table='readers',sortby=rb.reportIndex()))
+    #userGen = (x for x in sqlmy(mask=txt,r=readermy,table='readers',sortby=r////b.reportIndex()))
     userlist = ScrolledList(parent=centr)
-    userlist.listbox.config(height=25,width=100)
+    userlist.listbox.config(height=25,width=120)
     #number = StringVar() #поле ввода имени
     findtext = StringVar()
-    Entry(bottom, textvariable=findtext).grid(row=0,column=0)
+    fent = Entry(bottom, textvariable=findtext)
+    fent.grid(row=0,column=0)
     Button(bottom,text='Ok', command=lambda:handeofind() ).grid(row=1)
     Button(bottom,text='Отмена', command=lambda:getF.grid_remove()).grid(row=1,column=1)
     #Entry(bottom, textvariable=number).grid(row=1)
     options = (x[0] for x in readermy)
     print(options)
     print(list(options))
-    chb = chekbutton(parent=top,title='отображать поля:',opt=(x[0] for x in readermy),)
-    rb = RadioBut(parent=right, titile='Сортировать и искать по:',opt=(x[0] for x in readermy),default=list((x[0] for x in readermy))[1])
+    chb = modernchekbutton(parent=top,title='отображать поля:',opt=( (x[0],x[1]) for x in readermy) )
+    rb = RadioBut(parent=right, titile='Сортировать и искать по:',opt=(x[0] for x in readermy),default=list((x[0] for x in readermy))[0])
     chb.setFlagByIndex(0)
     chb.setFlagByIndex(1)
+    hand = lambda Event:handeofind
+    chb.setComand(hand)
 
     centr.grid(row=1,column=4)
     bottom.grid(row=2,column=4)
@@ -280,18 +391,40 @@ def viewreader():
     right.grid(row=1,column=5)
     getF.grid(column=4,row=0)
     handeofind()
+    handlecancel = lambda event:getF.grid_remove()
+
+    #root.focus()
+
+    root.bind('<KeyPress>',handeofind)
+    root.bind('<Return>',  handeofind)
+    root.bind('<Escape>',handlecancel)
+
 
 def addBook():
     global insertF
     def OkAct(event=True):
         ts = datetime.datetime.today()
-        args = (ISBN,bbk,author,title,years,publisher,keywords,sity,ts)
-        #args = (random.randint(0,9999),20,3,4,5,6,7,8,ts)
+        args = (ISBN.get(),bbk.get(),author.get(),title.get(),years.get(),publisher.get(),keywords.get(),sity.get(),ts)
+
+        args = (random.randint(0,9999),20,3,4,5,6,7,8,ts)
         if not testCompair(args):return
         request = 'INSERT INTO books (ISBN,autors,title,years,publisher,keywords,city,bbk,createTime) values(?,?,?,?,?,?,?,?,?)'
         print()
         if inscsql(request,args):
             showinfo('Успех',"Книги добавлена")
+
+        tmp = list(execsql('select (id) from books where ISBN=?',(ISBN.get(),)) )
+        if not len(tmp):
+            showerror("ошибка","ошибка при работе с ISBN")
+        print('tmp=',tmp)
+
+        #tmp = sqlmy(req='select id from books where ISBN=',(ISBN,) )
+        print(tmp,type(tmp))
+
+        if inscsql('INSERT INTO exemplars (id) values(?)',tmp[0] ):
+            #здесь ссылка на другую дб и тут проблема, как ее реализовать
+            showinfo('Успех',"Экземпляры добавлена")
+
     hideFrames()
     if flags['добавить_книгу']==True:
         insertF.grid()
@@ -436,5 +569,5 @@ getNdelF.grid(padx=20,ipady=5,row=2)
 readerAdmin.grid(padx=20,ipady=5,row=1)
 classifF.grid(padx=20,ipady=5,row=3)
 
-
+#ViewBooks()
 root.mainloop()

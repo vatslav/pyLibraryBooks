@@ -73,8 +73,6 @@ def execsql(request1,*values):
         if not len(values):cur.execute(request1)
         else:
             cur.execute(request1,values)
-            for obj in cur:
-                print(obj)
     except sqlite3.OperationalError as dbLock:
         showerror('Ошибка', dbLock)
     else:
@@ -289,3 +287,69 @@ def viewreader():
     userList.listbox.config(height=15,width=30)
     root.grab_set()
     root.wait_window()
+
+
+class modernchekbutton(Frame):
+    def __init__(self, parent=None, title=None, opt=[1,2,3], **options):
+        Frame.__init__(self, parent, **options)
+        self.pack()
+        self.tools()
+        if title:
+            Label(self, text=title).pack()
+        self.vars = []
+        self.sd={}
+        self.allrb={}
+        self.nn = {}
+        self.corent = {}
+        ptr = 0
+        for key in opt:
+            var = IntVar()
+            var.set(0)
+            s = Checkbutton(self,
+                text=key[0],
+                variable=var,
+            command=lambda:print('TATATAT!') )
+            s.pack(side=LEFT) #command=demos[key]
+            self.vars.append(var)
+            self.sd[key[0]]=var
+            self.allrb[key[0]]=s
+            self.nn[ptr]=var
+            self.corent[key[1]]=var
+            ptr += 1
+
+    def getSetup(self):
+        tmp = [x for x,y in self.corent.items() if y.get()>0]
+        return tmp
+
+
+    def setFlag(self,key,value=True):
+        self.sd[key].set(value)
+
+    def setFlagByIndex(self,index,value=True):
+        self.nn[index].set(value)
+
+    def setComand(self,com):
+        for name, rb in self.allrb.items():
+            rb['command']=lambda:com()
+        #def setFlagsOne(self,key,value=True):
+
+
+
+    def report(self):
+        for x,y in self.sd.items():
+            yield x, y.get()
+
+    def reportDict(self):
+        d={}
+        for key,value in self.sd.items():
+            d[key]=value.get()
+        return d
+
+    def act(self,key):
+        print(key)
+        self.report()
+    def tools(self):
+        frm = Frame(self)
+        frm.pack(side=RIGHT)
+        #Button(frm, text='State', command=self.report).pack(fill=X)
+        #Quitter(frm).pack(fill=X)

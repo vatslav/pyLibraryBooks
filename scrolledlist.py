@@ -1,5 +1,6 @@
 import sqlite3
 from tkinter import *
+from tkinter.messagebox import showerror
 def sortTextInDb(s1,s2):
     s1 = s1.lower()
     s2 = s2.lower()
@@ -26,17 +27,43 @@ class ScrolledList(Frame):
         self.pack(expand=YES, fill=BOTH)                   # make me expandable
         self.makeWidgets(options)
         self.reBind = newBind
+        actions='multi'
 
     def setHeight(height):
         pass
-
+    isinstance
     def handleList(self, event):
         #if self.reBind == None:
 
-        index = self.listbox.curselection()                # on list double-click
-        label = self.listbox.get(index)                    # fetch selection text
-        self.runCommand(label)                             # and call action here
+        #index = self.listbox.curselection()                # on list double-click
+        #label = self.listbox.get(index)                    # fetch selection text
+        #print('label=',label, 'index=',index)
+        #self.runCommand(label)                             # and call action here
         # or get(ACTIVE)
+
+
+        selections = self.listbox.curselection()
+        select = [int(x)+1 for x in selections] #индексы
+        selecttxt = [self.listbox.get(x) for x in select] #содержание индексов (может быть совсепм маленьким
+        print(select)
+        print(selecttxt)
+        return select
+        #self.runCommand(select)
+        #else:
+            #selecttxt = (self.listbox.get(x) for x in list(select) )
+            #select1 = (int(x)+1 for x in selections)
+            #return selecttxt,select1
+
+
+    def getCurMulti(self):
+        selections = self.listbox.curselection()
+        select = [int(x)+1 for x in selections] #индексы
+        selecttxt = [self.listbox.get(x) for x in select]
+        return  select,selecttxt
+   #def getCurMulti(self):
+
+
+
     def getCur(self):
         index = self.listbox.curselection()                # on list double-click
         try:

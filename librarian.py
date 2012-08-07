@@ -289,11 +289,6 @@ def changeUser():#изменить юзеров 1 окно
             return
         def okAct(Event=None):
             ptr=0
-            for spec in specialty:
-                if spec==user[2]:
-                    roleList.activate(ptr)
-                    print(ptr, spec,'===tada')
-                ptr += 1
             if e1.get()=="":
                 showerror("Ошибка","Заполните имя учетной записи")
                 return
