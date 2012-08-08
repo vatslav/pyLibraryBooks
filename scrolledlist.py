@@ -1,5 +1,6 @@
 import sqlite3
 from tkinter import *
+from tkinter.ttk import *
 from tkinter.messagebox import showerror
 def sortTextInDb(s1,s2):
     s1 = s1.lower()

@@ -3,13 +3,16 @@
 __author__ = 'Вячеслав'
 from tkinter import *
 from tkinter.messagebox import *
-from tkinter.ttk import *
+
 from sys import exit as ext
 from scrolledlist import *
 import sqlite3,re,random,datetime, time
 from hashlib import md5
 from share_data import *
 from copy import deepcopy
+
+from tkinter.ttk import *
+
 #поиск книг
 flags ={'выдать_книги':False,'добавить_книгу':False}
 fieldOfBooksRus = ('ISBN', 'ББК', 'Автор', 'Название', 'Год издания', 'Издательство', 'ключивые слова')
@@ -406,25 +409,37 @@ def addBook():
         ts = datetime.datetime.today()
         args = (ISBN.get(),bbk.get(),author.get(),title.get(),years.get(),publisher.get(),keywords.get(),sity.get(),ts)
 
-        args = (random.randint(0,9999),20,3,4,5,6,7,8,ts)
+        #args = (random.randint(0,9999),20,3,4,5,6,7,8,ts)
         if not testCompair(args):return
         request = 'INSERT INTO books (ISBN,autors,title,years,publisher,keywords,city,bbk,createTime) values(?,?,?,?,?,?,?,?,?)'
         print()
         if inscsql(request,args):
             showinfo('Успех',"Книги добавлена")
-
-        tmp = list(execsql('select (id) from books where ISBN=?',(ISBN.get(),)) )
-        if not len(tmp):
-            showerror("ошибка","ошибка при работе с ISBN")
-        print('tmp=',tmp)
-
-        #tmp = sqlmy(req='select id from books where ISBN=',(ISBN,) )
-        print(tmp,type(tmp))
-
-        if inscsql('INSERT INTO exemplars (id) values(?)',tmp[0] ):
-            #здесь ссылка на другую дб и тут проблема, как ее реализовать
-            showinfo('Успех',"Экземпляры добавлена")
-
+        ts = datetime.datetime.today()
+        #у меня не вышло два следующих запроса объединить в один, лист используется для преообразования генератора
+        #получается список в котором кортеж в котором число, поэтому так:
+        ptr = exemplars.get()
+        try:
+            ptr = int(ptr)
+        except ValueError as ve:
+            showerror('Error','Количество экзмепляров должно быть натуральным числом')
+            return
+        if ptr<1:
+            showerror('Error','Количество экзмепляров должно быть натуральным числом')
+            return
+        if ptr>1000:
+            showwarning('Опсно!','Вы не ошиблись нулем?')
+        tmp = list(execsql('SELECT (id) FROM books WHERE ISBN=?',(ISBN.get(),) ) )[0][0]
+        for x in range(ptr):
+            inscsql('INSERT INTO exemplars (classbook,create_time)  values(?,?)',(tmp,ts) )
+        if ptr > 0:
+            msg = 'Успех',"Экземпляров добавлено: " + str(ptr)
+            showinfo('Успех', msg)
+            #print(list(inscsql))
+        #s=sqlmy('SELECT * FROM EXEMPLARS')
+        s = cur.execute('SELECT * FROM EXEMPLARS')
+        for x in s:
+            print(x)
     hideFrames()
     if flags['добавить_книгу']==True:
         insertF.grid()
@@ -446,7 +461,7 @@ def addBook():
     Label(leftFrame, text='ключевые слова').grid(row=5)
     Label(leftFrame, text='город').grid(row=6)
     Label(leftFrame, text='ББК').grid(row=7)
-    Label(leftFrame, text='Количество экземпляров').grid(row=7)
+    Label(leftFrame, text='Количество экземпляров').grid(row=8)
 
 
     ISBN = Entry(leftFrame)
@@ -457,6 +472,7 @@ def addBook():
     publisher = Entry(leftFrame)
     keywords  = Entry(leftFrame)
     sity      = Entry(leftFrame)
+    exemplars = Entry(leftFrame)
 
     ISBN.grid(row=0, column=1,padx=5,pady=5,columnspan=2,ipadx=5)
     bbk.grid(row=1, column=1,padx=5,pady=5,columnspan=5,ipadx=5)
@@ -466,7 +482,7 @@ def addBook():
     publisher.grid(row=5, column=1,padx=5,pady=5,columnspan=5,ipadx=5)
     keywords.grid(row=6, column=1,padx=5,pady=5,columnspan=5,ipadx=5)
     sity.grid(row=7, column=1,padx=5,pady=5,columnspan=5,ipadx=5)
-
+    exemplars.grid(row=8, column=1,padx=5,pady=5,columnspan=5,ipadx=5)
 
     button1.grid(row=3, column=0,columnspan=1,ipadx=5,ipady=5,rowspan=10)
     button2.grid(row=3, column=2,columnspan=2,ipadx=5,ipady=5)
@@ -524,6 +540,7 @@ def delreader():
 root=Tk()
 root.title('Администрирование БД')
 master = Frame(root)
+#frame = Frame(content, borderwidth=5, relief="sunken",
 accountingF = Frame(master)
 getNdelF = Frame(master)
 classifF = Frame(master)

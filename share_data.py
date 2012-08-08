@@ -1,7 +1,8 @@
 __author__ = 'Вячеслав'
 import sqlite3,re,random,datetime, time
-from tkinter.ttk import *
+
 from tkinter.messagebox import showerror
+from tkinter.ttk import *
 def sortTextInDb(s1,s2):
     s1=str(s1);  s2 = str(s2)
     s1 = s1.lower()
