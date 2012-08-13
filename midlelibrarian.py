@@ -22,7 +22,7 @@ if len(fieldOfBooks)!=len(fieldOfBooksRus):showerror('erroe','erroedict')
 for x in range(len(fieldOfBooks)):
     fieldOfBookD[ fieldOfBooksRus[x] ] = fieldOfBooks[x]
 #поиск читателя
-rTableR = ('порядковый номер','Номер Абонемента', 'ФИО',"адресс","телефон","время создания") #имя для пользователя
+rTableR = ('порядковый номер','Номер Абонемента', 'ФИО',"адрес","телефон","время создания") #имя для пользователя
 rTableE = ('id',              'NomberAbonement' ,'fio', 'adress','telephone','create_time') #имя поля в бд
 rTableS = [0,                   1,                  1,      1,      1,          0] #флаг, отвечающий за общедоступна ли это поле
 rTableA = [0,1,1,1,0,0] #автивно ли это поле
@@ -83,7 +83,7 @@ def getBooks(mask=None,index=3,table='books', sortby='title',field={},state={}):
     else:
         conn.commit()
 #index=3,table='books', sortby='title',field={},state={}
-def sqlmy(mask=None,req=None,r=[],table='', sortby='',shadow=''): #фильтр на книги
+def sqlmy(mask=None,req=None,r=[],table='', sortby='',shadow='',all=''): #фильтр на книги
     global fieldOfBooks
     if mask:
         template = re.compile(mask)
@@ -92,20 +92,28 @@ def sqlmy(mask=None,req=None,r=[],table='', sortby='',shadow=''): #фильтр 
     else:
         if table=='' or sortby=='':
             showerror('Ошибка',"системная ошибка")
-            print(table, 'table')
-            print(sortby ,' sortby')
+            #print(table, 'table')
+            #print(sortby ,' sortby')
             return
         nfields = r
         nfieldstr = tuple2str(nfields)
         if shadow:
             nfieldstr = shadow + ',' + nfieldstr
-        sortby = nfields[sortby]
+        print('nfields= %s, sortby=%s' % (nfields, sortby) )
+        try:
+            sortby = nfields[sortby]
+        except ValueError: #на случай если sortby задан словом, не спасет от IndexError
+            pass
+        except TypeError: #на случай если sortby задан словом, не спасет от IndexError
+            pass
 
         #select имена полей from имя_таблицы Order By low сортировать по полю
         request = 'select ' + nfieldstr + ' from ' + table + ' ORDER BY low(' +sortby+ ') COLLATE sort'
         print(request)
         try:
             index = nfields.index(sortby)
+            if shadow:
+                index += 1
         except ValueError as er:
             showerror('Ошибка',er)
             return
@@ -124,7 +132,7 @@ def sqlmy(mask=None,req=None,r=[],table='', sortby='',shadow=''): #фильтр 
         conn.commit()
 
 
-def ViewBooks():#выдача книг читателю
+def ViewBooks():#выдача книг читателю #!dslfxf rybu rybub
     global flags,issueF,fieldOfBooksRus,firstIn
     def handlerPress(event):
         global firstIn
@@ -172,11 +180,12 @@ def ViewBooks():#выдача книг читателю
             print(txt)
             userlist.clearlist()
             print(chb.getSetup())
+            print('rb.reportIndex=%d, chb.getSetup()=%s, all=%s' % (rb.reportIndex(),chb.getSetup(), rTableE[1:5]) )
+            print('curelem=%s' % curelem)
 
-
-            for x in sqlmy(mask=txt,r=chb.getSetup(),table='readers',sortby=rb.reportIndex(),shadow='NomberAbonement'):
-                x = tuple2str(x)
-                userlist.listbox.insert('end',x)
+            for x in sqlmy(mask=txt,r=chb.getSetup(),table='readers',sortby=rTableE[1:5][curelem],shadow='NomberAbonement'):
+                y = tuple2str(x[1:])
+                userlist.listbox.insert('end',y)
 
         centr,bottom,top,right = Frame(tf), Frame(tf), Frame(tf), Frame(tf)
         #userGen = (x for x in sqlmy(mask=txt,r=readermy,table='readers',sortby=r////b.reportIndex()))
@@ -187,7 +196,11 @@ def ViewBooks():#выдача книг читателю
         fent = Entry(bottom, textvariable=findtext)
         fent.grid(row=0,column=0)
         Button(bottom,text='Ok', command=lambda:inserbd() ).grid(row=1)
-        Button(bottom,text='Отмена', command=lambda:tf.destroy()).grid(row=1,column=1)
+        def handlecancel():
+            root.bind('<KeyPress>',no)
+            tf.destroy()
+
+        Button(bottom,text='Отмена', command=lambda:handlecancel()).grid(row=1,column=1)
         Button(bottom,text='Поиск', command=lambda:handeofind()).grid(row=1,column=2)
         subbotton = Frame(bottom)
         subbotton.grid(row=0,column=0,padx=25,pady=25)
@@ -198,6 +211,8 @@ def ViewBooks():#выдача книг читателю
         #optchb = ( (x[0],x[1]) for x in readermy)
 
         chb = modernchekbutton(parent=top,title='отображать поля:',opt=( (x[0],x[1]) for x in readermy))
+        handle = lambda:handeofind(event='servseach')
+        chb.setComand(handle)
         rb = RadioBut(parent=right, titile='Сортировать и искать по:',opt=(x[0] for x in readermy),default=list((x[0] for x in readermy))[0])
         chb.setFlagByIndex(0)
         chb.setFlagByIndex(1)
@@ -215,11 +230,23 @@ def ViewBooks():#выдача книг читателю
         selectbooks.listbox.config(height=len(isbns),width=maxlenttitile)
         selectbooks.clearlist()
         #print('isbn=',isbns)
-        for x in books:
-            selectbooks.listbox.insert('end',x)
+        for x in range(len(books)):
+            print(books)
+            print(isbns)
+            #print('===tatatat==============')
+            #id_book = execsql('SELECT (id) FROM books WHERE ISBN=?',(isbns[x]),)[0][0]
+            #print(list(id_book))
+            count = execsql('SELECT COUNT (classbook) FROM exemplars WHERE classbook=?', (isbns[x],))
+            count = list(count)[0][0]
+            print(count)
+            #for xx in count:
+               # print(count)
+            row = str(books[x]) + ' {'+str(count)+'}'
+            selectbooks.listbox.insert('end',row)
+            #print('TATATDDA======================')
 
         #root.focus()
-        handlecancel = lambda Event:tf.destroy()
+        #handlecancel = lambda Event:tf.destroy()
         root.bind('<KeyPress>',handeofind)
         root.bind('<Return>',  handeofind)
         root.bind('<Escape>',handlecancel)
@@ -247,6 +274,9 @@ def ViewBooks():#выдача книг читателю
         for x in index:
             tmp.append(storageisbn[x-1]) #-1выведена эмпирически
         books = list(books)
+        print(tmp)
+        print(books)
+        print('^^^')
         iss(tmp,books) #отправляеем индексы и названия
     Button(bottom, text='Ок',command=lambda:handlOk() ).grid(row=0)
     Button(bottom, text='Отмена',command=lambda:issueF.grid_remove()).grid(row=0,column=1)
@@ -260,6 +290,8 @@ def ViewBooks():#выдача книг читателю
     storageisbn = []
 
     rb = RadioBut(parent=right,opt=nameOfrb(),titile='Сортировать и искать по:',default=fieldOfBooksRus[3])
+    Label(right,text='Количество экземпляров: ').pack()
+    Label(right,text='   20').pack()
     #rb['command']=lambda:print('nhfnhf!!')
 
     text =StringVar()
@@ -274,11 +306,19 @@ def ViewBooks():#выдача книг читателю
     for name in titname:
         chekLayers.setFlag(name)
     bookList = ScrolledList(parent=submidle2,options=getBooks( ) )
+    #sbx = Scrollbar( submidle2, orient=HORIZONTAL, command=bookList.listbox.xview)
+    #bookList.listbox.configure(xscrollcommand=sbx.set)
+    #sbx.pack(side=BOTTOM, fill=X)
+    #sbx.grid()
+    sbx = Scrollbar( submidle1, orient=HORIZONTAL, command=bookList.listbox.xview)
+    bookList.listbox.configure(xscrollcommand=sbx.set)
+    #sbx.pack(side=BOTTOM, fill=X)
     handlerPress('чижика собаку, кошку забичку!')#убираем фигурные скобки и деактивизируем первыйfirstIn
 
     bookList.listbox.config(height=25,width=80,font=('courier'),selectmode=MULTIPLE)#EXTENDED    MULTIPLE SINGLE
     bookList.listbox.ff=lambda Event:print('tada')
     bookList.setAct(handlOk)
+
     #bookList.listbox.bind('<Double-1>', bookList.listbox.ff)
     bookList.grid(column=0,row=0)
     find.grid(column=0,row=2,padx=20,ipady=5)
@@ -319,7 +359,7 @@ def testCompair(*args):
     if len(args) == 1:args=args[0] #помогает от звездочки:)
     for obj in args:
         if not obj:
-            showerror('Ошибка',"Пожалуйста, заполните все поля ввода данных")
+            #showerror('Ошибка',"Пожалуйста, заполните все поля ввода данных")
             return False
     return True
 
@@ -371,8 +411,11 @@ def viewreader():#!dslfxf
     centr,bottom,top,right = Frame(getF), Frame(getF), Frame(getF), Frame(getF)
     #userGen = (x for x in sqlmy(mask=txt,r=readermy,table='readers',sortby=r////b.reportIndex()))
     userlist = ScrolledList(parent=centr)
-    userlist.listbox.config(height=25,width=120)
+    userlist.listbox.config(height=25,width=70,font=('courier'))
     userlist.setAct(handeofind)
+    sbx = Scrollbar( centr, orient=HORIZONTAL, command=userlist.listbox.xview)
+    userlist.listbox.configure(xscrollcommand=sbx.set)
+    sbx.pack(side=BOTTOM, fill=X)
     #number = StringVar() #поле ввода имени
     findtext = StringVar()
     fent = Entry(bottom, textvariable=findtext)
@@ -410,9 +453,17 @@ def addBook():
     def OkAct(event=True):
         ts = datetime.datetime.today()
         args = (ISBN.get(),bbk.get(),author.get(),title.get(),years.get(),publisher.get(),keywords.get(),sity.get(),ts)
-
+        if ISBN.get()=='':
+            showerror('Ошибка',"Поле  ISBN должно быть заполнено обезательно!")
+            return
         #args = (random.randint(0,9999),20,3,4,5,6,7,8,ts)
-        if not testCompair(args):return
+        if not testCompair(args):
+            if askyesnocancel('Внимание',"Не все поля заполнены,\n"
+                                         "вы можете заполнить их позже, продолжить?"):
+                pass
+            else:
+                return
+
         ptr = spinval.get()
         try:
             ptr = int(ptr)
@@ -433,7 +484,7 @@ def addBook():
         request = 'INSERT INTO books (ISBN,autors,title,years,publisher,keywords,city,bbk,createTime) values(?,?,?,?,?,?,?,?,?)'
         print()
         if inscsql(request,args):
-            showinfo('Успех',"Книги добавлена")
+            showinfo('Успех',"Книга добавлена")
         else:
             return
         ts = datetime.datetime.today()
@@ -441,7 +492,8 @@ def addBook():
         #получается список в котором кортеж в котором число, поэтому так:
 
 
-        tmp = list(execsql('SELECT (id) FROM books WHERE ISBN=?',(ISBN.get(),) ) )[0][0]
+        #tmp = list(execsql('SELECT (id) FROM books WHERE ISBN=?',(ISBN.get(),) ) )[0][0]
+        tmp = ISBN.get()
         for x in range(ptr):
             if not inscsql('INSERT INTO exemplars (classbook,create_time) VALUES (?,?) ',(tmp,ts) ):
                 return #None вернется когда в inscql возникнет ошибка, и потоу здесь только return

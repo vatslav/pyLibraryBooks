@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/midlelibrarian.py" line="348" />
-    <bookmark url="file://$PROJECT_DIR$/midlelibrarian.py" line="165" />
-    <bookmark url="file://$PROJECT_DIR$/midlelibrarian.py" line="274" />
+    <bookmark url="file://$PROJECT_DIR$/midlelibrarian.py" line="388" />
+    <bookmark url="file://$PROJECT_DIR$/midlelibrarian.py" line="173" />
+    <bookmark url="file://$PROJECT_DIR$/midlelibrarian.py" line="306" />
+    <bookmark url="file://$PROJECT_DIR$/midlelibrarian.py" />
+    <bookmark url="file://$PROJECT_DIR$/midlelibrarian.py" line="313" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="59840cc4-c9eb-426a-ba10-ea9c0dd2b4dd" name="Default" comment="" />
@@ -34,7 +36,7 @@
       <file leaf-file-name="midlelibrarian.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/midlelibrarian.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="353" column="26" selection-start="12648" selection-end="12648" vertical-scroll-proportion="0.046413504">
+            <state line="114" column="22" selection-start="4383" selection-end="4383" vertical-scroll-proportion="0.44554454">
               <folding>
                 <element signature="e#46#67#0" expanded="true" />
               </folding>
@@ -45,7 +47,7 @@
       <file leaf-file-name="share_data.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/share_data.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="48" column="8" selection-start="1169" selection-end="1169" vertical-scroll-proportion="0.32">
+            <state line="326" column="54" selection-start="9678" selection-end="9678" vertical-scroll-proportion="-10.76">
               <folding />
             </state>
           </provider>
@@ -54,7 +56,7 @@
       <file leaf-file-name="scrolledlist.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/scrolledlist.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="120" column="20" selection-start="4135" selection-end="4135" vertical-scroll-proportion="-14.04">
+            <state line="56" column="0" selection-start="1897" selection-end="1897" vertical-scroll-proportion="-15.32">
               <folding>
                 <element signature="e#0#14#0" expanded="true" />
               </folding>
@@ -136,20 +138,20 @@
         <option value="$PROJECT_DIR$/sqltest.py" />
         <option value="$USER_HOME$/Dropbox/PP4E/Gui/Tour/entry2.py" />
         <option value="$PROJECT_DIR$/main.py" />
-        <option value="$PROJECT_DIR$/share_data.py" />
         <option value="$PROJECT_DIR$/arhiv/ttk.py" />
         <option value="$PROJECT_DIR$/arhiv/ttk2.py" />
-        <option value="$PROJECT_DIR$/scrolledlist.py" />
-        <option value="$PROJECT_DIR$/midlelibrarian.py" />
         <option value="$PROJECT_DIR$/librarian.py" />
+        <option value="$PROJECT_DIR$/scrolledlist.py" />
+        <option value="$PROJECT_DIR$/share_data.py" />
+        <option value="$PROJECT_DIR$/midlelibrarian.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="-8" />
     <option name="y" value="-8" />
-    <option name="width" value="1296" />
-    <option name="height" value="1000" />
+    <option name="width" value="1168" />
+    <option name="height" value="840" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -235,7 +237,7 @@
       <recent name="C:\Users\Вячеслав\Documents\GitHub\pyLibraryBooks" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.librarian">
+  <component name="RunManager" selected="Python.midlelibrarian">
     <configuration default="false" name="midlelibrarian" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -415,18 +417,18 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1296" height="1000" extended-state="6" />
+    <frame x="-8" y="-8" width="1168" height="840" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Data Sources" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32928678" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.184765" sideWeight="0.6424452" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.13562387" sideWeight="0.5459689" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2739726" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3575548" sideWeight="0.9983051" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.4540311" sideWeight="0.9983051" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -563,22 +565,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/share_data.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="48" column="8" selection-start="1169" selection-end="1169" vertical-scroll-proportion="0.32">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scrolledlist.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="120" column="20" selection-start="4135" selection-end="4135" vertical-scroll-proportion="-14.04">
-          <folding>
-            <element signature="e#0#14#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/librarian.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="386" column="35" selection-start="12594" selection-end="12594" vertical-scroll-proportion="-9.88">
@@ -586,9 +572,25 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/scrolledlist.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="56" column="0" selection-start="1897" selection-end="1897" vertical-scroll-proportion="-15.32">
+          <folding>
+            <element signature="e#0#14#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/share_data.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="326" column="54" selection-start="9678" selection-end="9678" vertical-scroll-proportion="-10.76">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/midlelibrarian.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="353" column="26" selection-start="12648" selection-end="12648" vertical-scroll-proportion="0.046413504">
+        <state line="114" column="22" selection-start="4383" selection-end="4383" vertical-scroll-proportion="0.44554454">
           <folding>
             <element signature="e#46#67#0" expanded="true" />
           </folding>

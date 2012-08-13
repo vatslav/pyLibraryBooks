@@ -14,13 +14,18 @@ def low(s):
     s = str(s)
     return s.lower()
 try:
-    conn = sqlite3.connect('db6.sqlite')
+    conn = sqlite3.connect('mydb1.sqlite')
     cur = conn.cursor()
     conn.create_collation('sort',sortTextInDb)
     conn.create_function("low", 1, low)
 except:
     showerror('Ошибка', 'Ошибка при рабое с базой данных, возможно ее кто-то уже использует.')
     exit()
+def no(Event=True):
+    pass
+def dest(r1,r2):
+    r1.bind('<KeyPress>',no)
+    r2.destroy()
 
 def tuple2str(t):
     tmp = ''
@@ -301,7 +306,7 @@ class modernchekbutton(Frame):
         self.sd={}
         self.allrb={}
         self.nn = {}
-        self.corent = {}
+        self.corent = []
         ptr = 0
         for key in opt:
             var = IntVar()
@@ -315,11 +320,11 @@ class modernchekbutton(Frame):
             self.sd[key[0]]=var
             self.allrb[key[0]]=s
             self.nn[ptr]=var
-            self.corent[key[1]]=var
+            self.corent.append((key[1],var))
             ptr += 1
 
     def getSetup(self):
-        tmp = [x for x,y in self.corent.items() if y.get()>0]
+        tmp = [x[0] for x in self.corent if x[1].get()>0 ]
         return tmp
 
 

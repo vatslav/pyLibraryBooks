@@ -58,8 +58,15 @@ class ScrolledList(Frame):
 
     def getCurMulti(self):
         selections = self.listbox.curselection()
-        select = [int(x)+1 for x in selections] #индексы
+
+        select = [int(x) for x in selections] #индексы
+        print('\n====------------')
+        print(selections)
+        print(select)
+        print([int(x) for x in selections])
         selecttxt = [self.listbox.get(x) for x in select]
+        print(selecttxt)
+        print('\n====------------')
         return  select,selecttxt
    #def getCurMulti(self):
 
