@@ -32,7 +32,7 @@ class ScrolledList(Frame):
 
     def setHeight(height):
         pass
-    isinstance
+    #isinstance
     def handleList(self, event):
         #if self.reBind == None:
 
@@ -117,6 +117,7 @@ class ScrolledList(Frame):
             self.reBind(selection)
         else:
             print( selection)
-
+    def setAct(self,newF):
+        self.listbox.bind('<Double-1>', newF,)
 
            

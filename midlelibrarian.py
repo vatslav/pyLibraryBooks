@@ -124,7 +124,7 @@ def sqlmy(mask=None,req=None,r=[],table='', sortby='',shadow=''): #фильтр 
         conn.commit()
 
 
-def ViewBooks():
+def ViewBooks():#выдача книг читателю
     global flags,issueF,fieldOfBooksRus,firstIn
     def handlerPress(event):
         global firstIn
@@ -241,7 +241,7 @@ def ViewBooks():
     flags['выдать_книги'] = True
     issueF = Frame(root)
     midlle, bottom, right = Frame(issueF), Frame(issueF), Frame(issueF)
-    def handlOk():
+    def handlOk(Event=True):
         index, books = bookList.getCurMulti()
         tmp = []  #текущие выбранные тут тепер хранитяться, после ок
         for x in index:
@@ -278,6 +278,7 @@ def ViewBooks():
 
     bookList.listbox.config(height=25,width=80,font=('courier'),selectmode=MULTIPLE)#EXTENDED    MULTIPLE SINGLE
     bookList.listbox.ff=lambda Event:print('tada')
+    bookList.setAct(handlOk)
     #bookList.listbox.bind('<Double-1>', bookList.listbox.ff)
     bookList.grid(column=0,row=0)
     find.grid(column=0,row=2,padx=20,ipady=5)
@@ -343,7 +344,7 @@ def hideFrames():
     for frame in [issueF,getF,insertF,delF, catalogingF, classificationF,addreaderF,delreaderF]:
         frame.grid_remove()
 
-def viewreader():
+def viewreader():#!dslfxf
     #имя для пользователя /\ в бд, для всех, поумолчанию тру?
     hideFrames()
     if windows['прием_книг'][1]:
@@ -371,6 +372,7 @@ def viewreader():
     #userGen = (x for x in sqlmy(mask=txt,r=readermy,table='readers',sortby=r////b.reportIndex()))
     userlist = ScrolledList(parent=centr)
     userlist.listbox.config(height=25,width=120)
+    userlist.setAct(handeofind)
     #number = StringVar() #поле ввода имени
     findtext = StringVar()
     fent = Entry(bottom, textvariable=findtext)
@@ -411,29 +413,41 @@ def addBook():
 
         #args = (random.randint(0,9999),20,3,4,5,6,7,8,ts)
         if not testCompair(args):return
-        request = 'INSERT INTO books (ISBN,autors,title,years,publisher,keywords,city,bbk,createTime) values(?,?,?,?,?,?,?,?,?)'
-        print()
-        if inscsql(request,args):
-            showinfo('Успех',"Книги добавлена")
-        ts = datetime.datetime.today()
-        #у меня не вышло два следующих запроса объединить в один, лист используется для преообразования генератора
-        #получается список в котором кортеж в котором число, поэтому так:
-        ptr = exemplars.get()
+        ptr = spinval.get()
         try:
             ptr = int(ptr)
         except ValueError as ve:
             showerror('Error','Количество экзмепляров должно быть натуральным числом')
             return
         if ptr<1:
-            showerror('Error','Количество экзмепляров должно быть натуральным числом')
+            showerror('Error','Количество экзмепляров должно быть больше нуля')
             return
-        if ptr>1000:
-            showwarning('Опсно!','Вы не ошиблись нулем?')
+        if ptr>100:
+            #showwarning('Опсно!','Вы не ошиблись нулем?')
+            msg = 'Количество экземпляров ' + str(ptr) + '\nОперация ввода такого количество экземпляров может занять некоторое время\nВы ввели все верно?'
+            if askyesno('Проверка', msg):
+                pass
+            else:
+                return
+
+        request = 'INSERT INTO books (ISBN,autors,title,years,publisher,keywords,city,bbk,createTime) values(?,?,?,?,?,?,?,?,?)'
+        print()
+        if inscsql(request,args):
+            showinfo('Успех',"Книги добавлена")
+        else:
+            return
+        ts = datetime.datetime.today()
+        #у меня не вышло два следующих запроса объединить в один, лист используется для преообразования генератора
+        #получается список в котором кортеж в котором число, поэтому так:
+
+
         tmp = list(execsql('SELECT (id) FROM books WHERE ISBN=?',(ISBN.get(),) ) )[0][0]
         for x in range(ptr):
-            inscsql('INSERT INTO exemplars (classbook,create_time)  values(?,?)',(tmp,ts) )
+            if not inscsql('INSERT INTO exemplars (classbook,create_time) VALUES (?,?) ',(tmp,ts) ):
+                return #None вернется когда в inscql возникнет ошибка, и потоу здесь только return
+
         if ptr > 0:
-            msg = 'Успех',"Экземпляров добавлено: " + str(ptr)
+            msg = "Экземпляров добавлено: " + str(ptr)
             showinfo('Успех', msg)
             #print(list(inscsql))
         #s=sqlmy('SELECT * FROM EXEMPLARS')
@@ -464,6 +478,7 @@ def addBook():
     Label(leftFrame, text='Количество экземпляров').grid(row=8)
 
 
+
     ISBN = Entry(leftFrame)
     bbk      = Entry(leftFrame)
     author = Entry(leftFrame)
@@ -473,7 +488,8 @@ def addBook():
     keywords  = Entry(leftFrame)
     sity      = Entry(leftFrame)
     exemplars = Entry(leftFrame)
-
+    spinval = StringVar()
+    Spinbox(leftFrame, from_=1.0, to=100.0, textvariable=spinval).grid(row=8,column=1,padx=5,pady=5,columnspan=2,ipadx=5)
     ISBN.grid(row=0, column=1,padx=5,pady=5,columnspan=2,ipadx=5)
     bbk.grid(row=1, column=1,padx=5,pady=5,columnspan=5,ipadx=5)
     author.grid(row=2, column=1,padx=5,pady=5,columnspan=5,ipadx=5)
@@ -482,7 +498,7 @@ def addBook():
     publisher.grid(row=5, column=1,padx=5,pady=5,columnspan=5,ipadx=5)
     keywords.grid(row=6, column=1,padx=5,pady=5,columnspan=5,ipadx=5)
     sity.grid(row=7, column=1,padx=5,pady=5,columnspan=5,ipadx=5)
-    exemplars.grid(row=8, column=1,padx=5,pady=5,columnspan=5,ipadx=5)
+    #exemplars.grid(row=8, column=1,padx=5,pady=5,columnspan=5,ipadx=5)
 
     button1.grid(row=3, column=0,columnspan=1,ipadx=5,ipady=5,rowspan=10)
     button2.grid(row=3, column=2,columnspan=2,ipadx=5,ipady=5)
@@ -505,6 +521,9 @@ def iterColumnBooks():
     ORDER BY name;''')
     for x in i:
         print(x)
+
+def delExemplars():
+    pass
 
 def addreader():
     hideFrames()

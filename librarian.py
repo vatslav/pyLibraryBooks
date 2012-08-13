@@ -373,21 +373,24 @@ def changeUser():#изменить юзеров 1 окно
     def resetPasAct():
         request = 'update users set pass=? where name=?'
         tmp = mkpass()
-
-        hsh = md5()
-        hsh.update( tmp.encode('utf-8') )
-        hashpass = hsh.hexdigest()
-        tmpmsg = 'Пароль сброшен, на ' + tmp
-        #
-        try:
-            cur.execute(request,(hashpass,userList.getCur()[0] ) ) #
-            showinfo('Успех', tmpmsg)
-        except sqlite3.OperationalError as dbLock:
-            showerror('Ошибка', dbLock)
-        except TypeError as te:
-            pass
+        if askyesno('Вы уверены?',"Вы уверены, что хотите сбросить пароль?"):
+            hsh = md5()
+            hsh.update( tmp.encode('utf-8') )
+            hashpass = hsh.hexdigest()
+            tmpmsg = 'Пароль сброшен, на ' + tmp
+            #
+            try:
+                cur.execute(request,(hashpass,userList.getCur()[0] ) ) #
+                showinfo('Успех', tmpmsg)
+            except sqlite3.OperationalError as dbLock:
+                showerror('Ошибка', dbLock)
+            except TypeError as te:
+                pass
+            else:
+                conn.commit()
         else:
-            conn.commit()
+            return
+
 
 
 
