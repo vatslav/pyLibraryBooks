@@ -72,7 +72,9 @@ def inscsql(request1,*values):
         conn.commit()
         return True
 #крутяцкая функция!:)
-def execsql(request1,*values):
+def execsql( request1,*values):
+    #if cr=='':cr=cur
+
     if len(values):
         values = funcGet(*values)
     try:
