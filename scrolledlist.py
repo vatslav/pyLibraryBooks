@@ -97,7 +97,9 @@ class ScrolledList(Frame):
 
     def getIndexCur(self):
         index = self.listbox.curselection()
+        if not len(index):return -1
         return index[0]
+
 
     def setBind(self,object):
         self.listbox.bind('<Double-1>', object)
@@ -126,5 +128,11 @@ class ScrolledList(Frame):
             print( selection)
     def setAct(self,newF):
         self.listbox.bind('<Double-1>', newF,)
+
+    def setActOneClick(self,newF):
+        self.listbox.bind('<Button-1>', newF,)
+
+    def setActExist(self,event, handler):
+        self.listbox.bind(event, handler)    
 
            

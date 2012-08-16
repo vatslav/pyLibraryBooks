@@ -14,10 +14,17 @@ def low(s):
     s = str(s)
     return s.lower()
 try:
-    conn = sqlite3.connect('mydb1.sqlite')
-    cur = conn.cursor()
+    conn = sqlite3.connect('mydb1.sqlite', isolation_level='DEFERRED')
+    cur = conn.cursor() 
     conn.create_collation('sort',sortTextInDb)
     conn.create_function("low", 1, low)
+
+    con2 = sqlite3.connect('mydb1.sqlite', isolation_level='DEFERRED')
+    cur2 = conn.cursor()
+    con2.create_collation('sort',sortTextInDb)
+    con2.create_function("low", 1, low)
+
+
 except:
     showerror('Ошибка', 'Ошибка при рабое с базой данных, возможно ее кто-то уже использует.')
     exit()
@@ -52,8 +59,6 @@ def inscsql(request1,*values):
     if len(values)==1:
         values = values[0]
     try:
-        print(request1,*values)
-        print(values)
         if not len(values):cur.execute(request1)
         if trace:
             print(request1,values)
@@ -71,6 +76,33 @@ def inscsql(request1,*values):
     else:
         conn.commit()
         return True
+def inscsql2(request1,*values):
+    trace=False
+
+    #if not isinstance(values,tuple):
+        #values = funcGet(*values)
+    if len(values)==1:
+        values = values[0]
+    try:
+        if not len(values):cur.execute(request1)
+        if trace:
+            print(request1,values)
+        else:
+            cur2.execute(request1,values)
+            for obj in cur2:
+                print(obj)
+    except sqlite3.IntegrityError as NoUn:
+        showerror('Ошибка', NoUn)
+        return None
+    except sqlite3.OperationalError as dbLock:
+        showerror('Ошибка', dbLock)
+        return None
+
+    else:
+        con2.commit()
+        return True
+
+
 #крутяцкая функция!:)
 def execsql( request1,*values):
     #if cr=='':cr=cur
@@ -85,6 +117,22 @@ def execsql( request1,*values):
         showerror('Ошибка', dbLock)
     else:
         conn.commit()
+        for line in cur:
+            yield line
+
+def execsql2( request1,*values):
+    #if cr=='':cr=cur
+
+    if len(values):
+        values = funcGet(*values)
+    try:
+        if not len(values):cur.execute(request1)
+        else:
+            cur2.execute(request1,values)
+    except sqlite3.OperationalError as dbLock:
+        showerror('Ошибка', dbLock)
+    else:
+        con2.commit()
         for line in cur:
             yield line
 
@@ -104,12 +152,15 @@ class RadioBut(Frame):
         self.var = StringVar()
         self.cursize = 0
         self.index = {}
+        self.scelet = []
 
         for key in opt:
-            Radiobutton(self, text=key,
+            rb = Radiobutton(self, text=key,
                 command=self.onPress,
                 variable=self.var,
-                value=key).pack(anchor=NW)
+                value=key)
+            rb.pack(anchor=NW)
+            self.scelet.append(rb)
             self.index[key]=self.cursize
             self.cursize += 1
         if not default:default=key
@@ -309,26 +360,30 @@ class modernchekbutton(Frame):
         self.allrb={}
         self.nn = {}
         self.corent = []
+        self.scelet = []
+
         ptr = 0
         for key in opt:
             var = IntVar()
             var.set(0)
             s = Checkbutton(self,
                 text=key[0],
-                variable=var,
-            command=lambda:print('TATATAT!') )
+                variable=var) #,command=print('TATATAT!' )''' 
             s.pack(side=LEFT) #command=demos[key]
             self.vars.append(var)
             self.sd[key[0]]=var
             self.allrb[key[0]]=s
             self.nn[ptr]=var
             self.corent.append((key[1],var))
+            self.scelet.append(s)
             ptr += 1
 
     def getSetup(self):
         tmp = [x[0] for x in self.corent if x[1].get()>0 ]
         return tmp
-
+    def setAct(self,handler):
+        for x in self.scelet:
+            x['command']=handler
 
     def setFlag(self,key,value=True):
         self.sd[key].set(value)
@@ -338,7 +393,7 @@ class modernchekbutton(Frame):
 
     def setComand(self,com):
         for name, rb in self.allrb.items():
-            rb['command']=lambda:com()
+            rb['command']=com
         #def setFlagsOne(self,key,value=True):
 
 

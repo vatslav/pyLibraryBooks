@@ -83,7 +83,7 @@ def getBooks(mask=None,index=3,table='books', sortby='title',field={},state={}):
     else:
         conn.commit()
 #index=3,table='books', sortby='title',field={},state={}
-def sqlmy(mask=None,req=None,r=[],table='', sortby='',shadow='',j=''): #фильтр на книги
+def sqlmy(mask=None,req=None,r=[],table='', sortby='',shadow='',j='',rq=False): #фильтр на книги
     global fieldOfBooks
     if mask:
         template = re.compile(mask)
@@ -110,7 +110,7 @@ def sqlmy(mask=None,req=None,r=[],table='', sortby='',shadow='',j=''): #филь
         #select имена полей from имя_таблицы Order By low сортировать по полю
         request = 'select ' + nfieldstr + ' from ' + table + ' ORDER BY low(' +sortby+ ') COLLATE sort'
         request = request + ' ' + j
-        print(request)
+        
         try:
             index = nfields.index(sortby)
             if shadow:
@@ -118,19 +118,21 @@ def sqlmy(mask=None,req=None,r=[],table='', sortby='',shadow='',j=''): #филь
         except ValueError as er:
             showerror('Ошибка',er)
             return
-    try:
-        for row in cur.execute(request):
-            if not mask:
-                yield row
-            else:
-
-                pb = template.search(str(row[index]).lower())
-                if pb:
-                    yield row
-    except sqlite3.OperationalError as dbLock:
-        showerror('Ошибка', dbLock)
+    if rq:yield request #просто вернуть запрос который получился в результате
     else:
-        conn.commit()
+        try:
+            for row in cur.execute(request):
+                if not mask:
+                    yield row
+                else:
+
+                    pb = template.search(str(row[index]).lower())
+                    if pb:
+                        yield row
+        except sqlite3.OperationalError as dbLock:
+            showerror('Ошибка', dbLock)
+        else:
+            conn.commit()
 
 
 def ViewBooks():#выдача книг читателю #!dslfxf rybu rybub
@@ -168,7 +170,7 @@ def ViewBooks():#выдача книг читателю #!dslfxf rybu rybub
 
            # continue
             x = tuple2str(x)
-
+            
             bookList.listbox.insert('end',x)
             storageisbn.append(isbn)
 
@@ -222,12 +224,30 @@ def ViewBooks():#выдача книг читателю #!dslfxf rybu rybub
                 if not inscsql(request,(True,td,tr,idbook,idcurreader)):
                     return
             showinfo('Успех','Книги добавлены')
-            handlecancel()
-
+            #handlecancel() ##!==
+            
             #print('SELECT id FROM readers WHERE NomberAbonement='+na)
             #aa=2
-
+        ptr = 0
             #inscsql(request,())
+        def handleDCUL(any,ptr=ptr):
+            #@ind = userlist.getIndexCur()
+            if userlist.getIndexCur()==-1:
+                numberbooks.set('не определено %s' % ptr) 
+                ptr += 1
+                return
+            ind = gna[int(userlist.getIndexCur() )]
+            ex = execsql('SELECT COUNT(active) FROM getting JOIN readers WHERE idreader IN ( SELECT readers.id where readers.NomberAbonement="%s")' % ind)
+                          #SELECT COUNT(g.idre) FROM getting as g WHERE idreader IN (SELECT r.id FROM readers AS r WHERE NomberAbonement='m-9')
+            print('gna=%s' % gna)
+            print('index = %s' % str(userlist.getIndexCur() ) )
+            #userlist.getCur()
+            numberbooks.set(list(ex)[0][0] ) #NA cur user
+            for x in ex:
+                print(x,'ex==')
+
+
+
 
         def handlecancel():
             root.bind('<KeyPress>',no)
@@ -238,44 +258,53 @@ def ViewBooks():#выдача книг читателю #!dslfxf rybu rybub
             curelem = rb.reportIndex()
             chb.setFlagByIndex(curelem)
             txt = findtext.get()
-            print(txt)
             userlist.clearlist()
-            print(chb.getSetup())
-            print('rb.reportIndex=%d, chb.getSetup()=%s, all=%s' % (rb.reportIndex(),chb.getSetup(), rTableE[1:5]) )
-            print('curelem=%s' % curelem)
-
-            j1 = 'JOIN getting '
-            for x in sqlmy(j='',mask=txt,r=chb.getSetup(),table='readers',sortby=rTableE[1:5][curelem],shadow='NomberAbonement'):
+            #print('rb.reportIndex=%d, chb.getSetup()=%s, all=%s' % (rb.reportIndex(),chb.getSetup(), rTableE[1:5]) )
+            #print('curelem=%s' % curelem)
+            req1 = sqlmy(mask=txt,r=chb.getSetup(),table='readers',sortby=rTableE[1:5][curelem],shadow='NomberAbonement',rq=True)
+            req1 = list(req1)
+            print('GOOD REQWEST!=%s'%req1)
+            #j1 = 'JOIN getting '
+            rows = [] #строки которые потом будут добавлены
+            auxcount = [] # то что допишем в конец строки
+            for x in sqlmy(mask=txt,r=chb.getSetup(),table='readers',sortby=rTableE[1:5][curelem],shadow='NomberAbonement'):
                 y = tuple2str(x[1:]) #сама строка
                 gna.append(x[0]) #скрытый id
                 req = 'SELECT COUNT(active) FROM getting where (id="%s" and active=1)' % x[0]
-                #print(req)
-                ngetbooks = execsql(req)
-                t1 =  execsql(req)
-                #print('----')
-                #ngetbooks = list(ngetbooks)
-                #for y in ngetbooks:
-                #    print('ngetbooks=%s' % y)
-                #y=y+' уже взято: %s' %ngetbooks
+                ngetbooks = execsql2(req)
+                t1 =  execsql2(req)
+                #print("THIS IS?? =%s" % list(ngetbooks
+                #userlist.listbox.insert('end',y) #печатаем строку в листбокс
+                rows.append(y)
 
-                userlist.listbox.insert('end',y) #печатаем строку в листбокс
-            for x in t1:
-                print(x,'===xt1')
+            for x in gna:
+                msg = 'SELECT COUNT(active) FROM getting JOIN readers WHERE idreader IN ( SELECT readers.id where readers.NomberAbonement="%s")' % x
+                auxcount.append(str(list(execsql( msg) )[0][0] ) )
+
+            ngetbooks = execsql(req)
+            for x in range(len(rows)):
+                #t = userlist.listbox.get(x)
+                #if not len(t):break
+                
+                #userlist.listbox.delete(x)
+                userlist.listbox.insert('end',rows[x] + ' В наличии:' + auxcount[x])
+            #for x in t1:
+            #    print(x,'===xt1')
         centr,bottom,top,right = Frame(tf), Frame(tf), Frame(tf), Frame(tf)
-        #userGen = (x for x in sqlmy(mask=txt,r=readermy,table='readers',sortby=r////b.reportIndex()))
+        #sdfsdf
         userlist = ScrolledList(parent=centr)
         userlist.listbox.config(height=25,width=120)
         def handleDCinuserlist():
             try:
-                print('ЕСТЬ ДАБЛЬКЛИУК!')
+                
                 ind = userlist.getIndexCur()
             except IndexError:
                 return
             print(ind)
             userlist.listbox.delete(ind)
-            # handlecancel handleDCinuserlist
-        #userlist.setAct(handlecancel)
 
+        userlist.setActOneClick(handleDCUL)
+        userlist.setAct(handleDCUL)
         findtext = StringVar()
         timeget  = StringVar()
         fent = Entry(bottom, textvariable=findtext)
@@ -296,8 +325,7 @@ def ViewBooks():#выдача книг читателю #!dslfxf rybu rybub
         subbotton.grid(row=0,column=0,padx=25,pady=25)
         #Entry(bottom, textvariable=number).grid(row=1)
         options = (x[0] for x in readermy)
-        print(options)
-        print(list(options))
+
         #optchb = ( (x[0],x[1]) for x in readermy)
 
         chb = modernchekbutton(parent=top,title='отображать поля:',opt=( (x[0],x[1]) for x in readermy))
@@ -306,7 +334,11 @@ def ViewBooks():#выдача книг читателю #!dslfxf rybu rybub
         rb = RadioBut(parent=right, titile='Сортировать и искать по:',opt=(x[0] for x in readermy),default=list((x[0] for x in readermy))[0])
         chb.setFlagByIndex(0)
         chb.setFlagByIndex(1)
-        print(chb.getSetup())
+        subright = Frame(right)
+        subright.pack()
+        Label(subright,text="Количество книг у данного пользователя").grid(row=0,column=0)
+        numberbooks = StringVar()
+        Label(subright,textvariable=numberbooks).grid(row=1,column=0)
         centr.grid(row=1,column=4)
         bottom.grid(row=2,column=4)
         top.grid(row=0,column=4)
@@ -339,9 +371,8 @@ def ViewBooks():#выдача книг читателю #!dslfxf rybu rybub
 
         def handleDCinuserlist(td):
             try:
-                print('ЕСТЬ ДАБЛЬКЛИУК!')
                 ind = int(selectbooks.getIndexCur())
-                print(ind)
+                
                 verifybooks.pop(ind)
                 #isbns=list(isbns)
                 isbns.pop(ind)
@@ -389,9 +420,7 @@ def ViewBooks():#выдача книг читателю #!dslfxf rybu rybub
         for x in index:
             tmp.append(storageisbn[x-1]) #-1выведена эмпирически
         books = list(books)
-        print(tmp)
-        print(books)
-        print('^^^')
+
         iss(tmp,books) #отправляеем индексы и названия
     Button(bottom, text='Ок',command=lambda:handlOk() ).grid(row=0)
     Button(bottom, text='Отмена',command=lambda:issueF.grid_remove()).grid(row=0,column=1)
@@ -431,7 +460,6 @@ def ViewBooks():#выдача книг читателю #!dslfxf rybu rybub
     handlerPress('чижика собаку, кошку забичку!')#убираем фигурные скобки и деактивизируем первыйfirstIn
 
     bookList.listbox.config(height=25,width=65,font=('courier'),selectmode=MULTIPLE)#EXTENDED    MULTIPLE SINGLE
-    bookList.listbox.ff=lambda Event:print('tada')
     bookList.setAct(handlOk)
 
     #bookList.listbox.bind('<Double-1>', bookList.listbox.ff)
@@ -460,7 +488,6 @@ def genGet(*values):
 #если среди аргументов есть Entry, замещает его на его содержимое, т.е. на entry.get() -возвращает картеж, в том же порядкке
 def funcGet(*values):
     tmp=[]
-    #print(values,type(values),len(values))
     for obj in values[0]:
         if str(type(obj)) == "<class 'tkinter.Entry'>":
             tmp.append(obj.get())
@@ -518,16 +545,16 @@ def viewreader():#!dslfxf
         curelem = rb.reportIndex()
         chb.setFlagByIndex(curelem)
         txt = findtext.get()
-        print(txt)
-        userlist.clearlist()
-        for x in sqlmy(mask=txt,r=chb.getSetup(),table='readers',sortby=rb.reportIndex()):
+        userlist.clearlist()#важно сортировать по динамическому элементу
+        for x in sqlmy(mask=txt,r=chb.getSetup(),table='readers',sortby=rTableE[1:5][curelem]):
             x = tuple2str(x)
             userlist.listbox.insert('end',x)
     centr,bottom,top,right = Frame(getF), Frame(getF), Frame(getF), Frame(getF)
     #userGen = (x for x in sqlmy(mask=txt,r=readermy,table='readers',sortby=r////b.reportIndex()))
     userlist = ScrolledList(parent=centr)
     userlist.listbox.config(height=25,width=70,font=('courier'))
-    userlist.setAct(handeofind)
+
+    #userlist.setAct(handeofind)
     sbx = Scrollbar( centr, orient=HORIZONTAL, command=userlist.listbox.xview)
     userlist.listbox.configure(xscrollcommand=sbx.set)
     sbx.pack(side=BOTTOM, fill=X)
@@ -539,14 +566,17 @@ def viewreader():#!dslfxf
     Button(bottom,text='Отмена', command=lambda:getF.grid_remove()).grid(row=1,column=1)
     #Entry(bottom, textvariable=number).grid(row=1)
     options = (x[0] for x in readermy)
-    print(options)
-    print(list(options))
     chb = modernchekbutton(parent=top,title='отображать поля:',opt=( (x[0],x[1]) for x in readermy) )
     rb = RadioBut(parent=right, titile='Сортировать и искать по:',opt=(x[0] for x in readermy),default=list((x[0] for x in readermy))[0])
+    # при кажом щелчке по радио кнопке перепоиск
+    for x in rb.scelet:
+        x['command']=handeofind 
+    chb.setAct(handeofind)
+
     chb.setFlagByIndex(0)
     chb.setFlagByIndex(1)
     hand = lambda Event:handeofind
-    chb.setComand(hand)
+
 
     centr.grid(row=1,column=4)
     bottom.grid(row=2,column=4)
@@ -597,7 +627,6 @@ def addBook():
                 return
 
         request = 'INSERT INTO books (ISBN,autors,title,years,publisher,keywords,city,bbk,createTime) values(?,?,?,?,?,?,?,?,?)'
-        print()
         if inscsql(request,args):
             showinfo('Успех',"Книга добавлена")
         else:
@@ -719,7 +748,6 @@ def addreader():
         val = [x.get() for x in txt]
         s=datetime.datetime.today()
         val.append(s)
-        print(val)
         if inscsql('INSERT INTO readers (NomberAbonement ,fio, adress,telephone,create_time) values(?,?,?,?,?)',val):
             showinfo('Успех',"Читатель успешно добвален")
             [field.set('') for field in txt]
