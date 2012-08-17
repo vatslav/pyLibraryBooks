@@ -2,6 +2,7 @@ import sqlite3
 from tkinter import *
 from tkinter.ttk import *
 from tkinter.messagebox import showerror
+from share_data import tuple2str
 def sortTextInDb(s1,s2):
     s1 = s1.lower()
     s2 = s2.lower()
@@ -113,6 +114,10 @@ class ScrolledList(Frame):
         list.pack(side=LEFT, expand=YES, fill=BOTH)        # list clipped first
         pos = 0
         for label in options:                              # add to listbox
+            #if isinstance(label,list): # выдает ошибка не понятно почему
+            #if type(label)=="<class 'list'>" or type(label)=="<class 'tuple'>": # не пашет
+                
+            label = tuple2str(label)
             list.insert(pos, label)                        # or insert(END,label)
             pos += 1                                       # or enumerate(options)
             #list.config(selectmode=SINGLE, setgrid=1)          # select,resize modes

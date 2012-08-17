@@ -290,6 +290,7 @@ class chekbutton(Frame):
 
 
 def viewreader():
+    quit()
     root = Toplevel()
     root.title(string='Выбирети учетную запись для изменения')
     leftFrame  = Frame(root)
@@ -348,8 +349,14 @@ def viewreader():
     root.wait_window()
 
 
+
+
+
+
+
+
 class modernchekbutton(Frame):
-    def __init__(self, parent=None, title=None, opt=[1,2,3], **options):
+    def __init__(self, parent=None, title=None, opt=[(1,2),(2,3),(3,4)], **options):
         Frame.__init__(self, parent, **options)
         self.pack()
         self.tools()
@@ -416,3 +423,52 @@ class modernchekbutton(Frame):
         frm.pack(side=RIGHT)
         #Button(frm, text='State', command=self.report).pack(fill=X)
         #Quitter(frm).pack(fill=X)
+
+
+class modernRadioBut(Frame):
+#opt=['1','2','3']
+    def __init__(self, parent=None, opt=[(1,2),(2,3),(3,4)],titile=None,trans=None,default=None,**options):
+        Frame.__init__(self, parent, **options)
+        self.pack()
+        if titile:
+            Label(self, text=titile).pack(side=TOP)
+        self.var = StringVar()
+        self.cursize = 0
+        self.index = {}
+        self.scelet = []
+
+        for key in opt:
+            rb = Radiobutton(self, text=key[0],
+                command=self.onPress,
+                variable=self.var,
+                value=key)
+            rb.sinonnym = key[1]
+            rb.pack(anchor=NW)
+            self.scelet.append(rb)
+            self.index[key]=self.cursize
+            self.cursize += 1
+        if not default:default=key
+        self.var.set(default) # select last to start
+        #Button(self, text='State', command=self.report).pack(fill=X)
+
+        #Quitter(self).pack(fill=X)
+    def view(self):
+        return self.index
+    def getbyname(self,name):
+        return self.index[name]
+
+
+    def onPress(self):#действие по нажатии кнопки
+        pick = self.var.get()
+        print('you pressed', pick)
+        #print('result:', demos[pick]())
+        print(self.index,self.getbyname(pick) )
+    def reportIndex(self):
+        return self.getbyname(self.var.get())
+    def report(self):
+        return self.var.get()
+    def setAct(self,handler):
+        for rb in self.scelet:
+            rb['command']=handler
+    def getSinonym(self):
+        return self.scelet[ self.getbyname(self.var.get()) ]

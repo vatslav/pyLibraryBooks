@@ -1,3 +1,14 @@
+ctrl+ alt + a - выравниваем равенства выделенном отрезке
+TERMINAL:
+Open Terminal at File
+    Press ctrl+shift+t on Windows and Linux, or cmd+shift+t on OS X 
+Open Terminal at Project Folder
+    Press ctrl+alt+shift+t on Windows and Linux, or cmd+alt+shift+t on OS X 
+   http://wbond.net/sublime_packages/terminal
+
+  
+
+
 все читатели которые взяли книги
 
 SELECT b.title,r.fio,r.NomberAbonement, g.idbook,g.idreader,r.id,b.id FROM getting as g JOIN books as b JOIN readers as r 

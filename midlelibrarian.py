@@ -339,12 +339,12 @@ def ViewBooks():#выдача книг читателю #!dslfxf rybu rybub
         verifybooks = []
         for x in range(len(books)):
             # количество экземпляров
-            count = execsql('SELECT COUNT (classbook) FROM exemplars WHERE classbook=?', (isbns[x],))
-            count = list(count)[0][0]
+            count    = execsql('SELECT COUNT (classbook) FROM exemplars WHERE classbook=?', (isbns[x],))
+            count    = list(count)[0][0]
             counttmp = execsql('SELECT (id) FROM books WHERE ISBN=?', (isbns[x],))
-            counttmp= list(counttmp)[0][0]
-            count2= execsql('SELECT COUNT (idbook) FROM getting WHERE idbook =?', (counttmp,))
-            count2 = list(count2)[0][0]
+            counttmp = list(counttmp)[0][0]
+            count2   = execsql('SELECT COUNT (idbook) FROM getting WHERE idbook =?', (counttmp,))
+            count2   = list(count2)[0][0]
             realcountbook = int(count)-int(count2)
             #if realcountbook<1:
                 #showerror()
@@ -526,7 +526,8 @@ def viewreader():#!dslfxf
     windows['прием_книг'][1] = True
 
 
-
+    gna = []#номер абонемента
+    auxcount = [] # то что допишем в конец строки
     def handeofind(event=True):
         #curelem = rb.reportIndex()
         #chb.setFlagByIndex(curelem)
@@ -540,9 +541,9 @@ def viewreader():#!dslfxf
         chb.setFlagByIndex(curelem)
         txt = findtext.get()
         userlist.clearlist()
-        gna = [] #номер абонемента
+         
         rows = [] #строки которые потом будут добавлены
-        auxcount = [] # то что допишем в конец строки
+        
         # в gna - NA, rows - content строк
         for x in sqlmy(mask=txt,r=chb.getSetup(),table='readers',sortby=rTableE[1:5][curelem],shadow='NomberAbonement'):
             y = tuple2str(x[1:]) #сама строка
@@ -556,11 +557,14 @@ def viewreader():#!dslfxf
         for x in range(len(rows)):
             userlist.listbox.insert('end',rows[x] + ' ~Книг на руках:' + auxcount[x])
 
-    def takeBooks(event=True, listcmd='', configcmd='',  listcontent='', configfields=''):
+    def takeBooks(event=True, listcmd=[], configcmd=[],  listcontent=[], configfields=[]):
+        if not listcontent:
+            listcontent = (('Тестовая строка-%s' % x) for x in range(100) )
+
         root = Toplevel()
         centr,bottom,top,right = Frame(root), Frame(root), Frame(root), Frame(root) #frames
         #центральный лист
-        toplist = ScrolledList(parent=centr) #central LIST
+        toplist = ScrolledList(parent=centr,options=listcontent) #central LIST
         toplist.listbox.config(height=25,width=70,font=('courier'))
         sbx = Scrollbar( centr, orient=HORIZONTAL, command=userlist.listbox.xview)
         userlist.listbox.configure(xscrollcommand=sbx.set)
@@ -570,16 +574,18 @@ def viewreader():#!dslfxf
         fent = Entry(bottom, textvariable=findtext)
         fent.grid(row=0,column=0)
         Button(bottom,text='Ok', command=lambda:handeofind() ).grid(row=1)
-        Button(bottom,text='Отмена', command=lambda:getF.grid_remove()).grid(row=1,column=1)
+        Button(bottom,text='Отмена', command=lambda:root.destroy()).grid(row=1,column=1)
 
         if not configfields:
-            configfields=readermy
+            configfields=(x for x in [1,2,3,4])
+        #[['Номер Абонемента', 'NomberAbonement', 1], ['ФИО', 'fio', 1], ['адрес', 'adress', 1], ['телефон', 'telephone', 0]]
+            print(readermy)
 
         #радио и флажки
-        chb = modernchekbutton(parent=top,title='отображать поля:',opt=( (x[0],x[1]) for x in configfields) )
-        rb = RadioBut(parent=right, titile='Сортировать и искать по:',opt=(x[0] for x in configfields),default=list((x[0] for x in configfields))[0])
+        chb = modernchekbutton(parent=top,title='отображать поля:',opt=configfields )
+        rb = modernRadioBut(parent=right, titile='Сортировать и искать по:',opt=configfields,default=configfields[0][0])
         
-        Entry(centr).pack()
+
 
         #действия по нажатию кнопки
         if configcmd:
@@ -601,9 +607,48 @@ def viewreader():#!dslfxf
 
     centr,bottom,top,right = Frame(getF), Frame(getF), Frame(getF), Frame(getF)
     #userGen = (x for x in sqlmy(mask=txt,r=readermy,table='readers',sortby=r////b.reportIndex()))
+    print(list((x for x in fieldOfBooksRus)))
     userlist = ScrolledList(parent=centr)
     userlist.listbox.config(height=25,width=70,font=('courier'))
-    userlist.setAct(takeBooks)
+    #' ORDER BY low(' +sortby+ ') COLLATE sort'
+    reg1=''' FROM books AS b WHERE id 
+    IN ( SELECT idbook FROM getting JOIN readers WHERE idreader 
+    IN ( SELECT readers.id where readers.NomberAbonement=?))'''
+
+    #def find():
+
+
+    cf = [(fieldOfBooksRus[x],fieldOfBooks[x]) for x in range(len(fieldOfBooks))]
+
+    
+    def usact (event):
+        #print('GNA= %S' % str(gna))
+        #print('ind = %s' % userlist.getIndexCur())
+        r = 'SELECT '
+        for x in chb.getSetup():
+            r = r + ' b.%s,' % x
+        r = r +reg1
+        print(r)
+
+        reg='''SELECT b.title, b.ISBN,b.ISBN,b.id FROM books AS b  WHERE id 
+        IN ( SELECT idbook FROM getting JOIN readers WHERE idreader 
+        IN ( SELECT readers.id where readers.NomberAbonement=?)) ORDER BY low(title) COLLATE sort'''
+
+        
+        
+
+        if not int(auxcount[int(userlist.getIndexCur() )]):
+            showerror("Ошибка",'У этого пользователя нет книг')
+            return
+
+        ind = gna[int(userlist.getIndexCur() )]
+        print('count=',auxcount[int(userlist.getIndexCur() )])
+        print('ind=',ind)
+        print(list(execsql(reg, (ind,) )))
+        bookrows = execsql(reg, (ind,) )        
+
+        takeBooks(configfields=cf, listcontent=bookrows)
+    userlist.setAct(usact )
 
     sbx = Scrollbar( centr, orient=HORIZONTAL, command=userlist.listbox.xview)
     userlist.listbox.configure(xscrollcommand=sbx.set)
