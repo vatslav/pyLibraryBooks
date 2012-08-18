@@ -209,10 +209,13 @@ def ViewBooks():#выдача книг читателю #!dslfxf rybu rybub
             for x in execsql('SELECT id FROM readers WHERE NomberAbonement="'+na+'"'):
                 idcurreader.append(x)
             for isbn in isbns:
-                for row in execsql('SELECT id FROM books WHERE ISBN="'+isbn+'"'):
+                for row in execsql('SELECT id FROM books WHERE ISBN=?',(isbn,)):
                     idbooks.append(row)
             idcurreader = [x[0] for x in idcurreader][0] # делаем из списка картежей список чисел (строк)
+            print('IDBOOKS=',idbooks)
             idbooks = [x[0] for x in idbooks]
+            idbooks[0] = int(idbooks[0]) - 1   #=====УМА НЕПРЕЛОЖУ КАК ВЫХОДИТ, ТАК ЧТО id, на 1 больше!????!!!!!======
+            print('IDBOOKS=',idbooks)
             #узнать id текущего ридера и ид всех книг - список
             #print('na,userlist.getIndexCur(),gna = %s, %s - %s' % (na,userlist.getIndexCur(),gna))
             td = datetime.date.today()
@@ -284,7 +287,6 @@ def ViewBooks():#выдача книг читателю #!dslfxf rybu rybub
                 ind = userlist.getIndexCur()
             except IndexError:
                 return
-            print(ind)
             userlist.listbox.delete(ind)
 
         userlist.setActOneClick(handleDCUL)
@@ -335,7 +337,7 @@ def ViewBooks():#выдача книг читателю #!dslfxf rybu rybub
         selectbooks = ScrolledList(parent=centr)#книшки которые уже выбрали
         selectbooks.listbox.config(height=len(isbns),width=maxlenttitile)
         selectbooks.clearlist()
-        #print('isbn=',isbns)
+
         # нижний лист - книги
         verifybooks = []
         for x in range(len(books)):
@@ -423,7 +425,6 @@ def ViewBooks():#выдача книг читателю #!dslfxf rybu rybub
     rb = RadioBut(parent=right,opt=nameOfrb(),titile='Сортировать и искать по:',default=fieldOfBooksRus[3])
     Label(right,text='Количество экземпляров: ').pack()
     Label(right,text='   20').pack()
-    #rb['command']=lambda:print('nhfnhf!!')
 
     text =StringVar()
     find = Entry(midlle,textvariable=text)
@@ -562,7 +563,6 @@ def viewreader():#!dslfxf
 
     centr,bottom,top,right = Frame(getF), Frame(getF), Frame(getF), Frame(getF)
     #userGen = (x for x in sqlmy(mask=txt,r=readermy,table='readers',sortby=r////b.reportIndex()))
-    print(list((x for x in fieldOfBooksRus)))
     userlist = ScrolledList(parent=centr)
     userlist.listbox.config(height=25,width=70,font=('courier'))
     #' ORDER BY low(' +sortby+ ') COLLATE sort'
@@ -601,16 +601,17 @@ def viewreader():#!dslfxf
             IN ( SELECT idbook FROM getting JOIN readers WHERE idreader 
             IN ( SELECT readers.id where readers.NomberAbonement=?)) ORDER BY low(%s) COLLATE sort''' % mtl.rb.report()
             
-            print('REG!=')
-            print(reg)
-            
             [idbooksFr.pop() for x in range(len(idbooksFr))]
+            print(reg)
             bookrows = execsql(reg, (ind,) )
             for x in bookrows:
                 idbooksFr.append(x[0])
                 x = tuple2str(x[1:])
                 mtl.toplist.listbox.insert('end',x)
-            delbooks()
+            for x in execsql(reg, (ind,) ):
+                print(x)
+            print(list(execsql(reg, (ind,) )))
+
         def h_dc_bl(event=True):
             i = int(mtl.toplist.getIndexCur())
             mtl.toplist.listbox.delete( i )
@@ -864,7 +865,7 @@ def addreader():
 
 
 def delreader():
-    pass
+    MyTopLevel(parent=root)
 root=Tk()
 root.title('Администрирование БД')
 master = Frame(root)

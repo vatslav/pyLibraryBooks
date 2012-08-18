@@ -429,11 +429,12 @@ def coroutine(func):
 class MyTopLevel(ScrolledList):
      """docstring for MyTopLevel"""
      #super(MyTopLevel, self).__init__()
-     def __init__(self, event=True, listcmd=[], configcmd=[],  listcontent=[], configfields=[],okcmd=[]):
+     def __init__(self, event=True, listcmd=[], configcmd=[],  listcontent=[], configfields=[],okcmd=[],parent=''):
         if not listcontent:
             listcontent = (('Тестовая строка-%s' % x) for x in range(100) )
 
-        self.root = Toplevel()
+        if parent: self.root = Frame(parent)
+        else:      self.root = Toplevel()
         centr,bottom,top,right = Frame(self.root), Frame(self.root), Frame(self.root), Frame(self.root) #frames
         #центральный лист
         self.toplist = ScrolledList(parent=centr,options=listcontent) #central LIST
@@ -461,7 +462,7 @@ class MyTopLevel(ScrolledList):
 
     #радио и флажки
         self.chb = modernchekbutton(parent=top,title='отображать поля:',opt=configfields )
-        self.rb = modernRadioBut(parent=right, titile='Сортировать и искать по:',opt=configfields,default=configfields[0][0] )
+        self.rb  = modernRadioBut(parent=right, titile='Сортировать и искать по:',opt=configfields,default=configfields[0][0] )
         self.chb.setFlagByIndex(self.rb.reportIndex())
     
         def clear(func):
@@ -472,7 +473,7 @@ class MyTopLevel(ScrolledList):
     #действия по нажатию кнопки
         if configcmd:
             for x in self.rb.scelet:
-                x['command']=configcmd 
+                x['command'] = configcmd 
             self.chb.setAct(configcmd)
         if listcmd:
             self.toplist.setAct(listcmd)
