@@ -223,6 +223,7 @@ def ViewBooks():#выдача книг читателю #!dslfxf rybu rybub
                 if not inscsql(request,(True,td,tr,idbook,idcurreader)):
                     return
             showinfo('Успех','Книги добавлены')
+            tf.destroy()
             #handlecancel() ##!==
             
             #print('SELECT id FROM readers WHERE NomberAbonement='+na)
@@ -557,53 +558,7 @@ def viewreader():#!dslfxf
         for x in range(len(rows)):
             userlist.listbox.insert('end',rows[x] + ' ~Книг на руках:' + auxcount[x])
 
-    def takeBooks(event=True, listcmd=[], configcmd=[],  listcontent=[], configfields=[]):
-        if not listcontent:
-            listcontent = (('Тестовая строка-%s' % x) for x in range(100) )
 
-        root = Toplevel()
-        centr,bottom,top,right = Frame(root), Frame(root), Frame(root), Frame(root) #frames
-        #центральный лист
-        toplist = ScrolledList(parent=centr,options=listcontent) #central LIST
-        toplist.listbox.config(height=25,width=70,font=('courier'))
-        sbx = Scrollbar( centr, orient=HORIZONTAL, command=userlist.listbox.xview)
-        userlist.listbox.configure(xscrollcommand=sbx.set)
-        sbx.pack(side=BOTTOM, fill=X)
-        # поисковая полоска и кнопки ок отмена
-        findtext = StringVar()
-        fent = Entry(bottom, textvariable=findtext)
-        fent.grid(row=0,column=0)
-        Button(bottom,text='Ok', command=lambda:handeofind() ).grid(row=1)
-        Button(bottom,text='Отмена', command=lambda:root.destroy()).grid(row=1,column=1)
-
-        if not configfields:
-            configfields=(x for x in [1,2,3,4])
-        #[['Номер Абонемента', 'NomberAbonement', 1], ['ФИО', 'fio', 1], ['адрес', 'adress', 1], ['телефон', 'telephone', 0]]
-            print(readermy)
-
-        #радио и флажки
-        chb = modernchekbutton(parent=top,title='отображать поля:',opt=configfields )
-        rb = modernRadioBut(parent=right, titile='Сортировать и искать по:',opt=configfields,default=configfields[0][0])
-        
-
-
-        #действия по нажатию кнопки
-        if configcmd:
-            for x in rb.scelet:
-                x['command']=configcmd 
-            chb.setAct(configcmd)
-        if listcmd:
-            userlist.setAct(listcmd)
-
-
-        #взаиморасположение
-        centr.grid(row=1,column=4)
-        bottom.grid(row=2,column=4)
-        top.grid(row=0,column=4)
-        right.grid(row=1,column=5)
-        getF.grid(column=4,row=0)
-
-        root.mainloop()
 
     centr,bottom,top,right = Frame(getF), Frame(getF), Frame(getF), Frame(getF)
     #userGen = (x for x in sqlmy(mask=txt,r=readermy,table='readers',sortby=r////b.reportIndex()))
@@ -620,35 +575,94 @@ def viewreader():#!dslfxf
 
     cf = [(fieldOfBooksRus[x],fieldOfBooks[x]) for x in range(len(fieldOfBooks))]
 
-    
-    def usact (event):
-        #print('GNA= %S' % str(gna))
-        #print('ind = %s' % userlist.getIndexCur())
-        r = 'SELECT '
-        for x in chb.getSetup():
-            r = r + ' b.%s,' % x
-        r = r +reg1
-        print(r)
+    #
+    def viewTopBooks (event):
+        
 
-        reg='''SELECT b.title, b.ISBN,b.ISBN,b.id FROM books AS b  WHERE id 
+        reg='''SELECT b.title, b.autors,b.years,b.keywords FROM books AS b  WHERE id 
         IN ( SELECT idbook FROM getting JOIN readers WHERE idreader 
-        IN ( SELECT readers.id where readers.NomberAbonement=?)) ORDER BY low(title) COLLATE sort'''
-
-        
-        
-
+        IN ( SELECT readers.id where readers.NomberAbonement=?)) ORDER BY low('title') COLLATE sort''' #% rb.report()
         if not int(auxcount[int(userlist.getIndexCur() )]):
             showerror("Ошибка",'У этого пользователя нет книг')
             return
-
         ind = gna[int(userlist.getIndexCur() )]
-        print('count=',auxcount[int(userlist.getIndexCur() )])
-        print('ind=',ind)
-        print(list(execsql(reg, (ind,) )))
-        bookrows = execsql(reg, (ind,) )        
 
-        takeBooks(configfields=cf, listcontent=bookrows)
-    userlist.setAct(usact )
+        bookrows = execsql(reg, (ind,) )
+        #поиск
+        idbooksFr= []
+        def handlefind(event=True):
+            mtl.toplist.clearlist()
+            mtl.chb.setFlagByIndex(mtl.rb.reportIndex())
+            r = 'SELECT b.id, '
+            for x in mtl.chb.getSetup():
+                r = r + ' b.%s,' % x
+            r = r[:-1]
+            reg=r + ''' FROM books AS b  WHERE id 
+            IN ( SELECT idbook FROM getting JOIN readers WHERE idreader 
+            IN ( SELECT readers.id where readers.NomberAbonement=?)) ORDER BY low(%s) COLLATE sort''' % mtl.rb.report()
+            
+            print('REG!=')
+            print(reg)
+            
+            [idbooksFr.pop() for x in range(len(idbooksFr))]
+            bookrows = execsql(reg, (ind,) )
+            for x in bookrows:
+                idbooksFr.append(x[0])
+                x = tuple2str(x[1:])
+                mtl.toplist.listbox.insert('end',x)
+            delbooks()
+        def h_dc_bl(event=True):
+            i = int(mtl.toplist.getIndexCur())
+            mtl.toplist.listbox.delete( i )
+            idbooksFr.pop(i)
+        def h_ungetting(event=True):
+            #for x in range(20):
+            #    msg = mtl.toplist.listbox.get(x)
+            #    if msg =='':break
+            #    print(msg,len(msg))
+
+            #for x in mtl.toplist.getContent():
+                #print(x,len(x))
+
+            print('idbooksFr =%s' % idbooksFr )
+            print('ind=%s' % ind)
+            req = 'DELETE FROM getting WHERE idbook=? AND idreader IN (SELECT id from readers WHERE NomberAbonement=?)'
+            for id in idbooksFr:
+                s = inscsql(req,(id,ind))
+                if not s:
+                    showerror('Ошибка','Произошла непредвиденная ошибка, причины неизвестны')
+
+            showinfo('Успех',"Книги возвращены")
+            mtl.root.destroy()
+
+        def delbooks():
+            print('idbook ',idbooksFr)
+            print('ind ',ind)
+           
+
+        mtl = MyTopLevel(configfields=cf, configcmd=handlefind,listcmd=h_dc_bl,okcmd=h_ungetting) 
+        #delbooks()
+
+        mtl.rb.setAct(handlefind)
+        mtl.chb.setFlagByIndex(2)
+        mtl.chb.setFlagByIndex(3)
+        mtl.chb.setFlagByIndex(6)
+        mtl.root.title(string='Возврат книг - СУБД Библиотека')
+
+
+        handlefind()
+        n = len(idbooksFr)
+        if n<9:
+            n=10
+        mtl.toplist.listbox.config(height=n,width=70,font=('courier'))  
+        
+
+        #mtl.start()
+
+        
+
+
+    userlist.setAct(viewTopBooks )
 
     sbx = Scrollbar( centr, orient=HORIZONTAL, command=userlist.listbox.xview)
     userlist.listbox.configure(xscrollcommand=sbx.set)

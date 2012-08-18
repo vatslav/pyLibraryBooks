@@ -1,8 +1,9 @@
 __author__ = 'Вячеслав'
 import sqlite3,re,random,datetime, time
-
+from scrolledlist import *
 from tkinter.messagebox import showerror
 from tkinter.ttk import *
+from scrolledlist import ScrolledList
 def sortTextInDb(s1,s2):
     s1=str(s1);  s2 = str(s2)
     s1 = s1.lower()
@@ -136,7 +137,7 @@ def execsql2( request1,*values):
         for line in cur:
             yield line
 
-"create a group of radio buttons that launch dialog demos"
+
 
 from tkinter import *                # get base widget set
 #from dialogTable import demos        # button callback handlers
@@ -289,64 +290,7 @@ class chekbutton(Frame):
         #Quitter(frm).pack(fill=X)
 
 
-def viewreader():
-    quit()
-    root = Toplevel()
-    root.title(string='Выбирети учетную запись для изменения')
-    leftFrame  = Frame(root)
-    rightFrame = Frame(root)
-    options = ex
-    title = Label(root,text='Выбирети учетную запись для изменения')
-    title.pack()
-    userList = ScrolledList(options,parent=leftFrame,newBind=changeOneuser )
-    #userList.setBind(changeOneuser())
 
-    nameText = StringVar()
-    numText  = StringVar()
-    findE   = Entry(rightFrame, textvariable=nameText)
-    findNum = Entry(rightFrame,textvariable=numText)
-    changeB = Button(rightFrame, text='Изменить',command=(lambda:changeOneuser(userList.getCur()) ) )
-    delB    = Button(rightFrame, text='Удалить', command=(lambda:delUser(userList)       ) )
-    changeB.pack()
-    delB.pack()
-    findE.pack()
-
-    #options = ( ('Lumberjack-%s' % x) for  x in range(20))
-    nameText.set('Поиск по ФИО читателя')
-    numText.set('Поиск по Читательскому билету читателя')
-
-    findNum.pack()
-    findNum.pack()
-    #findE.bind('<KeyPress>',  test('as' ) )
-    def handleFindPress(event):
-        userList.listbox.clear()
-        try:
-            for x in getUsers(findE.get().lower() ):
-                #print(x)#тут делать вставку в лист
-                userList.listbox.insert('end',x)
-
-        except StopIteration:
-            pass
-
-    #findE.bind('<KeyPress>',  handleFindPress )
-    root.bind('<KeyPress>',  handleFindPress ) #==!!!===аргументы передаются в контексте,а мне нужно передать аргумент не
-    #из контекста события (не то что вызвало событие, а то что находиться в соседнем виджите!), решение только так, как выше.???
-
-    leftFrame.pack()
-    rightFrame.pack()
-    def handkerEnter(event):
-        try:
-            print(userList.getCur())#changeOneuser(userList.getCur())
-        except TclError:
-            pass
-    def handkerEscape(event):
-        root.destroy()
-    root.bind('<Return>',handkerEnter)
-    root.bind('<Escape>',handkerEscape)
-    findE.focus_set()
-    userList.listbox.config(height=15,width=30)
-    root.grab_set()
-    root.wait_window()
 
 
 
@@ -441,11 +385,11 @@ class modernRadioBut(Frame):
             rb = Radiobutton(self, text=key[0],
                 command=self.onPress,
                 variable=self.var,
-                value=key)
+                value=key[1])
             rb.sinonnym = key[1]
             rb.pack(anchor=NW)
             self.scelet.append(rb)
-            self.index[key]=self.cursize
+            self.index[key[1]]=self.cursize
             self.cursize += 1
         if not default:default=key
         self.var.set(default) # select last to start
@@ -455,6 +399,7 @@ class modernRadioBut(Frame):
     def view(self):
         return self.index
     def getbyname(self,name):
+        print('name=%s' %name)
         return self.index[name]
 
 
@@ -472,3 +417,72 @@ class modernRadioBut(Frame):
             rb['command']=handler
     def getSinonym(self):
         return self.scelet[ self.getbyname(self.var.get()) ]
+
+def coroutine(func):
+    def start(*args,**kwargs):
+        g = func(*args,**kwargs)
+        g.next()
+        return g
+    return start
+
+
+class MyTopLevel(ScrolledList):
+     """docstring for MyTopLevel"""
+     #super(MyTopLevel, self).__init__()
+     def __init__(self, event=True, listcmd=[], configcmd=[],  listcontent=[], configfields=[],okcmd=[]):
+        if not listcontent:
+            listcontent = (('Тестовая строка-%s' % x) for x in range(100) )
+
+        self.root = Toplevel()
+        centr,bottom,top,right = Frame(self.root), Frame(self.root), Frame(self.root), Frame(self.root) #frames
+        #центральный лист
+        self.toplist = ScrolledList(parent=centr,options=listcontent) #central LIST
+        self.toplist.listbox.config(height=25,width=70,font=('courier'))
+        sbx = Scrollbar( centr, orient=HORIZONTAL, command=self.toplist.listbox.xview)
+        self.toplist.listbox.configure(xscrollcommand=sbx.set)
+        sbx.pack(side=BOTTOM, fill=X)
+        # поисковая полоска и кнопки ок отмена
+        findtext = StringVar()
+        fent = Entry(bottom, textvariable=findtext)
+        fent.grid(row=0,column=0)
+        self.b =Button(bottom,text='Ok',command=lambda:okcmd() )
+        self.b.grid(row=1)
+        Button(bottom,text='Отмена', command=lambda:self.root.destroy()).grid(row=1,column=1)
+        #if okcmd:
+        #    print(okcmd,type(okcmd))
+        #    self.b =Button(bottom,text='Ok',command=lambda:okcmd() ).grid(row=1)
+        #else:
+        #    quit()
+        #    self.b =Button(bottom,text='Ok' ).grid(row=1)
+
+        if not configfields:
+            configfields=(x for x in [1,2,3,4])
+        #[['Номер Абонемента', 'NomberAbonement', 1], ['ФИО', 'fio', 1], ['адрес', 'adress', 1], ['телефон', 'telephone', 0]]
+
+    #радио и флажки
+        self.chb = modernchekbutton(parent=top,title='отображать поля:',opt=configfields )
+        self.rb = modernRadioBut(parent=right, titile='Сортировать и искать по:',opt=configfields,default=configfields[0][0] )
+        self.chb.setFlagByIndex(self.rb.reportIndex())
+    
+        def clear(func):
+            self.toplist.clearlist()
+            return func
+        #configcmd = clear(configcmd)
+
+    #действия по нажатию кнопки
+        if configcmd:
+            for x in self.rb.scelet:
+                x['command']=configcmd 
+            self.chb.setAct(configcmd)
+        if listcmd:
+            self.toplist.setAct(listcmd)
+
+
+         #взаиморасположение
+        centr.grid(row=1,column=4)
+        bottom.grid(row=2,column=4)
+        top.grid(row=0,column=4)
+        right.grid(row=1,column=5)
+        a=4
+    #def start(self,a=2):
+    #    self.root.mainloop()

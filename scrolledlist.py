@@ -2,7 +2,16 @@ import sqlite3
 from tkinter import *
 from tkinter.ttk import *
 from tkinter.messagebox import showerror
-from share_data import tuple2str
+#print('name=%s' % __name__)
+#if __name__ == '__main__':
+
+
+def tuple2str(t):
+    tmp = ''
+    for x in t:
+        tmp = tmp + str(x) +','
+    tmp = tmp[0:-1]
+    return tmp
 def sortTextInDb(s1,s2):
     s1 = s1.lower()
     s2 = s2.lower()
@@ -139,5 +148,25 @@ class ScrolledList(Frame):
 
     def setActExist(self,event, handler):
         self.listbox.bind(event, handler)    
+
+    def getContentGen(self):
+        tmp = []
+        i=0
+        while True:    
+            msg = self.listbox.get(i)
+            i += 1
+            if msg=='':
+                break
+            yield msg
+
+    def getContent(self):
+        tmp = []
+        i=0
+        while True:    
+            msg = self.listbox.get(i)
+            i += 1
+            if msg=='':
+                break
+            return msg
 
            

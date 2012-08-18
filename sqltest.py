@@ -163,3 +163,54 @@ def viewFrame(name):
 fieldOfBooksRus = ('ISBN', 'ББК', 'Автор', 'Название', 'Год издания', 'Издательство', 'ключивые слова', 'город' )
 fieldOfBooks = ('ISBN','bbk', 'autors', 'titile', 'years', 'publisher', 'keywords', 'city')
 fieldOfBooksstr = 'ISBN,bbk,autors,titile,years,publisher,keywords,city
+
+
+
+
+    def takeBooks(event=True, listcmd=[], configcmd=[],  listcontent=[], configfields=[]):
+        if not listcontent:
+            listcontent = (('Тестовая строка-%s' % x) for x in range(100) )
+
+        root = Toplevel()
+        centr,bottom,top,right = Frame(root), Frame(root), Frame(root), Frame(root) #frames
+        #центральный лист
+        toplist = ScrolledList(parent=centr,options=listcontent) #central LIST
+        toplist.listbox.config(height=25,width=70,font=('courier'))
+        sbx = Scrollbar( centr, orient=HORIZONTAL, command=userlist.listbox.xview)
+        userlist.listbox.configure(xscrollcommand=sbx.set)
+        sbx.pack(side=BOTTOM, fill=X)
+        # поисковая полоска и кнопки ок отмена
+        findtext = StringVar()
+        fent = Entry(bottom, textvariable=findtext)
+        fent.grid(row=0,column=0)
+        Button(bottom,text='Ok', command=lambda:handeofind() ).grid(row=1)
+        Button(bottom,text='Отмена', command=lambda:root.destroy()).grid(row=1,column=1)
+
+        if not configfields:
+            configfields=(x for x in [1,2,3,4])
+        #[['Номер Абонемента', 'NomberAbonement', 1], ['ФИО', 'fio', 1], ['адрес', 'adress', 1], ['телефон', 'telephone', 0]]
+            print(readermy)
+
+        #радио и флажки
+        chb = modernchekbutton(parent=top,title='отображать поля:',opt=configfields )
+        rb = modernRadioBut(parent=right, titile='Сортировать и искать по:',opt=configfields,default=configfields[0][0] )
+        
+
+
+        #действия по нажатию кнопки
+        if configcmd:
+            for x in rb.scelet:
+                x['command']=configcmd 
+            chb.setAct(configcmd)
+        if listcmd:
+            userlist.setAct(listcmd)
+
+
+        #взаиморасположение
+        centr.grid(row=1,column=4)
+        bottom.grid(row=2,column=4)
+        top.grid(row=0,column=4)
+        right.grid(row=1,column=5)
+        getF.grid(column=4,row=0)
+
+        root.mainloop()
