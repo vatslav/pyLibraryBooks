@@ -431,6 +431,15 @@ class MyTopLevel(ScrolledList):
      """docstring for MyTopLevel"""
      #super(MyTopLevel, self).__init__()
      def __init__(self, event=True, listcmd=[], configcmd=[],  listcontent=[], configfields=[],okcmd=[],parent=''):
+        def clear(func):
+            self.toplist.clearlist()
+            return func
+        #configcmd = clear(configcmd)
+        def handlercmdconf():
+            self.chb.setFlagByIndex(int(self.rb.reportIndex() ) )
+            return configcmd()
+            
+
         if not listcontent:
             listcontent = (('Тестовая строка-%s' % x) for x in range(100) )
 
@@ -444,9 +453,11 @@ class MyTopLevel(ScrolledList):
         self.toplist.listbox.configure(xscrollcommand=sbx.set)
         sbx.pack(side=BOTTOM, fill=X)
         # поисковая полоска и кнопки ок отмена
-        findtext = StringVar()
-        self.fent = Entry(bottom, textvariable=findtext)
+        self.findtext = StringVar()
+        self.fent = Entry(bottom, textvariable=self.findtext)
         self.fent.grid(row=0,column=0)
+        self.bfent = Button(bottom,text='Найти',command=lambda:handlercmdconf() )
+        self.bfent.grid(row=0,column=1)
         if okcmd==[]:okcmd=lambda:1
         self.b =Button(bottom,text='Ok',command=lambda:okcmd() )
         self.b.grid(row=1)
@@ -462,16 +473,13 @@ class MyTopLevel(ScrolledList):
         self.rb  = modernRadioBut(parent=right, titile='Сортировать и искать по:',opt=configfields,default=configfields[0][0] )
         self.chb.setFlagByIndex(self.rb.reportIndex())
     
-        def clear(func):
-            self.toplist.clearlist()
-            return func
-        #configcmd = clear(configcmd)
 
     #действия по нажатию кнопки
         if configcmd:
             for x in self.rb.scelet:
-                x['command'] = configcmd 
-            self.chb.setAct(configcmd)
+                x['command'] = handlercmdconf 
+            self.chb.setAct(handlercmdconf)
+            #root.titile(string=)
         if listcmd:
             self.toplist.setAct(listcmd)
 

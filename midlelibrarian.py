@@ -261,6 +261,7 @@ def ViewBooks():#выдача книг читателю #!dslfxf rybu rybub
             root.bind('<KeyPress>',no)
             tf.destroy()
         tf = Toplevel(getF)
+        tf.title(string='Выдача книг читателю - СУБД Библиотека')
         # поиск для верхнего листа - юзеры
         def handeofind(event=True):
             curelem = rb.reportIndex()
@@ -919,11 +920,26 @@ def addreader():
 
 
 
-def delreader():
+
+def delreader(): #rf!
     print('rf=%s' % rf)
     cf = [(fieldOfBooksRus[x],fieldOfBooks[x]) for x in range(len(fieldOfBooks))]
     print('rf=%s' % cf)
-    #xw = MyTopLevel(configfields=rf)
+
+    
+    def find():
+        xw.toplist.clearlist()
+        txt=xw.findtext.get()
+        for x in getBooks(txt,index=xw.rb.reportIndex(),sortby=fieldOfBooks[xw.rb.reportIndex()],
+            state=xw.chb.reportDict(),field=fieldOfBookD):
+            x = tuple2str(x)
+            xw.toplist.listbox.insert('end',x)
+    xw = MyTopLevel(parent=root,configfields=cf,configcmd=find)
+    xw.root.grid(column=4,row=0)
+    #xw.root.title(string='Удаление экземпляров книг')
+    find()
+    
+    #xw.
     #for x in sqlmy(r=xw.chb.getSetup(),table='readers',sortby=rTableE[1:5][int(xw.rb.reportIndex())],shadow='NomberAbonement'):
             #y = tuple2str(x[1:]) #сама строка
             #gna.append(x[0]) #скрытый id
@@ -948,7 +964,7 @@ buttons = []
 issueB            = Button (accountingF,text='Выдача книг чиателю', command=lambda: ViewBooks() );
 getB              = Button (accountingF,text='Прием книг у читателя',command=lambda:viewreader() )
 insertB           = Button (getNdelF,text='Добавление новой книги в фонд библиотеки',command=lambda:addBook() )
-delB              = Button (getNdelF,text='Удаление книги')
+delB              = Button (getNdelF,text='Удаление книги',command=lambda:delreader() )
 
 addReader         = Button (readerAdmin,text='Добавление читателя',command=lambda:addreader()).grid(padx=20,ipady=5)
 delReader         = Button (readerAdmin,text='Удаление читателя',command=lambda:viewreader()).grid(padx=20,ipady=5)
