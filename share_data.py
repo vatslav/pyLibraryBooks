@@ -399,6 +399,7 @@ class modernRadioBut(Frame):
     def view(self):
         return self.index
     def getbyname(self,name):
+        print(self.index)
         print('name=%s' %name)
         return self.index[name]
 
@@ -446,18 +447,14 @@ class MyTopLevel(ScrolledList):
         findtext = StringVar()
         self.fent = Entry(bottom, textvariable=findtext)
         self.fent.grid(row=0,column=0)
+        if okcmd==[]:okcmd=lambda:1
         self.b =Button(bottom,text='Ok',command=lambda:okcmd() )
         self.b.grid(row=1)
         Button(bottom,text='Отмена', command=lambda:self.root.destroy()).grid(row=1,column=1)
-        #if okcmd:
-        #    print(okcmd,type(okcmd))
-        #    self.b =Button(bottom,text='Ok',command=lambda:okcmd() ).grid(row=1)
-        #else:
-        #    quit()
-        #    self.b =Button(bottom,text='Ok' ).grid(row=1)
+
 
         if not configfields:
-            configfields=(x for x in [1,2,3,4])
+            configfields=[(x,x) for x in ['1','2','3','4']]
         #[['Номер Абонемента', 'NomberAbonement', 1], ['ФИО', 'fio', 1], ['адрес', 'adress', 1], ['телефон', 'telephone', 0]]
 
     #радио и флажки
@@ -484,6 +481,11 @@ class MyTopLevel(ScrolledList):
         bottom.grid(row=2,column=4)
         top.grid(row=0,column=4)
         right.grid(row=1,column=5)
-        a=4
+        #showerror('ТАДА','ТАДА')
     #def start(self,a=2):
     #    self.root.mainloop()
+
+
+def countBooksByNA(na):
+    return list(execsql('''SELECT COUNT(active) FROM getting JOIN readers WHERE idreader IN 
+        ( SELECT readers.id where readers.NomberAbonement="%s")''' % na))[0][0]

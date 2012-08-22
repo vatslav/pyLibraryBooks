@@ -26,15 +26,11 @@ rTableR = ('порядковый номер','Номер Абонемента', 
 rTableE = ('id',              'NomberAbonement' ,'fio', 'adress','telephone','create_time') #имя поля в бд
 rTableS = [0,                   1,                  1,      1,      1,          0] #флаг, отвечающий за общедоступна ли это поле
 rTableA = [0,1,1,1,0,0] #автивно ли это поле
-rTableD = {}
-readerT = {}
-for x in range(len(rTableR)):
-    rTableD[rTableR[x]]=list((rTableE[x],rTableA[x],rTableS[x],))
-for x in range(len(rTableR))[1:-1]:
-    readerT[rTableR[x]]=list((rTableE[x],rTableA[x]))
+rf = [(rTableR[x],rTableR[x]) for x in range( len(rTableE) - 1 )]
 readermy = []
 for x in range(len(rTableR))[1:-1]:
     readermy.append(list((rTableR[x],rTableE[x],rTableA[x])))
+
 
 #имя для пользователя /\ в бд, для всех, поумолчанию тру?
 #print(list(rTableD.items()))
@@ -207,12 +203,18 @@ def ViewBooks():#выдача книг читателю #!dslfxf rybu rybub
             idcurreader=[] #ID текущего ридера
             
             idbooks=[] # ID книг
-            for x in execsql('SELECT id FROM readers WHERE NomberAbonement=%s' % na):
+            for x in execsql('SELECT id FROM readers WHERE NomberAbonement="%s"' % na):
                 idcurreader.append(x)
             for isbn in isbns:
                 for row in execsql('SELECT id FROM books WHERE ISBN=?',(isbn,)):
                     idbooks.append(row)
-            idcurreader = [x[0] for x in idcurreader][0] # делаем из списка картежей список чисел (строк)
+             
+            try:idcurreader = [x[0] for x in idcurreader][0] # делаем из списка картежей список чисел (строк)
+            except IndexError: 
+                print('idcurreader =', idcurreader)
+                print(na)
+                showerror('Ошибка',"Произошла непредвиденная ошибка")
+                return
             print('IDBOOKS=',idbooks)
             print('idcurreader=',idcurreader)
             idbooks = [x[0] for x in idbooks]
@@ -340,15 +342,19 @@ def ViewBooks():#выдача книг читателю #!dslfxf rybu rybub
         selectbooks = ScrolledList(parent=centr)#книшки которые уже выбрали
         selectbooks.listbox.config(height=len(isbns),width=maxlenttitile)
         selectbooks.clearlist()
-
+        print('isbns %s' % isbns)
         # нижний лист - книги
         verifybooks = []
         for x in range(len(books)):
             # количество экземпляров
+            #SELECT count(e.classbook) FROM exemplars as e  WHERE e.classbook="5-9050"
+            # количество книг по isbn
             count    = execsql('SELECT COUNT (classbook) FROM exemplars WHERE classbook=?', (isbns[x],))
             count    = list(count)[0][0]
+            #id by isbn
             counttmp = execsql('SELECT (id) FROM books WHERE ISBN=?', (isbns[x],))
             counttmp = list(counttmp)[0][0]
+
             count2   = execsql('SELECT COUNT (idbook) FROM getting WHERE idbook =?', (counttmp,))
             count2   = list(count2)[0][0]
             realcountbook = int(count)-int(count2)
@@ -396,26 +402,33 @@ def ViewBooks():#выдача книг читателю #!dslfxf rybu rybub
 
 
     #===================    end==========
+    def delread():
+        pass
     hideFrames();
     if flags['выдать_книги']==True:
         issueF.grid()
+        bookList.clearlist()
+        handlerPress(99)
         return
     flags['выдать_книги'] = True
     issueF = Frame(root)
     midlle, bottom, right = Frame(issueF), Frame(issueF), Frame(issueF)
-    def handlOk(Event=True):
+    def handlOk(func,Event=True,):
         index, books = bookList.getCurMulti()
         if not len(index):
             showerror('Ошибка',"Не выбрана не одна книга")
             return #iss([0],[0]) #можно была бы вызывать окно
         tmp = []  #текущие выбранные тут тепер хранитяться, после ок
         for x in index:
-            tmp.append(storageisbn[x-1]) #-1выведена эмпирически
+            tmp.append(storageisbn[x]) #-1выведена эмпирически
         books = list(books)
-        iss(tmp,books) #отправляеем индексы и названия
+        #print('tmp=isbns %s tmp')
+        try:func(tmp,books) #отправляеем индексы и названия
+        except TypeError:iss(tmp,books)
 
-    Button(bottom, text='Ок',command=lambda:handlOk() ).grid(row=0)
+    Button(bottom, text='Ок',command=lambda:handlOk(iss) ).grid(row=0)
     Button(bottom, text='Отмена',command=lambda:issueF.grid_remove()).grid(row=0,column=1)
+    
     midlle.grid(column=4,row=0)
     submidle1, submidle2 = Frame(midlle),Frame(midlle)
     submidle1.grid(row=0)
@@ -517,18 +530,21 @@ def hideFrames():
     for frame in [issueF,getF,insertF,delF, catalogingF, classificationF,addreaderF,delreaderF]:
         frame.grid_remove()
 
-def viewreader():#!dslfxf
+def viewreader(serv=True,newcomand=[]):#!dslfxf
     #имя для пользователя /\ в бд, для всех, поумолчанию тру?
-    hideFrames()
-    if windows['прием_книг'][1]:
-        windows['прием_книг'][0].grid()
-        handlecancel = lambda event:getF.grid_remove()
+    if serv:
+        hideFrames()
+        if windows['прием_книг'][1]:
+            windows['прием_книг'][0].grid()
+            userlist.clearlist()
+            handeofind()
+            handlecancel = lambda event:getF.grid_remove()
 
-        #root.bind('<KeyPress>',handeofind)
-        #root.bind('<Return>',  handeofind)
-        #root.bind('<Escape>',handlecancel)
-        return
-    windows['прием_книг'][1] = True
+            #root.bind('<KeyPress>',handeofind)
+            #root.bind('<Return>',  handeofind)
+            #root.bind('<Escape>',handlecancel)
+            return
+        windows['прием_книг'][1] = True
 
 
     gna = []#номер абонемента
@@ -645,7 +661,7 @@ def viewreader():#!dslfxf
             print('idbook ',idbooksFr)
             print('ind ',ind)
            
-
+        print('cf = %s' % cf)
         mtl = MyTopLevel(configfields=cf, configcmd=handlefind,listcmd=h_dc_bl,okcmd=h_ungetting) 
         #delbooks()
 
@@ -655,7 +671,7 @@ def viewreader():#!dslfxf
         mtl.chb.setFlagByIndex(6)
         mtl.root.title(string='Возврат книг - СУБД Библиотека')
         mtl.fent.grid_remove()
-        mtl.toplist
+        #mtl.toplist
 
 
         handlefind()
@@ -668,10 +684,24 @@ def viewreader():#!dslfxf
         #mtl.start()
 
         
-
-
+    def delread():
+        i = int(userlist.getIndexCur())
+        if i==-1:return
+        na = gna[i]
+        if countBooksByNA(na)>0:
+            showerror('Ошибка',"Нельзя удалить читателя, который вернул не все книги")
+            return
+        print(na,len(na),userlist.getIndexCur())
+        msg = "Вы уверены что хотите удалить пользователя за номером %s" %na
+        if askyesnocancel("Предупреждение",msg):
+            if inscsql('DELETE FROM readers where NomberAbonement="%s"' %na ):
+                showinfo("Успешное выполнение операции",'Читатель за номером %s удален' % na)
+                userlist.clearlist()
+                handeofind()
+            else:showerror("Ошибка","Читатель не удален")
+        else:pass
     userlist.setAct(viewTopBooks )
-
+    #useVTB = lambda:viewTopBooks()
     sbx = Scrollbar( centr, orient=HORIZONTAL, command=userlist.listbox.xview)
     userlist.listbox.configure(xscrollcommand=sbx.set)
     sbx.pack(side=BOTTOM, fill=X)
@@ -679,7 +709,12 @@ def viewreader():#!dslfxf
     findtext = StringVar()
     fent = Entry(bottom, textvariable=findtext)
     fent.grid(row=0,column=0)
-    Button(bottom,text='Ok', command=lambda:handeofind() ).grid(row=1)
+    Button(bottom,text='Найти', command=lambda:handeofind() ).grid(row=0,column=1)
+    Button(bottom, text='Удалить читателя',command=lambda:delread()  ).grid(row=0,column=2,columnspan=2)
+    b = Button(bottom,text='Ok', command=lambda:viewTopBooks(1) )
+    b.grid(row=1,ipadx=45,padx=10)
+    if newcomand!=[]:
+        b['command']=lambda:newcomand()
     Button(bottom,text='Отмена', command=lambda:getF.grid_remove()).grid(row=1,column=1)
     #Entry(bottom, textvariable=number).grid(row=1)
 
@@ -872,7 +907,17 @@ def addreader():
 
 
 def delreader():
-    MyTopLevel(parent=root)
+    print('rf=%s' % rf)
+    cf = [(fieldOfBooksRus[x],fieldOfBooks[x]) for x in range(len(fieldOfBooks))]
+    print('rf=%s' % cf)
+    #xw = MyTopLevel(configfields=rf)
+    #for x in sqlmy(r=xw.chb.getSetup(),table='readers',sortby=rTableE[1:5][int(xw.rb.reportIndex())],shadow='NomberAbonement'):
+            #y = tuple2str(x[1:]) #сама строка
+            #gna.append(x[0]) #скрытый id
+            #rows.append(y)
+
+    
+
 root=Tk()
 root.title('Администрирование БД')
 master = Frame(root)
@@ -893,7 +938,7 @@ insertB           = Button (getNdelF,text='Добавление новой кн�
 delB              = Button (getNdelF,text='Удаление книги')
 
 addReader         = Button (readerAdmin,text='Добавление читателя',command=lambda:addreader()).grid(padx=20,ipady=5)
-delReader         = Button (readerAdmin,text='Удаление читателя',command=lambda:delreader()).grid(padx=20,ipady=5)
+delReader         = Button (readerAdmin,text='Удаление читателя',command=lambda:viewreader()).grid(padx=20,ipady=5)
 
 cataloging        = Button (classifF,text='Каталогизация' )
 classificationB   = Button (classifF,text='Классификация книг')

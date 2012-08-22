@@ -33,7 +33,7 @@ SELECT b.title, b.ISBN,b.ISBN,b.id FROM books AS b WHERE id
 IN ( SELECT idbook FROM getting JOIN readers WHERE idreader 
 IN ( SELECT readers.id where readers.NomberAbonement='m-9'))
 
-количество книг по чит. билету
+количество взятых книг по чит. билету
 SELECT COUNT(g.idreader) FROM getting as g WHERE idreader IN (SELECT r.id FROM readers AS r WHERE NomberAbonement='m-9')
 
 ВСЕ ИЗ ДВУХ ТАБЛИЦ!
@@ -43,3 +43,5 @@ SELECT b.*, r.* FROM books as b, readers As r
 книги по idreaders
 SELECT b.autors,b.title FROM books as b WHERE id IN( SELECT idbook FROM getting as g JOIN readers as r WHERE idreader IN 
 ( SELECT r.id where r.NomberAbonement="opi-5428"))
+
+
