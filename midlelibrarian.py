@@ -182,7 +182,7 @@ def ViewBooks():#выдача книг читателю #!dslfxf rybu rybub
     gna = [] #recursiv acronim from GNA is Nomber of Abonement
     def iss(isbns,books):
         def inserbd():
-            if len(books)>5:
+            if len(books)>5: #дописать - чтобы сумма от желаемых и текущех была
                 showerror('Ошибка','У одного человека не может находиться более 5 книг')
                 return
             try:
@@ -205,16 +205,18 @@ def ViewBooks():#выдача книг читателю #!dslfxf rybu rybub
             request = '''INSERT INTO getting (active,datestart,dateend,idbook,idreader) VALUES (?,?,?,?,?)'''
             na = gna[int(userlist.getIndexCur())] # NomberAbonement текущего выбраного
             idcurreader=[] #ID текущего ридера
+            
             idbooks=[] # ID книг
-            for x in execsql('SELECT id FROM readers WHERE NomberAbonement="'+na+'"'):
+            for x in execsql('SELECT id FROM readers WHERE NomberAbonement=%s' % na):
                 idcurreader.append(x)
             for isbn in isbns:
                 for row in execsql('SELECT id FROM books WHERE ISBN=?',(isbn,)):
                     idbooks.append(row)
             idcurreader = [x[0] for x in idcurreader][0] # делаем из списка картежей список чисел (строк)
             print('IDBOOKS=',idbooks)
+            print('idcurreader=',idcurreader)
             idbooks = [x[0] for x in idbooks]
-            idbooks[0] = int(idbooks[0]) - 1   #=====УМА НЕПРЕЛОЖУ КАК ВЫХОДИТ, ТАК ЧТО id, на 1 больше!????!!!!!======
+            idbooks[0] = int(idbooks[0]) #-1   #=====УМА НЕПРЕЛОЖУ КАК ВЫХОДИТ, ТАК ЧТО id, на 1 больше!????!!!!!======
             print('IDBOOKS=',idbooks)
             #узнать id текущего ридера и ид всех книг - список
             #print('na,userlist.getIndexCur(),gna = %s, %s - %s' % (na,userlist.getIndexCur(),gna))
@@ -271,11 +273,12 @@ def ViewBooks():#выдача книг читателю #!dslfxf rybu rybub
                 rows.append(y)
             # для каждого НА в гна получить количество книг, на этот НА
             for x in gna:
-                msg = 'SELECT COUNT(active) FROM getting JOIN readers WHERE idreader IN ( SELECT readers.id where readers.NomberAbonement="%s")' % x
+                msg = '''SELECT COUNT(active) FROM getting JOIN readers WHERE idreader IN 
+                ( SELECT readers.id where readers.NomberAbonement="%s")''' % x
                 auxcount.append(str(list(execsql( msg) )[0][0] ) )
             #
             for x in range(len(rows)):
-                userlist.listbox.insert('end',rows[x] + ' ~Книг на руках:' + auxcount[x])
+                userlist.listbox.insert('end',rows[x] + ' ~Книг на_руках:' + auxcount[x])
 
         centr,bottom,top,right = Frame(tf), Frame(tf), Frame(tf), Frame(tf)
         #sdfsdf
@@ -553,7 +556,8 @@ def viewreader():#!dslfxf
             rows.append(y)
         # для каждого НА в гна получить количество книг, на этот НА
         for x in gna:
-            msg = 'SELECT COUNT(active) FROM getting JOIN readers WHERE idreader IN ( SELECT readers.id where readers.NomberAbonement="%s")' % x
+            msg = '''SELECT COUNT(active) FROM getting JOIN readers WHERE idreader IN 
+            ( SELECT readers.id where readers.NomberAbonement="%s")''' % x
             auxcount.append(str(list(execsql( msg) )[0][0] ) )
         #
         for x in range(len(rows)):
@@ -629,6 +633,7 @@ def viewreader():#!dslfxf
             print('ind=%s' % ind)
             req = 'DELETE FROM getting WHERE idbook=? AND idreader IN (SELECT id from readers WHERE NomberAbonement=?)'
             for id in idbooksFr:
+                
                 s = inscsql(req,(id,ind))
                 if not s:
                     showerror('Ошибка','Произошла непредвиденная ошибка, причины неизвестны')
@@ -649,6 +654,8 @@ def viewreader():#!dslfxf
         mtl.chb.setFlagByIndex(3)
         mtl.chb.setFlagByIndex(6)
         mtl.root.title(string='Возврат книг - СУБД Библиотека')
+        mtl.fent.grid_remove()
+        mtl.toplist
 
 
         handlefind()

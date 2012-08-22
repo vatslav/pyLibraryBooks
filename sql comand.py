@@ -38,3 +38,8 @@ SELECT COUNT(g.idreader) FROM getting as g WHERE idreader IN (SELECT r.id FROM r
 
 ВСЕ ИЗ ДВУХ ТАБЛИЦ!
 SELECT b.*, r.* FROM books as b, readers As r
+
+
+книги по idreaders
+SELECT b.autors,b.title FROM books as b WHERE id IN( SELECT idbook FROM getting as g JOIN readers as r WHERE idreader IN 
+( SELECT r.id where r.NomberAbonement="opi-5428"))

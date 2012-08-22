@@ -92,9 +92,13 @@ def okAct(event):
     if hashtable!='':
         #print('hsh msg 1')
         if str(row[0])+str(row[1]) ==   str(passlower)+ str (hsh.hexdigest() ):  #проверка на правельность данных!!!
-            if row[2]=='Адинистратор':
+            #print(row, row[2])
+            if row[2]=='Администратор':
                 master.destroy()
                 import librarian
+            elif row[2]=='Библиотекарь':
+                master.destroy()
+                import midlelibrarian
             else:
                 showerror('Ошибка', 'Ошибка роли, обратитесь в техподдержку')
 

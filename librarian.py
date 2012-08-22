@@ -20,7 +20,7 @@ b1  = '<Button-1>'
 b1w = '<Double-1>'
 b2  = '<Button-2>'
 tab=''
-specialty = ("Библиотекарь", "Читатель", "Администратор")
+specialty = ("Библиотекарь", "Администратор")
 root1=True #кнопки
 root=True #таблица
 numberUser=0
@@ -501,7 +501,7 @@ def mymain():
     root1.title(string='Администрирование БД Библиотека')
     viewAllBooks    = Button (text='посмотреть список книг')
     creatLibrarian  = Button (text='Создать учетную запись библиотекаря',   command=(lambda:creatUser() )  )
-    changeLibrarian = Button (text='Изменить  учетную запись библиотекаря', command=(lambda:changeUser())  )
+    changeLibrarian = Button (text='Изменить  учетную запись пользователя', command=(lambda:changeUser())  )
     viewLibrarian   = Button (text='Посмотреть статистику')
     exportdb        = Button (text='Экспорт базы данных в файл',            command=(lambda:exportDb()  )  )
     importdb        = Button (text='Импорт базы данных в файл',             command=(lambda:importDb()  )  )

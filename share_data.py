@@ -444,8 +444,8 @@ class MyTopLevel(ScrolledList):
         sbx.pack(side=BOTTOM, fill=X)
         # поисковая полоска и кнопки ок отмена
         findtext = StringVar()
-        fent = Entry(bottom, textvariable=findtext)
-        fent.grid(row=0,column=0)
+        self.fent = Entry(bottom, textvariable=findtext)
+        self.fent.grid(row=0,column=0)
         self.b =Button(bottom,text='Ok',command=lambda:okcmd() )
         self.b.grid(row=1)
         Button(bottom,text='Отмена', command=lambda:self.root.destroy()).grid(row=1,column=1)
