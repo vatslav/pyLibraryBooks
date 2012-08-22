@@ -10,6 +10,7 @@ import sqlite3,re,random,datetime, time
 from hashlib import md5
 from share_data import *
 from copy import deepcopy
+import webbrowser
 
 from tkinter.ttk import *
 
@@ -426,8 +427,8 @@ def ViewBooks():#выдача книг читателю #!dslfxf rybu rybub
         try:func(tmp,books) #отправляеем индексы и названия
         except TypeError:iss(tmp,books)
 
-    Button(bottom, text='Ок',command=lambda:handlOk(iss) ).grid(row=0)
-    Button(bottom, text='Отмена',command=lambda:issueF.grid_remove()).grid(row=0,column=1)
+    Button(bottom, text='Ок',command=lambda:handlOk(iss) ).grid(row=1)
+    Button(bottom, text='Отмена',command=lambda:issueF.grid_remove()).grid(row=1,column=1)
     
     midlle.grid(column=4,row=0)
     submidle1, submidle2 = Frame(midlle),Frame(midlle)
@@ -443,7 +444,7 @@ def ViewBooks():#выдача книг читателю #!dslfxf rybu rybub
     Label(right,text='   20').pack()
 
     text =StringVar()
-    find = Entry(midlle,textvariable=text)
+    find = Entry(bottom,textvariable=text)
 
     chekLayers = chekbutton(parent=submidle1,title='Отображаемые поля:',opt=nameOfrb())
     def hand():handlerPress('служебный поиск')
@@ -468,8 +469,20 @@ def ViewBooks():#выдача книг читателю #!dslfxf rybu rybub
 
     #bookList.listbox.bind('<Double-1>', bookList.listbox.ff)
     bookList.grid(column=0,row=0)
-    find.grid(column=0,row=2,padx=20,ipady=5)
-    Button(bottom,text='Найти',command=lambda:handlerPress(1)).grid(column=2,row=0,padx=20,pady=5)
+    find.grid(column=0,row=0,padx=20,ipady=5)
+    Button(bottom,text='Найти1',command=lambda:handlerPress(1)).grid(column=1,row=0)
+    Button(bottom,text='Найти выбранные книги на Ozon.ru',command=lambda:ozon()).grid(column=2,row=0)
+    ms = 'http://www.google.ru/search?hl=ru&tbo=p&tbm=bks&q=isbn:'
+    Button(bottom,text='Найти выбранные книги на Google.com',command=lambda:ozon(msg=ms)).grid(column=2,row=1)
+    def ozon(msg="http://www.ozon.ru/?context=search&text="):
+        i,s = bookList.getCurMulti()
+        t = [storageisbn[x] for x in i]
+        if len(t)>5:
+            if askyesnocancel('Внимание',"Каждая книга откроется в новой вкладке, хотите открыть %s вкладок" % len(t)):
+                pass
+            else:return
+        for x in t:
+            webbrowser.open(msg+x)
     issueF.grid(column=4,row=0)
     find.focus()
     def handlerCancel(event):issueF.grid_remove()
@@ -536,7 +549,7 @@ def viewreader(serv=True,newcomand=[]):#!dslfxf
         hideFrames()
         if windows['прием_книг'][1]:
             windows['прием_книг'][0].grid()
-            userlist.clearlist()
+            #userlist.clearlist()
             handeofind()
             handlecancel = lambda event:getF.grid_remove()
 
