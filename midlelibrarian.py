@@ -133,8 +133,14 @@ def sqlmy(mask=None,req=None,r=[],table='', sortby='',shadow='',j='',rq=False): 
 
 def ViewBooks():#выдача книг читателю #!dslfxf rybu rybub
     global flags,issueF,fieldOfBooksRus,firstIn
+    isbns = []
+    issb  = []
+    row   = []
+    rissb = []
+    struct = {} #,isbns=isbns,issb=issb,row=row,struct
     def handlerPress(event):
         global firstIn
+        nonlocal isbns,issb,row,struct,rissb
         bookList.clearlist()#index=rb.reportIndex()
 
 
@@ -152,9 +158,14 @@ def ViewBooks():#выдача книг читателю #!dslfxf rybu rybub
             txt=''
         # НЕ ВЫПОДИТЬ ТЕ КНИГИ КОТОРЫЕ НЕ ПОЛНОСТЬЮ ЗАПОЛНЕНЫ====
         for x in range(len(storageisbn)):storageisbn.pop()
-        isbns = []
-        issb  = []
-        row  = []
+        print(222)
+        #a     = [x for x range(len(isbns))]
+        print(isbns,len(isbns))
+        [isbns.pop() for x in range(len(isbns)) ]
+        [issb.pop()  for x in range(len(issb))]
+        [row.pop()   for x in range(len(row))]
+        [rissb.pop() for x in range(len(rissb))]
+        struct.clear()
         for x in getBooks(txt,index=rb.reportIndex(),sortby=fieldOfBooks[rb.reportIndex()],state=chekLayers.reportDict(),field=fieldOfBookD):
             isbn = x[0]
             #isbns.append(x[0])
@@ -176,9 +187,13 @@ def ViewBooks():#выдача книг читателю #!dslfxf rybu rybub
             issb.append( int(countBooksByISBN(isbns[x]))  )
         for x in range(len(row)):
             j = int( countBooksBeByISBN(isbns[x]) )
+            rissb.append(j-issb[x])
             row[x] += ' ' + str(j-issb[x]) + 'из' + str(j)
         for x in row:    
             bookList.listbox.insert('end',x)
+        struct = {isbns[x]:(rissb[x],issb[x]) for x in range(len(row)) }
+        #for x in struct.items():
+            #print()
             
 
             #print(x,type(x),type(x[0]),type(x[4]))
@@ -191,8 +206,20 @@ def ViewBooks():#выдача книг читателю #!dslfxf rybu rybub
     def iss(isbns,books):
         def inserbd():
             if len(books)>5: #дописать - чтобы сумма от желаемых и текущех была
-                showerror('Ошибка','У одного человека не может находиться более 5 книг')
+                showerror('Ошибка','Одному читателю нелья выдать более 5 книг за раз')
                 return
+            for isbn in isbns:
+                if struct[isbn][0]<1:
+                    showerror('Ошибка',"Одной из книг нет в наличии")
+                    return
+            na = gna[int(userlist.getIndexCur())] # NomberAbonement текущего выбраного
+            if int(countBooksByNA(na))>5:
+                showerror("Ошибка","У читателя уже более 5 книг")
+                return
+            if int(countBooksByNA(na))+len(isbns)>5:
+                showerror("Ошибка","Суммарное количество книг взятых читателем и отобранных для выдачи превышает 5 штук")
+                return
+            
             try:
                 deltat = int(timeget.get())
                 if deltat<1:
@@ -211,7 +238,7 @@ def ViewBooks():#выдача книг читателю #!dslfxf rybu rybub
                     showerror('Ошибка','Одной из книг нет в наличии')
                     return
             request = '''INSERT INTO getting (active,datestart,dateend,idbook,idreader) VALUES (?,?,?,?,?)'''
-            na = gna[int(userlist.getIndexCur())] # NomberAbonement текущего выбраного
+            
             idcurreader=[] #ID текущего ридера
             
             idbooks=[] # ID книг
@@ -354,9 +381,15 @@ def ViewBooks():#выдача книг читателю #!dslfxf rybu rybub
             if len(x)>maxlenttitile:
                 maxlenttitile=len(x)
         selectbooks = ScrolledList(parent=centr)#книшки которые уже выбрали
+        def handlerDC_selbooks(event=1):
+            i = int ( selectbooks.getIndexCur() )
+            print('i=',i)
+            selectbooks.listbox.delete( i)
         selectbooks.listbox.config(height=len(isbns),width=maxlenttitile)
         selectbooks.clearlist()
-        print('isbns %s' % isbns)
+        selectbooks.setAct(handlerDC_selbooks)
+        selectbooks.listbox.bind('<Double-1>', handlerDC_selbooks)
+        #print('isbns %s' % isbns)
         # нижний лист - книги
         verifybooks = []
         for x in range(len(books)):
