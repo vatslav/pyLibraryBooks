@@ -15,7 +15,7 @@ def low(s):
     s = str(s)
     return s.lower()
 try:
-    conn = sqlite3.connect('mydb1.sqlite', isolation_level='DEFERRED')
+    conn = sqlite3.connect('mydb1.sqlite', isolation_level='IMMEDIATE')
     cur = conn.cursor() 
     conn.create_collation('sort',sortTextInDb)
     conn.create_function("low", 1, low)
@@ -497,3 +497,10 @@ class MyTopLevel(ScrolledList):
 def countBooksByNA(na):
     return list(execsql('''SELECT COUNT(active) FROM getting JOIN readers WHERE idreader IN 
         ( SELECT readers.id where readers.NomberAbonement="%s")''' % na))[0][0]
+
+def countBooksByISBN(isbn):
+     return list(execsql('''SELECT COUNT(g.active) FROM getting as g WHERE g.active=1 and g.idbook IN 
+        (SELECT id FROM books where ISBN="%s" )''' % isbn))[0][0]   
+
+def countBooksBeByISBN(isbn):
+     return list(execsql('''SELECT COUNT(classbook) FROM exemplars WHERE classbook="%s"''' % isbn))[0][0]   

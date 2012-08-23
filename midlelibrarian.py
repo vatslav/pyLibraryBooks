@@ -16,7 +16,7 @@ from tkinter.ttk import *
 
 #поиск книг
 flags ={'выдать_книги':False,'добавить_книгу':False}
-fieldOfBooksRus = ('ISBN', 'ББК', 'Автор', 'Название', 'Год издания', 'Издательство', 'ключивые слова')
+fieldOfBooksRus = ('ISBN', 'ББК', 'Автор', 'Название', 'Год издания', 'Издательство', 'ключевые слова')
 fieldOfBooks = ('ISBN','bbk', 'autors', 'title', 'years', 'publisher', 'keywords')
 fieldOfBookD = {} #создадим словарь на оснве двух предыдущих картежей
 if len(fieldOfBooks)!=len(fieldOfBooksRus):showerror('erroe','erroedict')
@@ -152,8 +152,12 @@ def ViewBooks():#выдача книг читателю #!dslfxf rybu rybub
             txt=''
         # НЕ ВЫПОДИТЬ ТЕ КНИГИ КОТОРЫЕ НЕ ПОЛНОСТЬЮ ЗАПОЛНЕНЫ====
         for x in range(len(storageisbn)):storageisbn.pop()
+        isbns = []
+        issb  = []
+        row  = []
         for x in getBooks(txt,index=rb.reportIndex(),sortby=fieldOfBooks[rb.reportIndex()],state=chekLayers.reportDict(),field=fieldOfBookD):
             isbn = x[0]
+            #isbns.append(x[0])
             x=x[1:]
             # не выводим книгу, если она не полностью заполнена
             wiki = True
@@ -163,12 +167,19 @@ def ViewBooks():#выдача книг читателю #!dslfxf rybu rybub
                     wiki=False
                     break
             if not wiki:continue
-
-           # continue
-            x = tuple2str(x)
-            
-            bookList.listbox.insert('end',x)
             storageisbn.append(isbn)
+            isbns.append(isbn)
+           # continue
+            row.append( tuple2str(x) )
+
+        for x in range(len(row)):
+            issb.append( int(countBooksByISBN(isbns[x]))  )
+        for x in range(len(row)):
+            j = int( countBooksBeByISBN(isbns[x]) )
+            row[x] += ' ' + str(j-issb[x]) + 'из' + str(j)
+        for x in row:    
+            bookList.listbox.insert('end',x)
+            
 
             #print(x,type(x),type(x[0]),type(x[4]))
 
@@ -348,23 +359,8 @@ def ViewBooks():#выдача книг читателю #!dslfxf rybu rybub
         # нижний лист - книги
         verifybooks = []
         for x in range(len(books)):
-            # количество экземпляров
-            #SELECT count(e.classbook) FROM exemplars as e  WHERE e.classbook="5-9050"
-            # количество книг по isbn
-            count    = execsql('SELECT COUNT (classbook) FROM exemplars WHERE classbook=?', (isbns[x],))
-            count    = list(count)[0][0]
-            #id by isbn
-            counttmp = execsql('SELECT (id) FROM books WHERE ISBN=?', (isbns[x],))
-            counttmp = list(counttmp)[0][0]
 
-            count2   = execsql('SELECT COUNT (idbook) FROM getting WHERE idbook =?', (counttmp,))
-            count2   = list(count2)[0][0]
-            realcountbook = int(count)-int(count2)
-            #if realcountbook<1:
-                #showerror()
-            verifybooks.append(realcountbook)
-            row = str(books[x]) + ' всего экз.:('+str(count)+')'+ ' в наличии('+str(realcountbook)+')'
-            selectbooks.listbox.insert('end',row)
+            selectbooks.listbox.insert('end',books[x])
 
         def handleDCinuserlist(td):
             try:
@@ -586,7 +582,7 @@ def viewreader(serv=True,newcomand=[]):#!dslfxf
             rows.append(y)
         # для каждого НА в гна получить количество книг, на этот НА
         for x in gna:
-            msg = '''SELECT COUNT(active) FROM getting JOIN readers WHERE idreader IN 
+            msg = '''SELECT COUNT(active) FROM getting JOIN readers WHERE active=1 AND idreader IN 
             ( SELECT readers.id where readers.NomberAbonement="%s")''' % x
             auxcount.append(str(list(execsql( msg) )[0][0] ) )
         #
@@ -661,14 +657,17 @@ def viewreader(serv=True,newcomand=[]):#!dslfxf
 
             print('idbooksFr =%s' % idbooksFr )
             print('ind=%s' % ind)
-            req = 'DELETE FROM getting WHERE idbook=? AND idreader IN (SELECT id from readers WHERE NomberAbonement=?)'
+            #req = 'DELETE FROM getting WHERE idbook=? AND idreader IN (SELECT id from readers WHERE NomberAbonement=?)'
+            req = 'UPDATE getting set active=0 where idbook=? AND idreader IN (SELECT id from readers WHERE NomberAbonement=?)'
+            s=1
             for id in idbooksFr:
                 
                 s = inscsql(req,(id,ind))
                 if not s:
                     showerror('Ошибка','Произошла непредвиденная ошибка, причины неизвестны')
 
-            showinfo('Успех',"Книги возвращены")
+            if s:showinfo('Успех',"Книги возвращены")
+            handlefind()
             mtl.root.destroy()
 
         def delbooks():
@@ -922,22 +921,102 @@ def addreader():
 
 
 def delreader(): #rf!
-    print('rf=%s' % rf)
+    #print('rf=%s' % rf)
     cf = [(fieldOfBooksRus[x],fieldOfBooks[x]) for x in range(len(fieldOfBooks))]
-    print('rf=%s' % cf)
-
-    
+    #print('rf=%s' % cf)
+    hideFrames()
+    isbns = []
     def find():
         xw.toplist.clearlist()
-        txt=xw.findtext.get()
+        txt  = xw.findtext.get()
+        [isbns.pop() for x in range(len(isbns))]
+        row  = []
+        issb = []
+        #print('ISBNS=!!===++++', list(isbns))
         for x in getBooks(txt,index=xw.rb.reportIndex(),sortby=fieldOfBooks[xw.rb.reportIndex()],
             state=xw.chb.reportDict(),field=fieldOfBookD):
-            x = tuple2str(x)
+            isbns.append(x[0])
+            row.append( tuple2str(x[1:]) )
+
+        for x in range(len(row)):
+            issb.append( int(countBooksByISBN(isbns[x]))  )
+        for x in range(len(row)):
+            j = int( countBooksBeByISBN(isbns[x]) )
+            row[x] += ' ' + str(j-issb[x]) + 'из' + str(j)
+
+
+
+            #x += ' выдано:'+str(countBooksByISBN(y))
+        #print(2)
+        for x in row:
             xw.toplist.listbox.insert('end',x)
-    xw = MyTopLevel(parent=root,configfields=cf,configcmd=find)
+    def tl(event):
+        def delb():
+
+            try:x = int(count.get())
+            except ValueError:
+                showerror('Ошибка',"Введите целое число")
+                return
+            flag = True
+            ptr = 0
+            ids = list(execsql('SELECT id from exemplars  where classbook="%s"' % isbns[i]))
+            ids = [x[0] for x in ids]
+            if len(ids)<x:
+                showerror('Ошибка',"""Вы хотите удалить экземпляров: %s - это больше 
+                    чем есть в наличии: %s """ % ( x, len(ids) ) )
+            numberissb = list( execsql('''SELECT COUNT(g.active) FROM getting as g WHERE 
+                g.idbook IN (SELECT id FROM books where ISBN="%s")''' % isbns[i]))
+            numberissb = tuple2str( numberissb[0] )
+            print('numberissb=%s' % numberissb)
+            if int(numberissb)>0:
+                showerror('Ошибка',"Одик из экземпляров это книги выдан пользователю,\nудаление невозможно")
+                return
+            ids = ids[0:x] #сколько будем выдавать
+            for id in ids:
+                ptr += 1
+                if not inscsql('DELETE from exemplars where classbook="%s" and id="%s"' % (isbns[i],id)):
+                    flag = False
+            if flag:showinfo("Успех","Экземпляров удалено: %s" % x)
+            else:showerror('Ошибка',"В процессе удаления произошла ошибка")
+            r.destroy()
+        i = int(xw.toplist.getIndexCur())
+        if i == -1:
+            return
+        r = Toplevel()
+        l, centr = Frame(r), Frame(r)
+        l.grid(row=0,column=0)
+        centr.grid(row=1,column=0)
+        r.title(string='Удаление экземпляров книги')
+        lb = Listbox(l)
+        lb.config(height=2,width=5+len(xw.toplist.getCur()),font=('courier'))
+        lb.grid(row=0,column=0,columnspan=2)
+        
+        lb.insert('end',xw.toplist.getCur())
+        count = IntVar()
+        Label(centr,text='Количество экземпляров к удалению:').grid(row=1,column=0)
+        s = Spinbox(centr, from_=1.0, to=100.0, textvariable=count)
+        s.grid(row=2,column=0)
+        Button(centr,text='Удалить',command=lambda:delb()).grid(row=2,column=1)
+        Button(r,text='Отмена',command=lambda:r.destroy()).grid(row=3,column=0)
+        #r.focus_set()
+    
+        #r.grab_set()
+        #r.wait_window()
+        r.focus_set()          # take over input focus,
+        #r.grab_set()           # disable other windows while I'm open,
+        r.wait_window() 
+        #r.mainloop()
+
+
+    xw = MyTopLevel(parent=delF,configfields=cf,configcmd=find,listcmd=tl)
+    xw.rb.var.set('title')
+    xw.chb.setFlagByIndex(3)
+    xw.chb.setFlagByIndex(2)
+    xw.chb.setFlagByIndex(0,value=False)
     xw.root.grid(column=4,row=0)
     #xw.root.title(string='Удаление экземпляров книг')
     find()
+    delF.grid(row=0,column=2)
     
     #xw.
     #for x in sqlmy(r=xw.chb.getSetup(),table='readers',sortby=rTableE[1:5][int(xw.rb.reportIndex())],shadow='NomberAbonement'):

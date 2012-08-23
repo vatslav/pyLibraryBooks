@@ -214,3 +214,24 @@ fieldOfBooksstr = 'ISBN,bbk,autors,titile,years,publisher,keywords,city
         getF.grid(column=4,row=0)
 
         root.mainloop()
+
+
+
+        for x in range(len(books)):
+            # количество экземпляров
+            #SELECT count(e.classbook) FROM exemplars as e  WHERE e.classbook="5-9050"
+            # количество книг по isbn
+            count    = execsql('SELECT COUNT (classbook) FROM exemplars WHERE classbook=?', (isbns[x],))
+            count    = list(count)[0][0]
+            #id by isbn
+            counttmp = execsql('SELECT (id) FROM books WHERE ISBN=?', (isbns[x],))
+            counttmp = list(counttmp)[0][0]
+
+            count2   = execsql('SELECT COUNT (idbook) FROM getting WHERE idbook =?', (counttmp,))
+            count2   = list(count2)[0][0]
+            realcountbook = int(count)-int(count2)
+            #if realcountbook<1:
+                #showerror()
+            verifybooks.append(realcountbook)
+            #row = str(books[x]) + ' всего экз.:('+str(count)+')'+ ' в наличии('+str(realcountbook)+')'
+            selectbooks.listbox.insert('end',row)
