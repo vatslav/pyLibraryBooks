@@ -242,6 +242,7 @@ def ViewBooks():#выдача книг читателю #!dslfxf rybu rybub
                 if not inscsql(request,(True,td,tr,idbook,idcurreader)):
                     return
             showinfo('Успех','Книги добавлены')
+            handlerPress(1)
             tf.destroy()
             #handlecancel() ##!==
             
@@ -288,7 +289,7 @@ def ViewBooks():#выдача книг читателю #!dslfxf rybu rybub
                 rows.append(y)
             # для каждого НА в гна получить количество книг, на этот НА
             for x in gna:
-                msg = '''SELECT COUNT(active) FROM getting JOIN readers WHERE idreader IN 
+                msg = '''SELECT COUNT(active) FROM getting JOIN readers WHERE active=1 AND idreader IN 
                 ( SELECT readers.id where readers.NomberAbonement="%s")''' % x
                 auxcount.append(str(list(execsql( msg) )[0][0] ) )
             #
@@ -405,8 +406,9 @@ def ViewBooks():#выдача книг читателю #!dslfxf rybu rybub
     hideFrames();
     if flags['выдать_книги']==True:
         issueF.grid()
-        bookList.clearlist()
-        handlerPress(99)
+        #bookList.clearlist()
+        try:handlerPress(99)
+        except NameError:pass
         return
     flags['выдать_книги'] = True
     issueF = Frame(root)
@@ -547,7 +549,7 @@ def viewreader(serv=True,newcomand=[]):#!dslfxf
         if windows['прием_книг'][1]:
             windows['прием_книг'][0].grid()
             #userlist.clearlist()
-            handeofind()
+            #handeofind()
             handlecancel = lambda event:getF.grid_remove()
 
             #root.bind('<KeyPress>',handeofind)
@@ -623,24 +625,31 @@ def viewreader(serv=True,newcomand=[]):#!dslfxf
         def handlefind(event=True):
             mtl.toplist.clearlist()
             mtl.chb.setFlagByIndex(mtl.rb.reportIndex())
-            r = 'SELECT b.id, '
+            r = 'SELECT b.id, ' # готовим запрос (учет текущих флагов)
             for x in mtl.chb.getSetup():
                 r = r + ' b.%s,' % x
-            r = r[:-1]
+            r = r[:-1] # del запятая
+            # old - оператор IN не возвращает только уникальные элементы, повторки нет
             reg=r + ''' FROM books AS b  WHERE id 
             IN ( SELECT idbook FROM getting JOIN readers WHERE idreader 
             IN ( SELECT readers.id where readers.NomberAbonement=?)) ORDER BY low(%s) COLLATE sort''' % mtl.rb.report()
+            # запрос, новый, когда id отдельно
+            r2 = r + ' FROM books AS b  WHERE id="%s"'
+            idbooks = '''SELECT idbook FROM getting JOIN readers WHERE active=1 AND idreader 
+            IN ( SELECT readers.id where readers.NomberAbonement=?) ''' 
             
+            idbooks = list(execsql(idbooks,(ind,)))
+            idbooks = [x[0] for x in idbooks]
+            print('___r2__==%s' %r2)
             [idbooksFr.pop() for x in range(len(idbooksFr))]
-            print(reg)
-            bookrows = execsql(reg, (ind,) )
-            for x in bookrows:
-                idbooksFr.append(x[0])
-                x = tuple2str(x[1:])
-                mtl.toplist.listbox.insert('end',x)
-            for x in execsql(reg, (ind,) ):
-                print(x)
-            print(list(execsql(reg, (ind,) )))
+            print(r2,idbooks)
+            for y in idbooks:
+                bookrows = execsql(r2 % y )
+                for x in bookrows:
+                    idbooksFr.append(x[0])
+                    x = tuple2str(x[1:])
+                    mtl.toplist.listbox.insert('end',x)
+
 
         def h_dc_bl(event=True):
             i = int(mtl.toplist.getIndexCur())
@@ -667,7 +676,10 @@ def viewreader(serv=True,newcomand=[]):#!dslfxf
                     showerror('Ошибка','Произошла непредвиденная ошибка, причины неизвестны')
 
             if s:showinfo('Успех',"Книги возвращены")
-            handlefind()
+            handeofind()
+
+            #handeofind
+
             mtl.root.destroy()
 
         def delbooks():
@@ -964,6 +976,7 @@ def delreader(): #rf!
             if len(ids)<x:
                 showerror('Ошибка',"""Вы хотите удалить экземпляров: %s - это больше 
                     чем есть в наличии: %s """ % ( x, len(ids) ) )
+                return
             numberissb = list( execsql('''SELECT COUNT(g.active) FROM getting as g WHERE 
                 g.idbook IN (SELECT id FROM books where ISBN="%s")''' % isbns[i]))
             numberissb = tuple2str( numberissb[0] )

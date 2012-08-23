@@ -235,3 +235,8 @@ fieldOfBooksstr = 'ISBN,bbk,autors,titile,years,publisher,keywords,city
             verifybooks.append(realcountbook)
             #row = str(books[x]) + ' всего экз.:('+str(count)+')'+ ' в наличии('+str(realcountbook)+')'
             selectbooks.listbox.insert('end',row)
+
+
+            reg=r + ''' FROM books AS b  WHERE id 
+            IN ( SELECT idbook FROM getting JOIN readers WHERE idreader 
+            IN ( SELECT readers.id where readers.NomberAbonement=?)) ORDER BY low(%s) COLLATE sort''' % mtl.rb.report()
