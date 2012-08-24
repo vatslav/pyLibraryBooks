@@ -1069,9 +1069,12 @@ def delexempl(): #rf! удаление экземпляров книги
         isbn = data[0]
         
         r = Toplevel()
-        centr, bottom = Frame(r) , Frame(r)
+        centr, bottom, subcentr = Frame(r) , Frame(r),Frame(r)
         form = inform(centr, fieldOfBooksRus)
         form.setContent(data)
+        Label(subcentr,text='Кол-во экземпляров ').grid(row=0,column=0)
+        count = IntVar()
+        Spinbox(subcentr,from_=1.0, to=1000.0, textvariable=count).grid(row=0,column=1)
         Button(bottom,text='Изменить',command=lambda:update()).grid(row=0,column=0)
         Button(bottom,text='Отмена',command=lambda:r.destroy()).grid(row=0, column=1)
 
@@ -1089,7 +1092,8 @@ def delexempl(): #rf! удаление экземпляров книги
 
         r.bind('<KeyPress>',handlerisbn)
         centr.grid()
-        bottom.grid(row=2)
+        subcentr.grid(row=2)
+        bottom.grid(row=3)
 
     xw = MyTopLevel(parent=delF,configfields=cf,configcmd=find,listcmd=tl)
     xw.rb.var.set('title')
@@ -1107,12 +1111,6 @@ def delexempl(): #rf! удаление экземпляров книги
 
 def classif():
     pass
-    
-    #xw.
-    #for x in sqlmy(r=xw.chb.getSetup(),table='readers',sortby=rTableE[1:5][int(xw.rb.reportIndex())],shadow='NomberAbonement'):
-            #y = tuple2str(x[1:]) #сама строка
-            #gna.append(x[0]) #скрытый id
-            #rows.append(y)
 
     
 
