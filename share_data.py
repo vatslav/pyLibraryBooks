@@ -211,6 +211,7 @@ class EnryV(Frame):
 
 def makeform(root, fields,w1=15,w2=None):
     entries = []
+
     var = StringVar()
     for field in fields:
         #field=field[0]
@@ -225,6 +226,37 @@ def makeform(root, fields,w1=15,w2=None):
         ent.pack(side=RIGHT, expand=YES, fill=X)    # grow horizontal
         entries.append(var)
     return entries
+
+class inform(Frame):
+    """docstring for inform"""
+    def __init__(self, root, fields,w1=15,w2=None):
+        self.entries = []
+
+        #self.vars = []
+        for field in fields:
+            #field=field[0]
+            self.var = StringVar()
+            self.row = Frame(root)                           # make a new self.row
+            self.lab = Label(self.row, width=w1, text=field)       # add self.label, self.entry
+            self.ent = Entry(self.row,textvariable=self.var)
+            if w2!=None:
+                self.ent.config(width=w2)
+            self.row.pack(side=TOP, fill=X)                  # pack row on top
+            self.lab.pack(side=LEFT,expand=YES,)
+            self.ent.pack(side=RIGHT, expand=YES, fill=X)    # grow horizontal
+            self.entries.append(self.var)
+            #self.vars.append(self.var)
+    def getContent(self):
+        return self.entries
+    def getStr(self):
+        return [x.get() for x in self.entries]
+    def setContent(self,rows):
+        for x in range(len(self.entries)):
+            self.entries[x].set( rows[x] )
+    def setContentByIndex(self,index,row):
+        self.entries[index].set( row )
+                
+
 
 
 class chekbutton(Frame):
@@ -445,7 +477,7 @@ class MyTopLevel(ScrolledList):
 
         if parent: self.root = Frame(parent)
         else:      self.root = Toplevel()
-        centr,bottom,top,right = Frame(self.root), Frame(self.root), Frame(self.root), Frame(self.root) #frames
+        centr,self.bottom,top,right = Frame(self.root), Frame(self.root), Frame(self.root), Frame(self.root) #frames
         #центральный лист
         self.toplist = ScrolledList(parent=centr,options=listcontent) #central LIST
         self.toplist.listbox.config(height=25,width=70,font=('courier'))
@@ -454,14 +486,14 @@ class MyTopLevel(ScrolledList):
         sbx.pack(side=BOTTOM, fill=X)
         # поисковая полоска и кнопки ок отмена
         self.findtext = StringVar()
-        self.fent = Entry(bottom, textvariable=self.findtext)
+        self.fent = Entry(self.bottom, textvariable=self.findtext)
         self.fent.grid(row=0,column=0)
-        self.bfent = Button(bottom,text='Найти',command=lambda:handlercmdconf() )
+        self.bfent = Button(self.bottom,text='Найти',command=lambda:handlercmdconf() )
         self.bfent.grid(row=0,column=1)
         if okcmd==[]:okcmd=lambda:1
-        self.b =Button(bottom,text='Ok',command=lambda:okcmd() )
+        self.b =Button(self.bottom,text='Ok',command=lambda:okcmd() )
         self.b.grid(row=1)
-        Button(bottom,text='Отмена', command=lambda:self.root.destroy()).grid(row=1,column=1)
+        Button(self.bottom,text='Отмена', command=lambda:self.root.destroy()).grid(row=1,column=1)
 
 
         if not configfields:
@@ -486,7 +518,7 @@ class MyTopLevel(ScrolledList):
 
          #взаиморасположение
         centr.grid(row=1,column=4)
-        bottom.grid(row=2,column=4)
+        self.bottom.grid(row=2,column=4)
         top.grid(row=0,column=4)
         right.grid(row=1,column=5)
         #showerror('ТАДА','ТАДА')
@@ -495,7 +527,7 @@ class MyTopLevel(ScrolledList):
 
 
 def countBooksByNA(na):
-    return list(execsql('''SELECT COUNT(active) FROM getting JOIN readers WHERE idreader IN 
+    return list(execsql('''SELECT COUNT(active) FROM getting JOIN readers WHERE active=1 AND idreader IN 
         ( SELECT readers.id where readers.NomberAbonement="%s")''' % na))[0][0]
 
 def countBooksByISBN(isbn):

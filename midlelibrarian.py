@@ -217,6 +217,7 @@ def ViewBooks():#выдача книг читателю #!dslfxf rybu rybub
                 showerror("Ошибка","У читателя уже более 5 книг")
                 return
             if int(countBooksByNA(na))+len(isbns)>5:
+                print('kоличество книг взятых читателем ', countBooksByNA(na))
                 showerror("Ошибка","Суммарное количество книг взятых читателем и отобранных для выдачи превышает 5 штук")
                 return
             
@@ -931,8 +932,6 @@ def iterColumnBooks():
     for x in i:
         print(x)
 
-def delExemplars():
-    pass
 
 def addreader():
     hideFrames()
@@ -965,10 +964,16 @@ def addreader():
 
 
 
-def delreader(): #rf!
-    #print('rf=%s' % rf)
+def delexempl(): #rf! удаление экземпляров книги
+    if windows['удаление_книг'][1]==1:
+        hideFrames()
+        delF.grid()
+        windows['удаление_книг'][0].cmd_()
+        #find()
+        return
+    windows['удаление_книг'][1]=1
+
     cf = [(fieldOfBooksRus[x],fieldOfBooks[x]) for x in range(len(fieldOfBooks))]
-    #print('rf=%s' % cf)
     hideFrames()
     isbns = []
     def find():
@@ -1032,7 +1037,7 @@ def delreader(): #rf!
         l, centr = Frame(r), Frame(r)
         l.grid(row=0,column=0)
         centr.grid(row=1,column=0)
-        r.title(string='Удаление экземпляров книги')
+        r.title(string='Удаление экземпляров книги_')
         lb = Listbox(l)
         lb.config(height=2,width=5+len(xw.toplist.getCur()),font=('courier'))
         lb.grid(row=0,column=0,columnspan=2)
@@ -1052,7 +1057,39 @@ def delreader(): #rf!
         #r.grab_set()           # disable other windows while I'm open,
         r.wait_window() 
         #r.mainloop()
+    def cataloging():
+        i = int ( xw.toplist.getIndexCur() )
+        if i==-1:
+            showerror('Ошибка',"Не выбрана не одна книга")
+            return
+        print(i,type(i),isbns[i])
+        data = execsql('''SELECT ISBN, bbk, autors, title, years, publisher, keywords 
+            from books WHERE ISBN="%s" ''' % isbns[i])
+        data=list(data)[0]
+        isbn = data[0]
+        
+        r = Toplevel()
+        centr, bottom = Frame(r) , Frame(r)
+        form = inform(centr, fieldOfBooksRus)
+        form.setContent(data)
+        Button(bottom,text='Изменить',command=lambda:update()).grid(row=0,column=0)
+        Button(bottom,text='Отмена',command=lambda:r.destroy()).grid(row=0, column=1)
 
+        def update():
+            print(form.getStr())
+            req = inscsql('''UPDATE books set ISBN=?, bbk=?, autors=?, title=?, years=?, 
+                publisher=?, keywords=? where ISBN="%s"''' % isbn, form.getStr())
+            if req:
+                showinfo("Успех",'Запись успешно изменина')
+                r.destroy()
+            else:
+                showerror('Ошибка',"Произошла непредвиденная ошибка")
+        def handlerisbn(event=1):
+            form.setContentByIndex(0,isbn)
+
+        r.bind('<KeyPress>',handlerisbn)
+        centr.grid()
+        bottom.grid(row=2)
 
     xw = MyTopLevel(parent=delF,configfields=cf,configcmd=find,listcmd=tl)
     xw.rb.var.set('title')
@@ -1060,9 +1097,16 @@ def delreader(): #rf!
     xw.chb.setFlagByIndex(2)
     xw.chb.setFlagByIndex(0,value=False)
     xw.root.grid(column=4,row=0)
+    xw.cat = Button(xw.bottom,text='Класификация книги',command=lambda:cataloging())
+    xw.cat.grid(column=3,row=1)
+    xw.cmd_ = find
     #xw.root.title(string='Удаление экземпляров книг')
     find()
     delF.grid(row=0,column=2)
+    windows['удаление_книг'][0]=xw
+
+def classif():
+    pass
     
     #xw.
     #for x in sqlmy(r=xw.chb.getSetup(),table='readers',sortby=rTableE[1:5][int(xw.rb.reportIndex())],shadow='NomberAbonement'):
@@ -1086,10 +1130,10 @@ state = ''
 buttons = []
 
 
-issueB            = Button (accountingF,text='Выдача книг чиателю', command=lambda: ViewBooks() );
-getB              = Button (accountingF,text='Прием книг у читателя',command=lambda:viewreader() )
-insertB           = Button (getNdelF,text='Добавление новой книги в фонд библиотеки',command=lambda:addBook() )
-delB              = Button (getNdelF,text='Удаление книги',command=lambda:delreader() )
+issueB            = Button (accountingF,text='Выдача книг чиателю / поиск книги в Интернет', command=lambda: ViewBooks() );
+getB              = Button (accountingF,text='Прием книг у читателя / удаление читателя   ',command=lambda:viewreader() )
+insertB           = Button (getNdelF,   text='      Добавление книг в фонд библиотеки     ',command=lambda:addBook() )
+delB              = Button (getNdelF,   text='        Класификация/Удаление книг          ',command=lambda:delexempl() )
 
 addReader         = Button (readerAdmin,text='Добавление читателя',command=lambda:addreader()).grid(padx=20,ipady=5)
 delReader         = Button (readerAdmin,text='Удаление читателя',command=lambda:viewreader()).grid(padx=20,ipady=5)
@@ -1112,8 +1156,8 @@ issueB.grid(padx=20,ipady=5)
 getB.grid(padx=20,ipady=5)
 insertB.grid(padx=20,ipady=5)
 delB.grid(padx=20,ipady=5)
-cataloging.grid(padx=20,ipady=5)
-classificationB.grid(padx=20,ipady=5)
+#cataloging.grid(padx=20,ipady=5)
+#classificationB.grid(padx=20,ipady=5)
 
 master.grid()
 accountingF.grid(padx=20,ipady=5)
