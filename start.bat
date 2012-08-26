@@ -1,1 +1,1 @@
-Bin\App\python.exe source\midlelibrarian.py
+Bin\App\python.exe source\main.py
