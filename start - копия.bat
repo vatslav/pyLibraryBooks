@@ -1,0 +1,1 @@
+Bin\App\python.exe source\main.py

@@ -1,0 +1,4 @@
+все читатели которые взяли книги
+
+SELECT b.title,r.fio,r.NomberAbonement, g.idbook,g.idreader,r.id,b.id FROM getting as g JOIN books as b JOIN readers as r 
+WHERE g.idbook=b.id AND g.idreader=r.id
