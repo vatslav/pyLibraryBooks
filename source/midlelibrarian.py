@@ -1094,12 +1094,14 @@ def delexempl(): #rf! удаление экземпляров книги
         centr.grid()
         subcentr.grid(row=2)
         bottom.grid(row=3)
-
-    xw = MyTopLevel(parent=delF,configfields=cf,configcmd=find,listcmd=tl)
+    h_tl = lambda:tl(1)
+    xw = MyTopLevel(parent=delF,configfields=cf,configcmd=find,listcmd=tl,okcmd=h_tl)
     xw.rb.var.set('title')
     xw.chb.setFlagByIndex(3)
     xw.chb.setFlagByIndex(2)
     xw.chb.setFlagByIndex(0,value=False)
+    xw.b['text'] = "Удаление экземпляров книги"
+
     xw.root.grid(column=4,row=0)
     xw.cat = Button(xw.bottom,text='Класификация книги',command=lambda:cataloging())
     xw.cat.grid(column=3,row=1)
@@ -1134,7 +1136,7 @@ insertB           = Button (getNdelF,   text='      Добавление кни�
 delB              = Button (getNdelF,   text='        Класификация/Удаление книг          ',command=lambda:delexempl() )
 
 addReader         = Button (readerAdmin,text='Добавление читателя',command=lambda:addreader()).grid(padx=20,ipady=5)
-delReader         = Button (readerAdmin,text='Удаление читателя',command=lambda:viewreader()).grid(padx=20,ipady=5)
+#delReader         = Button (readerAdmin,text='Удаление читателя',command=lambda:viewreader()).grid(padx=20,ipady=5)
 
 cataloging        = Button (classifF,text='Каталогизация' )
 classificationB   = Button (classifF,text='Классификация книг')

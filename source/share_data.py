@@ -1,9 +1,10 @@
 ﻿__author__ = 'Вячеслав'
 import sqlite3,re,random,datetime, time
-from scrolledlist import *
+#from scrolledlist import *
 from tkinter.messagebox import showerror
-from tkinter.ttk import *
+
 from scrolledlist import ScrolledList
+from tkinter.ttk import *
 def sortTextInDb(s1,s2):
     s1=str(s1);  s2 = str(s2)
     s1 = s1.lower()
@@ -458,10 +459,11 @@ def coroutine(func):
         return g
     return start
 
-
+from tkinter.ttk import *
 class MyTopLevel(ScrolledList):
      """docstring for MyTopLevel"""
      #super(MyTopLevel, self).__init__()
+
      def __init__(self, event=True, listcmd=[], configcmd=[],  listcontent=[], configfields=[],okcmd=[],parent=''):
         def clear(func):
             self.toplist.clearlist()
@@ -491,6 +493,7 @@ class MyTopLevel(ScrolledList):
         self.bfent = Button(self.bottom,text='Найти',command=lambda:handlercmdconf() )
         self.bfent.grid(row=0,column=1)
         if okcmd==[]:okcmd=lambda:1
+
         self.b =Button(self.bottom,text='Ok',command=lambda:okcmd() )
         self.b.grid(row=1)
         Button(self.bottom,text='Отмена', command=lambda:self.root.destroy()).grid(row=1,column=1)
