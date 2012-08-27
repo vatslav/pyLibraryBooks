@@ -7,7 +7,7 @@ from tkinter import *
 from tkinter.messagebox import *
 from sys import exit as ext
 from hashlib import md5
-
+from tkinter.ttk import *
 master = Tk()
 master.resizable(False, False)
 #root.protocol('WM_DELETE_WINDOW', window_deleted) # обработчик закрытия окна===========
@@ -97,17 +97,18 @@ def okAct(event):
 def quit(event):
     ext()
     return
-
-button1 = Button(text='Да')
-button2 = Button(text='Отмена')
+def hreader():
+    master.destroy()
+    import reader
+f  = Frame(master)
+f2 = Frame(master)
+button1 = Button(master,text='Да')
+button2 = Button(master,text='Отмена')
 
 button1.bind(b1, okAct)
 button2.bind(b1, quit)
 
-label1 = Label()
-label2 = Label()
-entry1 = Entry()
-entry2 = Entry()
+
 
 Label(master, text="Логин").grid(row=0)
 Label(master, text="Пароль").grid(row=1)
@@ -117,8 +118,9 @@ e2 = Entry(master, show='*')
 
 e1.grid(row=0, column=1, padx=5, pady=5, columnspan=2, ipadx=5)
 e2.grid(row=1, column=1, padx=5, pady=5, columnspan=5, ipadx=5)
-button1.grid(row=2, column=0, columnspan=1, ipadx=5, ipady=5, rowspan=10)
+button1.grid(row=2, column=0, columnspan=1, ipadx=5, ipady=5,)
 button2.grid(row=2, column=2, columnspan=2, ipadx=5, ipady=5)
+Button (master, text='вход для читателя',command=lambda : hreader()).grid(row=10, column=0, padx=5, pady=5, columnspan=5, ipadx=5)
 e1.focus_set()
 master.bind('<Return>', okAct)
 master.bind('<Escape>', quit)

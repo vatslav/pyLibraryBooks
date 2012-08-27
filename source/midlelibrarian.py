@@ -18,10 +18,7 @@ from tkinter.ttk import *
 flags ={'выдать_книги':False,'добавить_книгу':False}
 fieldOfBooksRus = ('ISBN', 'ББК', 'Автор', 'Название', 'Год издания', 'Издательство', 'ключевые слова')
 fieldOfBooks = ('ISBN','bbk', 'autors', 'title', 'years', 'publisher', 'keywords')
-fieldOfBookD = {} #создадим словарь на оснве двух предыдущих картежей
-if len(fieldOfBooks)!=len(fieldOfBooksRus):showerror('erroe','erroedict')
-for x in range(len(fieldOfBooks)):
-    fieldOfBookD[ fieldOfBooksRus[x] ] = fieldOfBooks[x]
+fieldOfBookD = dict(zip(fieldOfBooksRus,fieldOfBooks)) #специальное спасибо FishHook`у, за на
 #поиск читателя
 rTableR = ('порядковый номер','Номер Абонемента', 'ФИО',"адрес","телефон","время создания") #имя для пользователя
 rTableE = ('id',              'NomberAbonement' ,'fio', 'adress','telephone','create_time') #имя поля в бд
@@ -1072,13 +1069,24 @@ def delexempl(): #rf! удаление экземпляров книги
         centr, bottom, subcentr = Frame(r) , Frame(r),Frame(r)
         form = inform(centr, fieldOfBooksRus)
         form.setContent(data)
-        Label(subcentr,text='Кол-во экземпляров ').grid(row=0,column=0)
+        #Label(subcentr, text='Добавление экзе')
+        Label(subcentr,text='Добавить экземпляров ').grid(row=0,column=0)
         count = IntVar()
-        Spinbox(subcentr,from_=1.0, to=1000.0, textvariable=count).grid(row=0,column=1)
+        Spinbox(subcentr,from_=0.0, to=1000.0, textvariable=count).grid(row=0,column=1)
         Button(bottom,text='Изменить',command=lambda:update()).grid(row=0,column=0)
         Button(bottom,text='Отмена',command=lambda:r.destroy()).grid(row=0, column=1)
 
         def update():
+            mycount = count.get()
+            try:
+                mycount = int(mycount)
+            except ValueError:
+                showerror('Ошибка', "Количисетво книг должно быть целым числом")
+                return
+            if mycount<0:
+                showerror('Ошибка', "Количисетво книг должно быть целым числом")
+                return
+
             print(form.getStr())
             req = inscsql('''UPDATE books set ISBN=?, bbk=?, autors=?, title=?, years=?,
                 publisher=?, keywords=? where ISBN="%s"''' % isbn, form.getStr())
@@ -1087,6 +1095,19 @@ def delexempl(): #rf! удаление экземпляров книги
                 r.destroy()
             else:
                 showerror('Ошибка',"Произошла непредвиденная ошибка")
+                return
+            if not mycount:return
+            req = 'INSERT INTO exemplars (classbook, create_time) values (?,?)'
+            fl = 1
+            for x in range(mycount):
+                if not inscsql(req,(isbn,datetime.datetime.today())):
+                    fl = 0
+            if fl:
+                showinfo("Успех",'Экземпляров добавлено: %s' % mycount)
+            else:
+                showerror('Ошибка',"Произошла непредвиденная ошибка")
+
+
         def handlerisbn(event=1):
             form.setContentByIndex(0,isbn)
 
@@ -1138,6 +1159,7 @@ delB              = Button (getNdelF,   text='        Класификация/�
 addReader         = Button (readerAdmin,text='Добавление читателя',command=lambda:addreader()).grid(padx=20,ipady=5)
 #delReader         = Button (readerAdmin,text='Удаление читателя',command=lambda:viewreader()).grid(padx=20,ipady=5)
 
+
 cataloging        = Button (classifF,text='Каталогизация' )
 classificationB   = Button (classifF,text='Классификация книг')
 #фремы подфункций
@@ -1166,4 +1188,5 @@ readerAdmin.grid(padx=20,ipady=5,row=1)
 classifF.grid(padx=20,ipady=5,row=3)
 
 #ViewBooks()
-root.mainloop()
+start = lambda :root.mainloop()
+start()

@@ -496,7 +496,8 @@ class MyTopLevel(ScrolledList):
 
         self.b =Button(self.bottom,text='Ok',command=lambda:okcmd() )
         self.b.grid(row=1)
-        Button(self.bottom,text='Отмена', command=lambda:self.root.destroy()).grid(row=1,column=1)
+        self.cb = Button(self.bottom,text='Отмена', command=lambda:self.root.destroy())
+        self.cb.grid(row=1,column=1)
 
 
         if not configfields:
@@ -538,4 +539,10 @@ def countBooksByISBN(isbn):
         (SELECT id FROM books where ISBN="%s" )''' % isbn))[0][0]   
 
 def countBooksBeByISBN(isbn):
-     return list(execsql('''SELECT COUNT(classbook) FROM exemplars WHERE classbook="%s"''' % isbn))[0][0]   
+     return list(execsql('''SELECT COUNT(classbook) FROM exemplars WHERE classbook="%s"''' % isbn))[0][0]
+
+
+
+
+
+

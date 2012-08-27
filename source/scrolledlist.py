@@ -23,14 +23,7 @@ def low(s):
 
 def testOpt():
     return( ('Lumberjack-%s' % x) for  x in range(20))
-try:
-    conn = sqlite3.connect('db.sqlite')
-    cur = conn.cursor()
-    conn.create_collation('sort',sortTextInDb) #встраиваем сортировку
-    conn.create_function("low", 1, low) #встраиваеваем функцию, 1 - кол-во аргмуентов
-except sqlite3.OperationalError as dbLock:
-    showerror('Ошибка', dbLock)
-    exit()
+
 
 class ScrolledList(Frame):
     def __init__(self, options=testOpt(), parent=None,newBind=None):
