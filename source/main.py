@@ -123,3 +123,4 @@ e1.focus_set()
 master.bind('<Return>', okAct)
 master.bind('<Escape>', quit)
 master.mainloop()
+#копиит из pycharm
