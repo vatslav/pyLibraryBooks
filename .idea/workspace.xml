@@ -5,14 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="59840cc4-c9eb-426a-ba10-ea9c0dd2b4dd" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/source/reader.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/mydb1.sqlite" afterPath="$PROJECT_DIR$/source/mydb1.sqlite" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/start.exe" afterPath="$PROJECT_DIR$/start.exe" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/main.py" afterPath="$PROJECT_DIR$/source/main.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/midlelibrarian.py" afterPath="$PROJECT_DIR$/source/midlelibrarian.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/scrolledlist.py" afterPath="$PROJECT_DIR$/source/scrolledlist.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/share_data.py" afterPath="$PROJECT_DIR$/source/share_data.py" />
     </list>
     <ignored path="pylibrary.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -53,7 +46,7 @@
       <file leaf-file-name="reader.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/source/reader.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="53" column="10" selection-start="2075" selection-end="2075" vertical-scroll-proportion="0.5883777">
+            <state line="57" column="44" selection-start="2188" selection-end="2188" vertical-scroll-proportion="0.7530266">
               <folding />
             </state>
           </provider>
@@ -481,7 +474,11 @@
       <created>1346063871819</created>
       <updated>1346063871819</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="красивый вход в программу + 100%читатель&#10;ну вроде сегодня закрыл 99%курсовой, вроде все требовало ТЗ сделано">
+      <created>1346103919755</created>
+      <updated>1346103919755</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -518,7 +515,7 @@
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2739726" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.11666667" sideWeight="0.38297874" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22094926" sideWeight="0.9983051" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.22094926" sideWeight="0.9983051" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3289689" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -565,7 +562,7 @@
     <option name="SHOW_VCS_ERROR_NOTIFICATIONS" value="false" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="починил и переименовал &quot;ок&quot; в класификации книг&#10;" />
+    <option name="LAST_COMMIT_MESSAGE" value="красивый вход в программу + 100%читатель&#10;ну вроде сегодня закрыл 99%курсовой, вроде все требовало ТЗ сделано" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -581,6 +578,7 @@
     <MESSAGE value="ssdf" />
     <MESSAGE value="#копиит из pycharm" />
     <MESSAGE value="починил и переименовал &quot;ок&quot; в класификации книг&#10;" />
+    <MESSAGE value="красивый вход в программу + 100%читатель&#10;ну вроде сегодня закрыл 99%курсовой, вроде все требовало ТЗ сделано" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -696,7 +694,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/source/reader.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="53" column="10" selection-start="2075" selection-end="2075" vertical-scroll-proportion="0.5883777">
+        <state line="57" column="44" selection-start="2188" selection-end="2188" vertical-scroll-proportion="0.7530266">
           <folding />
         </state>
       </provider>
