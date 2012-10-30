@@ -26,6 +26,7 @@ root=True #таблица
 numberUser=0
 NumberUserCur=0
 '''
+#test edit
 #сортировка строк, в sql запросе, без учете регистра
 def sortTextInDb(s1,s2):
     s1 = s1.lower()
